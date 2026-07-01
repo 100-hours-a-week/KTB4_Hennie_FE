@@ -1,0 +1,107 @@
+<!-- 📁 pages/profile-edit.html  (라우트: /users/myInfo) -->
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원정보수정</title>
+  </head>
+  <body>
+    <!-- 회원정보수정 본문 -->
+    <main class="profile-edit-main">
+      <section class="profile-edit-card">
+        <h2 class="profile-edit-card__title">회원정보수정</h2>
+
+        <form class="profile-edit-form">
+          <!-- 프로필 사진 (변경 가능) -->
+          <div class="avatar-upload">
+            <span class="avatar-upload__label">프로필 사진*</span>
+
+            <label class="avatar-upload__box" for="profile-image">
+              <img
+                class="avatar-upload__preview"
+                src="/src/assets/images/profile-default.jpeg"
+                alt="프로필 미리보기"
+              />
+              <span class="avatar-upload__overlay" aria-hidden="true">
+                <span class="avatar-upload__change">변경</span>
+              </span>
+            </label>
+
+            <input
+              class="avatar-upload__input"
+              type="file"
+              id="profile-image"
+              accept="image/*"
+            />
+          </div>
+
+          <!-- 이메일 (읽기 전용) -->
+          <div class="field">
+            <label class="field__label" for="email">이메일</label>
+            <input
+              class="field__input field__input--readonly"
+              type="email"
+              id="email"
+              readonly
+            />
+          </div>
+
+          <!-- 닉네임 (수정 가능) -->
+          <div class="field">
+            <label class="field__label" for="nickname">닉네임</label>
+            <input
+              class="field__input"
+              type="text"
+              id="nickname"
+              name="nickname"
+              placeholder="수정할 닉네임"
+            />
+            <p class="field__helper"></p>
+          </div>
+
+          <!-- 액션 -->
+          <div class="profile-edit-actions">
+            <button type="submit" class="btn btn--primary btn--block">
+              수정하기
+            </button>
+            <button
+              type="button"
+              class="profile-edit-withdraw"
+              id="withdrawBtn"
+            >
+              회원 탈퇴
+            </button>
+            <button type="button" class="profile-edit-complete">
+              수정 완료
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <!-- 회원 탈퇴 확인 모달 -->
+    <div
+      class="modal"
+      id="withdrawModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="withdrawModalTitle"
+    >
+      <div class="modal__box">
+        <p class="modal__title" id="withdrawModalTitle">
+          회원탈퇴 하시겠습니까?
+        </p>
+        <p class="modal__desc">작성된 게시글과 댓글은 삭제됩니다.</p>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--dark" id="withdrawCancel">
+            취소
+          </button>
+          <button type="button" class="btn btn--primary" id="withdrawConfirm">
+            확인
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입</title>
+  </head>
+  <body>
+    <!-- 회원가입 본문 -->
+    <main class="signup-main">
+      <section class="signup-card">
+        <h2 class="signup-card__title">회원가입</h2>
+
+        <form class="signup-form">
+          <!-- 프로필 사진 업로드 -->
+          <div class="avatar-upload">
+            <span class="avatar-upload__label">프로필 사진</span>
+            <label class="avatar-upload__box" for="profile-image">
+              <span class="avatar-upload__icon">+</span>
+              <!-- 이미지 선택 시 아래 img의 src를 채우고 .avatar-upload__icon은 숨김 -->
+              <!-- <img class="avatar-upload__preview" src="" alt="프로필 미리보기" /> -->
+            </label>
+            <input
+              class="avatar-upload__input"
+              type="file"
+              id="profile-image"
+              accept="image/*"
+            />
+            <p class="avatar-upload__helper"></p>
+          </div>
+
+          <!-- 이메일 -->
+          <div class="field">
+            <label class="field__label" for="email">이메일*</label>
+            <input
+              class="field__input"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="이메일을 입력하세요"
+            />
+            <p class="field__helper"></p>
+          </div>
+
+          <!-- 비밀번호 -->
+          <div class="field">
+            <label class="field__label" for="password">비밀번호*</label>
+            <input
+              class="field__input"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="비밀번호를 입력하세요"
+            />
+            <p class="field__helper"></p>
+          </div>
+
+          <!-- 비밀번호 확인 -->
+          <div class="field">
+            <label class="field__label" for="password-confirm"
+              >비밀번호 확인*</label
+            >
+            <input
+              class="field__input"
+              type="password"
+              id="password-confirm"
+              name="password-confirm"
+              placeholder="비밀번호를 한번 더 입력하세요"
+            />
+            <p class="field__helper"></p>
+          </div>
+
+          <!-- 닉네임 -->
+          <div class="field">
+            <label class="field__label" for="nickname">닉네임*</label>
+            <input
+              class="field__input"
+              type="text"
+              id="nickname"
+              name="nickname"
+              placeholder="닉네임을 입력하세요"
+            />
+            <p class="field__helper"></p>
+          </div>
+
+          <!-- 액션 버튼 -->
+          <div class="signup-actions">
+            <button type="submit" class="btn btn--primary btn--block" disabled>
+              회원가입
+            </button>
+            <a href="/users/login" class="btn btn--secondary btn--sm"
+              >로그인하러 가기</a
+            >
+          </div>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
