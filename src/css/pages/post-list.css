@@ -1,0 +1,42 @@
+.post-list-main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+}
+.post-list-greeting {
+  text-align: center;
+  font-size: var(--fs-lg);
+  line-height: 1.6;
+  margin-bottom: var(--space-6);
+}
+.post-list-greeting strong {
+  font-weight: var(--fw-bold);
+}
+
+/* '게시글 작성' 버튼 우측 정렬 */
+.post-list-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-4);
+}
+.post-list-toolbar .btn {
+  background-color: #aca0eb;
+}
+.post-list-toolbar .btn:hover {
+  background-color: #7f6aee;
+}
+
+/* 카드 세로 목록 */
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.post-list-sentinel {
+  min-height: 40px;
+  padding: var(--space-5) 0;
+  text-align: center;
+  color: var(--color-text-sub);
+  font-size: var(--fs-sm);
+}

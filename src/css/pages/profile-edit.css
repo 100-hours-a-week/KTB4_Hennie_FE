@@ -1,0 +1,50 @@
+.profile-edit-main {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-8) var(--space-6);
+}
+.profile-edit-card {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.profile-edit-card__title {
+  text-align: center;
+  font-size: var(--fs-title);
+  font-weight: var(--fw-bold);
+}
+.profile-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.profile-edit-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+/* 회원 탈퇴: 버튼이 아닌 텍스트 링크 형태 */
+.profile-edit-withdraw {
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
+  text-decoration: underline;
+}
+
+.profile-edit-complete {
+  width: 50%;
+  min-width: 140px;
+  height: 42px;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+}
+
+.profile-edit-complete:hover {
+  background-color: var(--color-primary-hover);
+}

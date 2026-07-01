@@ -1,0 +1,67 @@
+.post-detail-main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+}
+
+/* 글 제목 영역 */
+.post-detail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+.post-detail-head__title {
+  font-size: var(--fs-title);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-2);
+}
+.post-detail-head__author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
+}
+.post-detail-head__avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  overflow: hidden;
+}
+.post-detail-head__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.post-detail-head__actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* 이미지 */
+.post-detail-image {
+  width: 100%;
+  border-radius: var(--radius-md);
+  background-color: #e9ecef;
+  margin-bottom: var(--space-6);
+}
+
+/* 본문 */
+.post-detail-body {
+  font-size: var(--fs-md);
+  line-height: 1.8;
+  white-space: pre-wrap; /* 줄바꿈 유지 */
+  margin-bottom: var(--space-4);
+}
+
+/* 댓글 영역 간격 */
+.post-detail-comments {
+  margin-top: var(--space-8);
+}
+.post-detail-comments .comment-form {
+  margin-bottom: var(--space-6);
+}

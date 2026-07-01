@@ -1,0 +1,45 @@
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none; /* 기본 숨김 */
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+.modal.is-open {
+  display: flex;
+} /* JS로 토글 */
+.modal__box {
+  width: 100%;
+  max-width: 320px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  text-align: center;
+}
+.modal__title {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-2);
+}
+.modal__desc {
+  font-size: var(--fs-md);
+  color: var(--color-text-sub);
+  margin-bottom: var(--space-6);
+}
+.modal__actions {
+  display: flex;
+  gap: var(--space-3);
+}
+.modal__actions .btn {
+  flex: 1;
+}
+/* 취소(어두운) 버튼 변형 */
+.btn--dark {
+  background-color: #343a40;
+  color: #fff;
+}
+.btn--dark:hover {
+  background-color: #212529;
+}

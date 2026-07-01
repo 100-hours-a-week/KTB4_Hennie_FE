@@ -1,0 +1,37 @@
+:root {
+  /* Colors */
+  --color-bg: #f4f5f7;
+  --color-surface: #ffffff;
+  --color-primary: #7f6aee;
+  --color-primary-hover: #7f6aee;
+  --color-text: #1a1a1a;
+  --color-text-sub: #868e96;
+  --color-error: #e03131;
+  --color-border: #e0e0e0;
+  --color-input-border: #d5d8dd;
+  --color-placeholder: #adb5bd;
+
+  /* Typography */
+  --font-base: "Pretendard", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fs-sm: 12px;
+  --fs-md: 14px;
+  --fs-lg: 16px;
+  --fs-title: 24px;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-bold: 700;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Radius & layout */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --header-height: 80px;
+  --field-height: 44px;
+}

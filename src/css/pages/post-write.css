@@ -1,0 +1,176 @@
+.post-write-main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+}
+.post-write-card__title {
+  text-align: center;
+  font-size: var(--fs-title);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-6);
+}
+.post-write-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.post-write-form .btn {
+  margin-top: var(--space-2);
+}
+.post-write-actions {
+  display: grid;
+  grid-template-columns: minmax(112px, 0.42fr) minmax(0, 1fr);
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+.post-write-actions .btn {
+  margin-top: 0;
+}
+.post-write-actions .btn--block {
+  width: auto;
+}
+.post-write-draft {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px;
+  align-items: stretch;
+  min-width: 0;
+}
+.post-write-draft-button {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: var(--color-surface);
+  color: var(--color-text-sub);
+  border: 1px solid var(--color-input-border);
+}
+.post-write-draft-button:hover {
+  background-color: #f1f1f5;
+  color: var(--color-text);
+}
+.post-write-draft-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--field-height);
+  border: 1px solid var(--color-input-border);
+  border-left: 0;
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: #7f6aee;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+}
+.post-write-draft-count:hover {
+  background-color: #f1f1f5;
+}
+.post-write-form .btn--primary {
+  background-color: #aca0eb;
+}
+.post-write-form .post-write-submit--ready,
+.post-write-form .post-write-submit--ready:hover {
+  background-color: #7f6aee;
+}
+
+.post-draft-modal__box {
+  max-width: 420px;
+  text-align: left;
+}
+.post-draft-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.post-draft-modal__header .modal__title {
+  margin-bottom: 0;
+}
+.post-draft-modal__close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--color-text-sub);
+  font-size: 20px;
+  line-height: 1;
+}
+.post-draft-modal__close:hover {
+  background-color: #f1f1f5;
+  color: var(--color-text);
+}
+.post-draft-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 320px;
+  overflow-y: auto;
+}
+.post-draft-list__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 80px;
+  align-items: stretch;
+  min-height: 68px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  overflow: hidden;
+}
+.post-draft-list__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  width: 100%;
+  padding: var(--space-3);
+  text-align: left;
+}
+.post-draft-list__content:hover {
+  background-color: #f8f8fb;
+}
+.post-draft-list__title {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: var(--space-1);
+  color: var(--color-text);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  line-height: 1.4;
+}
+.post-draft-list__date {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-sub);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+.post-draft-list__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 100%;
+}
+.post-draft-list__delete-button {
+  height: 32px;
+  width: 56px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background-color: #fff;
+  color: #d94848;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+.post-draft-list__delete-button:hover {
+  background-color: #fff1f1;
+  color: #d94848;
+}
+.post-draft-list__empty {
+  padding: var(--space-6) 0;
+  text-align: center;
+  color: var(--color-text-sub);
+  font-size: var(--fs-sm);
+}
