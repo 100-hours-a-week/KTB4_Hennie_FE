@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>게시글 목록</title>
+  </head>
+  <body>
+    <main class="post-list-main">
+      <!-- 인사말 -->
+      <p class="post-list-greeting">
+        안녕하세요,<br />
+        아무 말 대잔치 <strong>게시판</strong> 입니다.
+      </p>
+
+      <!-- 게시글 작성 버튼 -->
+      <div class="post-list-toolbar">
+        <a href="/posts/write" class="btn btn--primary btn--sm">
+          게시글 작성
+        </a>
+      </div>
+
+      <!-- 게시글 카드 목록 -->
+      <ul class="post-list" id="postList"></ul>
+      <div
+        class="post-list-sentinel"
+        id="postListSentinel"
+        aria-live="polite"
+      ></div>
+    </main>
+  </body>
+</html>

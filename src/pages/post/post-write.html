@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>게시글 작성</title>
+  </head>
+  <body>
+    <!-- 게시글 작성 본문 -->
+    <main class="post-write-main">
+      <section class="post-write-card">
+        <h2 class="post-write-card__title">게시글 작성</h2>
+
+        <form class="post-write-form">
+          <!-- 제목 -->
+          <div class="field">
+            <label class="field__label" for="title">제목*</label>
+            <input
+              class="field__input"
+              type="text"
+              id="title"
+              name="title"
+              maxlength="26"
+              placeholder="제목을 입력해주세요. (최대 26글자)"
+            />
+          </div>
+
+          <!-- 내용 -->
+          <div class="field">
+            <label class="field__label" for="content">내용*</label>
+            <textarea
+              class="field__textarea"
+              id="content"
+              name="content"
+              placeholder="내용을 입력해주세요."
+            ></textarea>
+            <p class="field__helper"></p>
+          </div>
+
+          <!-- 이미지 -->
+          <div class="field">
+            <label class="field__label" for="image">이미지</label>
+            <div class="field__file">
+              <label class="field__file-btn" for="image">파일 선택</label>
+              <input
+                class="field__file-input"
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+              />
+              <span class="field__file-name">파일을 선택해주세요.</span>
+            </div>
+          </div>
+
+          <div class="post-write-actions">
+            <div class="post-write-draft">
+              <button
+                type="button"
+                class="btn post-write-draft-button"
+                id="postDraftSaveBtn"
+              >
+                임시저장
+              </button>
+              <button
+                type="button"
+                class="post-write-draft-count"
+                id="postDraftCountBtn"
+                aria-label="임시 저장 목록 열기"
+              >
+                0
+              </button>
+            </div>
+            <button type="submit" class="btn btn--primary btn--block">
+              완료
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <div
+      class="modal post-draft-modal"
+      id="postDraftModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="postDraftModalTitle"
+    >
+      <div class="modal__box post-draft-modal__box">
+        <div class="post-draft-modal__header">
+          <p class="modal__title" id="postDraftModalTitle">임시 저장 목록</p>
+          <button
+            type="button"
+            class="post-draft-modal__close"
+            id="postDraftCloseBtn"
+            aria-label="임시 저장 목록 닫기"
+          >
+            ×
+          </button>
+        </div>
+        <ul class="post-draft-list" id="postDraftList">
+          <li class="post-draft-list__empty">임시 저장된 글이 없습니다.</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

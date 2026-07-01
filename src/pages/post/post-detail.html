@@ -1,0 +1,63 @@
+<!-- 📁 pages/post-detail.html  (라우트 예: /posts/:id) -->
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>게시글</title>
+  </head>
+  <body>
+
+    <main class="post-detail-main">
+      <!-- 게시글 본문 (postDetailView가 생성) -->
+      <div id="postDetail"></div>
+
+      <!-- 댓글 영역 -->
+      <section class="post-detail-comments">
+        <!-- 댓글 입력 -->
+        <form class="comment-form">
+          <textarea
+            class="comment-form__input"
+            placeholder="댓글을 남겨주세요."
+          ></textarea>
+          <div class="comment-form__actions">
+            <button
+              type="button"
+              class="btn btn--primary btn--sm"
+              id="commentSubmitBtn"
+            >
+              댓글 등록
+            </button>
+          </div>
+        </form>
+
+        <!-- 댓글 목록 (commentView가 생성) -->
+        <ul class="comment-list" id="commentList"></ul>
+      </section>
+    </main>
+
+    <!-- 삭제 확인 모달 (회원정보수정에서 만든 공통 모달 재사용) -->
+    <div
+      class="modal"
+      id="deleteModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="deleteModalTitle"
+    >
+      <div class="modal__box">
+        <p class="modal__title" id="deleteModalTitle">
+          게시글을 삭제하시겠습니까?
+        </p>
+        <p class="modal__desc">삭제한 내용은 복구할 수 없습니다.</p>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--dark" id="deleteCancel">
+            취소
+          </button>
+          <button type="button" class="btn btn--primary" id="deleteConfirm">
+            확인
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
