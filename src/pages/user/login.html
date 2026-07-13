@@ -9,41 +9,58 @@
     <!-- 로그인 본문 -->
     <main class="login-main">
       <section class="login-card">
-        <h2 class="login-card__title">로그인</h2>
+        <div class="login-card__head">
+          <h2 class="login-card__title">로그인</h2>
+          <p class="login-card__subtitle">
+            개발이 남긴 발자국을 따라가다
+          </p>
+        </div>
 
         <form class="login-form">
-          <div class="field">
-            <label class="field__label" for="email">이메일</label>
+          <!-- 플로팅 라벨: input 다음에 label을 두어 :focus/:not(:placeholder-shown)로 라벨을 띄운다 -->
+          <div class="field field--float">
             <input
               class="field__input"
               type="email"
               id="email"
               name="email"
-              placeholder="이메일을 입력하세요"
+              placeholder=" "
+              autocomplete="email"
             />
+            <label class="field__label" for="email">이메일</label>
           </div>
 
-          <div class="field">
-            <label class="field__label" for="password">비밀번호</label>
+          <div class="field field--float field--password">
             <input
               class="field__input"
               type="password"
               id="password"
               name="password"
-              placeholder="비밀번호를 입력하세요"
+              placeholder=" "
+              autocomplete="current-password"
             />
+            <label class="field__label" for="password">비밀번호</label>
+            <button
+              type="button"
+              class="field__toggle"
+              aria-label="비밀번호 표시"
+            >
+              표시
+            </button>
             <p class="field__helper"></p>
           </div>
 
-          <div class="login-actions">
-            <button type="submit" class="btn btn--primary btn--block">
-              로그인
-            </button>
-            <a href="/users/signup" class="btn btn--secondary btn--sm"
-              >회원가입</a
-            >
-          </div>
+          <button type="submit" class="btn btn--primary btn--block login-submit">
+            로그인
+          </button>
         </form>
+
+        <div class="login-divider">또는</div>
+
+        <p class="login-signup">
+          아직 개발바닥 회원이 아니신가요?
+          <a href="/users/signup" class="login-signup__link">회원가입</a>
+        </p>
       </section>
     </main>
   </body>

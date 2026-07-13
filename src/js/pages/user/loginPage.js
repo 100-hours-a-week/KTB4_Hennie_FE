@@ -1,8 +1,11 @@
 import { login } from "../../api/authApi";
 import { navigate } from "../../route/navigation.js";
+import { initPasswordToggles } from "../../utils/initPasswordToggles.js";
 
 export const initLoginPage = () => {
   const form = document.querySelector(".login-form");
+
+  initPasswordToggles(".login-form");
 
   form.addEventListener("input", (event) => {
     syncLoginSubmitButton(form);

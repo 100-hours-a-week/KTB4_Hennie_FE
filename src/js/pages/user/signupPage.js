@@ -3,6 +3,7 @@ import { signup } from "../../api/userApi.js";
 import { setFieldHelper } from "../../utils/setFieldHelper.js";
 import { clearFieldHelpers } from "../../utils/clearFieldHelpers.js";
 import { handleFormError } from "../../utils/handleFormError.js";
+import { initPasswordToggles } from "../../utils/initPasswordToggles.js";
 
 const SIGNUP_FIELD_SELECTOR = {
   email: "#email",
@@ -24,6 +25,7 @@ export const initSignupPage = () => {
     return;
   }
 
+  initPasswordToggles(".signup-form");
   syncSignupSubmitButton(form);
 
   form.addEventListener("input", (event) => {

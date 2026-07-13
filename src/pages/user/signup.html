@@ -9,7 +9,12 @@
     <!-- 회원가입 본문 -->
     <main class="signup-main">
       <section class="signup-card">
-        <h2 class="signup-card__title">회원가입</h2>
+        <div class="signup-card__head">
+          <h2 class="signup-card__title">회원가입</h2>
+          <p class="signup-card__subtitle">
+            개발바닥에서 나만의 개발자국을 남겨보세요
+          </p>
+        </div>
 
         <form class="signup-form">
           <!-- 프로필 사진 업로드 -->
@@ -29,70 +34,94 @@
             <p class="avatar-upload__helper"></p>
           </div>
 
+          <!-- 플로팅 라벨: input 다음에 label을 두어 :focus/:not(:placeholder-shown)로 라벨을 띄운다 -->
           <!-- 이메일 -->
-          <div class="field">
-            <label class="field__label" for="email">이메일*</label>
+          <div class="field field--float">
             <input
               class="field__input"
               type="email"
               id="email"
               name="email"
-              placeholder="이메일을 입력하세요"
+              placeholder=" "
+              autocomplete="email"
             />
+            <label class="field__label" for="email">이메일</label>
             <p class="field__helper"></p>
           </div>
 
           <!-- 비밀번호 -->
-          <div class="field">
-            <label class="field__label" for="password">비밀번호*</label>
+          <div class="field field--float field--password">
             <input
               class="field__input"
               type="password"
               id="password"
               name="password"
-              placeholder="비밀번호를 입력하세요"
+              placeholder=" "
+              autocomplete="new-password"
             />
+            <label class="field__label" for="password">비밀번호</label>
+            <button
+              type="button"
+              class="field__toggle"
+              aria-label="비밀번호 표시"
+            >
+              표시
+            </button>
             <p class="field__helper"></p>
           </div>
 
           <!-- 비밀번호 확인 -->
-          <div class="field">
-            <label class="field__label" for="password-confirm"
-              >비밀번호 확인*</label
-            >
+          <div class="field field--float field--password">
             <input
               class="field__input"
               type="password"
               id="password-confirm"
               name="password-confirm"
-              placeholder="비밀번호를 한번 더 입력하세요"
+              placeholder=" "
+              autocomplete="new-password"
             />
+            <label class="field__label" for="password-confirm"
+              >비밀번호 확인</label
+            >
+            <button
+              type="button"
+              class="field__toggle"
+              aria-label="비밀번호 표시"
+            >
+              표시
+            </button>
             <p class="field__helper"></p>
           </div>
 
           <!-- 닉네임 -->
-          <div class="field">
-            <label class="field__label" for="nickname">닉네임*</label>
+          <div class="field field--float">
             <input
               class="field__input"
               type="text"
               id="nickname"
               name="nickname"
-              placeholder="닉네임을 입력하세요"
+              placeholder=" "
+              autocomplete="nickname"
             />
+            <label class="field__label" for="nickname">닉네임</label>
             <p class="field__helper"></p>
           </div>
 
-          <!-- 액션 버튼 -->
-          <div class="signup-actions">
-            <button type="submit" class="btn btn--primary btn--block" disabled>
-              회원가입
-            </button>
-            <a href="/users/login" class="btn btn--secondary btn--sm"
-              >로그인하러 가기</a
-            >
-          </div>
+          <button
+            type="submit"
+            class="btn btn--primary btn--block signup-submit"
+            disabled
+          >
+            회원가입
+          </button>
         </form>
+
+        <div class="signup-divider">또는</div>
+
+        <p class="signup-login">
+          이미 개발바닥 회원이세요?
+          <a href="/users/login" class="signup-login__link">로그인</a>
+        </p>
       </section>
     </main>
   </body>
