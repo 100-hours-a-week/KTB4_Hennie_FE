@@ -1,4 +1,5 @@
 import { CommentItem } from "../../components/commentItem.js";
+import { isOwnedByCurrentUser } from "../../utils/isOwnedByCurrentUser.js";
 
 // 게시글 응답에서 댓글 배열을 안전하게 추출
 export const extractComments = (post) => {
@@ -8,7 +9,10 @@ export const extractComments = (post) => {
   return Array.isArray(comments) ? comments : [];
 };
 
-export const renderCommentList = (comments = []) => {
+export const renderCommentList = (
+  comments = [],
+  { currentUserId, currentUserNickname } = {}
+) => {
   const $list = document.querySelector("#commentList");
 
   if (!$list) {
@@ -20,5 +24,14 @@ export const renderCommentList = (comments = []) => {
     return;
   }
 
-  $list.innerHTML = comments.map(CommentItem).join("");
+  $list.innerHTML = comments
+    .map((comment) =>
+      CommentItem(comment, {
+        canManage: isOwnedByCurrentUser(comment, {
+          id: currentUserId,
+          nickname: currentUserNickname,
+        }),
+      })
+    )
+    .join("");
 };

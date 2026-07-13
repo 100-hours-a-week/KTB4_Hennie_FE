@@ -1,5 +1,6 @@
 import { escapeHtml } from "../../utils/escapeHtml.js";
 import { formatDate } from "../../utils/formatDate.js";
+import { isOwnedByCurrentUser } from "../../utils/isOwnedByCurrentUser.js";
 
 const DEFAULT_PROFILE = "/src/assets/images/profile-default.jpeg";
 
@@ -12,15 +13,11 @@ export const setCommentCount = (count) => {
   }
 };
 
-// 현재 화면에 표시된 댓글 수 (낙관적 업데이트의 롤백 기준값)
-export const getCommentCount = () => {
-  const element = document.querySelector("#commentCount");
-
-  return Number(element?.textContent) || 0;
-};
-
 // 게시글 상세 본문 마크업을 생성해 #postDetail 컨테이너에 렌더한다.
-export const renderPostDetail = (post) => {
+export const renderPostDetail = (
+  post,
+  { currentUserId, currentUserNickname } = {}
+) => {
   const $root = document.querySelector("#postDetail");
 
   if (!$root) {
@@ -42,8 +39,13 @@ export const renderPostDetail = (post) => {
   const imageUrl = post.imageUrl || post.image || "";
   const content = escapeHtml(post.content || "");
   const likeCount = post.likeCount ?? post.likes ?? 0;
+  const liked = Boolean(post.liked);
   const viewCount = post.viewCount ?? post.views ?? 0;
   const commentCount = post.commentCount ?? post.comments ?? 0;
+  const canManagePost = isOwnedByCurrentUser(post, {
+    id: currentUserId,
+    nickname: currentUserNickname,
+  });
 
   $root.innerHTML = `
     <div class="post-detail-head">
@@ -63,6 +65,7 @@ export const renderPostDetail = (post) => {
         </div>
       </div>
       <div class="post-detail-head__actions">
+      ${canManagePost ? `
         <a class="btn btn--secondary btn--sm" id="postEditLink">수정</a>
         <button
           type="button"
@@ -71,6 +74,15 @@ export const renderPostDetail = (post) => {
         >
           삭제
         </button>
+      ` : `
+        <button
+          type="button"
+          class="btn btn--secondary btn--sm"
+          id="postReportBtn"
+        >
+          신고
+        </button>
+      `}
       </div>
     </div>
 
@@ -85,10 +97,16 @@ export const renderPostDetail = (post) => {
     <p class="post-detail-body">${content}</p>
 
     <div class="stat-boxes">
-      <div class="stat-box">
-        <span class="stat-box__count">${likeCount}</span>
+      <button
+        type="button"
+        class="stat-box stat-box--like${liked ? " is-liked" : ""}"
+        id="postLikeButton"
+        aria-pressed="${liked}"
+        aria-label="좋아요${liked ? " 취소" : ""}"
+      >
+        <span class="stat-box__count" id="postLikeCount">${likeCount}</span>
         <span class="stat-box__label">좋아요수</span>
-      </div>
+      </button>
       <div class="stat-box">
         <span class="stat-box__count">${viewCount}</span>
         <span class="stat-box__label">조회수</span>

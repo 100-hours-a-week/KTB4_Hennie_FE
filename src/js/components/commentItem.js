@@ -1,7 +1,7 @@
 import { escapeHtml } from "../utils/escapeHtml.js";
 import { formatDate } from "../utils/formatDate.js";
 
-export const CommentItem = (comment) => {
+export const CommentItem = (comment, { canManage = false } = {}) => {
   const commentId = comment.id || comment.commentId || "";
   const isDeleted = Boolean(comment.deleted);
   const authorName = escapeHtml(
@@ -36,7 +36,7 @@ export const CommentItem = (comment) => {
           }
         </div>
         ${
-          isDeleted
+          isDeleted || !canManage
             ? ""
             : `<div class="comment-item__actions">
           <button type="button" class="btn btn--secondary btn--sm comment-item__edit">
