@@ -13,6 +13,9 @@
   font-weight: var(--fw-bold);
   letter-spacing: 0.02em;
 }
+.header__title-link {
+  color: inherit;
+}
 /* 뒤로가기 버튼 (회원가입/상세 화면에서 사용) */
 .header__back {
   position: absolute;

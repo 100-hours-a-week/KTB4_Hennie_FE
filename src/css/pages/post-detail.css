@@ -65,3 +65,18 @@
 .post-detail-comments .comment-form {
   margin-bottom: var(--space-6);
 }
+.post-report-form__input {
+  width: 100%;
+  min-height: 96px;
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-md);
+  resize: vertical;
+  font: inherit;
+  line-height: 1.5;
+}
+.post-report-form__input:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}

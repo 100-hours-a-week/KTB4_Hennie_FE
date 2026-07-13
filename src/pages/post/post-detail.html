@@ -23,6 +23,14 @@
           <div class="comment-form__actions">
             <button
               type="button"
+              class="btn btn--secondary btn--sm comment-form__cancel"
+              id="commentEditCancelBtn"
+              hidden
+            >
+              취소
+            </button>
+            <button
+              type="button"
               class="btn btn--primary btn--sm"
               id="commentSubmitBtn"
             >
@@ -35,6 +43,41 @@
         <ul class="comment-list" id="commentList"></ul>
       </section>
     </main>
+
+    <div id="commentModalRoot"></div>
+
+    <div
+      class="modal"
+      id="postReportModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="postReportModalTitle"
+    >
+      <div class="modal__box">
+        <p class="modal__title" id="postReportModalTitle">
+          게시글을 신고하시겠습니까?
+        </p>
+        <p class="modal__desc">신고 사유를 입력해주세요.</p>
+        <textarea
+          class="post-report-form__input"
+          id="postReportReason"
+          maxlength="500"
+          placeholder="신고 사유"
+        ></textarea>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--dark" id="postReportCancel">
+            취소
+          </button>
+          <button
+            type="button"
+            class="btn btn--primary"
+            id="postReportConfirm"
+          >
+            신고
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- 삭제 확인 모달 (회원정보수정에서 만든 공통 모달 재사용) -->
     <div

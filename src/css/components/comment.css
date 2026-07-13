@@ -24,7 +24,11 @@
 .comment-form__actions {
   display: flex;
   justify-content: flex-end;
+  gap: var(--space-2);
   margin-top: var(--space-2);
+}
+.comment-form__cancel[hidden] {
+  display: none;
 }
 
 /* 댓글 목록 */
