@@ -9,16 +9,9 @@
     <main class="post-list-main">
       <!-- 인사말 -->
       <p class="post-list-greeting">
-        안녕하세요,<br />
-        아무 말 대잔치 <strong>게시판</strong> 입니다.
+        기업 <strong>개발</strong> 부서가 남긴 기술 <strong>발자국</strong>을 따라<br />
+        <strong>개발자국(의견)</strong>을 남겨보세요...🐾
       </p>
-
-      <!-- 게시글 작성 버튼 -->
-      <div class="post-list-toolbar">
-        <a href="/posts/write" class="btn btn--primary btn--sm">
-          게시글 작성
-        </a>
-      </div>
 
       <!-- 게시글 카드 목록 -->
       <ul class="post-list" id="postList"></ul>
@@ -28,5 +21,25 @@
         aria-live="polite"
       ></div>
     </main>
+
+    <!-- 하단 우측 고정 플로팅 버튼 (의견 작성) -->
+    <a href="/posts/write" class="post-list-fab" aria-label="의견 작성">
+      <svg
+        class="post-list-fab__icon"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <!-- 개발바닥 발바닥 아이콘: 발가락 4개 + 발볼 -->
+        <ellipse cx="5.5" cy="11" rx="1.8" ry="2.4" />
+        <ellipse cx="10" cy="7.3" rx="1.9" ry="2.6" />
+        <ellipse cx="14.5" cy="7.3" rx="1.9" ry="2.6" />
+        <ellipse cx="18.5" cy="11" rx="1.8" ry="2.4" />
+        <path
+          d="M12 12.3c-2.7 0-5.1 2.2-5.1 4.8 0 1.8 1.4 3 3.2 3 .9 0 1.4-.35 1.9-.35s1 .35 1.9.35c1.8 0 3.2-1.2 3.2-3 0-2.6-2.4-4.8-5.1-4.8z"
+        />
+      </svg>
+      <span>의견 작성</span>
+    </a>
   </body>
 </html>

@@ -1,7 +1,8 @@
 .post-list-main {
   max-width: 720px;
   margin: 0 auto;
-  padding: var(--space-8) var(--space-6);
+  /* 하단은 플로팅 버튼에 가려지지 않도록 여유를 둔다 */
+  padding: var(--space-8) var(--space-6) 96px;
 }
 .post-list-greeting {
   text-align: center;
@@ -13,17 +14,32 @@
   font-weight: var(--fw-bold);
 }
 
-/* '게시글 작성' 버튼 우측 정렬 */
-.post-list-toolbar {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: var(--space-4);
+/* 하단 우측 고정 플로팅 버튼 (의견 작성) — 프로필 이미지와 동일한 우측 여백 기준 */
+.post-list-fab {
+  position: fixed;
+  right: var(--space-6);
+  bottom: var(--space-6);
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  height: 52px;
+  padding: 0 var(--space-5);
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  box-shadow: var(--shadow-md);
+  transition: background-color 0.15s ease, transform 0.15s ease;
 }
-.post-list-toolbar .btn {
-  background-color: #aca0eb;
+.post-list-fab:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-2px);
 }
-.post-list-toolbar .btn:hover {
-  background-color: #7f6aee;
+.post-list-fab__icon {
+  width: 18px;
+  height: 18px;
 }
 
 /* 카드 세로 목록 */
