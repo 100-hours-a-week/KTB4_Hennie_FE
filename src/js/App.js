@@ -4,7 +4,7 @@ import { initHeaderMenu } from "./components/headerMenu.js";
 import { registerRouteRenderer } from "./route/navigation.js";
 import { restoreAuthSession } from "./api/authApi.js";
 
-const AUTH_ENTRY_PATHS = new Set(["/users/login", "/users/signup"]);
+const AUTH_ENTRY_PATHS = new Set(["/","/users/login", "/users/signup"]);
 
 const App = async ({ $target }) => {
   const route = async () => {
@@ -13,7 +13,7 @@ const App = async ({ $target }) => {
     try {
       const page = await loadView(matched.view);
 
-      document.title = page.title || "아무 말 대잔치";
+      document.title = page.title || "개발바닥";
       $target.innerHTML = Header(matched.header) + page.body; // 헤더 + 본문
 
       matched.init?.(...params); // 매칭된 페이지 컨트롤러만 실행
