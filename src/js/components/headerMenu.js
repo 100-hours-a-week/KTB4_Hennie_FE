@@ -1,7 +1,14 @@
+import { logout } from "../api/authApi";
+
 // 헤더 프로필 드롭다운 토글 + 로그아웃.
 // 문서 전역 위임이라 페이지가 다시 그려져도 한 번만 등록하면 계속 동작한다.
 export const initHeaderMenu = () => {
   document.addEventListener("click", (event) => {
+    if (event.target.closest(".header__back")) {
+      history.back();
+      return;
+    }
+
     const menu = document.querySelector("#profileMenu");
 
     if (!menu) {
@@ -11,10 +18,7 @@ export const initHeaderMenu = () => {
     // 로그아웃
     if (event.target.closest("#logoutBtn")) {
       closeMenu(menu);
-      // TODO: 인증 도입 시 세션/토큰 정리 + 로그아웃 API 연동
-      history.pushState(null, "", "/users/login");
-      window.dispatchEvent(new CustomEvent("app:navigate"));
-      return;
+      handleLogout();
     }
 
     // 프로필 버튼 → 메뉴 토글
@@ -38,4 +42,16 @@ const closeMenu = (menu) => {
   document
     .querySelector("#profileMenuBtn")
     ?.setAttribute("aria-expanded", "false");
+};
+
+const handleLogout = async () => {
+  try {
+    const response = await logout();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    history.pushState(null, "", "/users/login");
+    window.dispatchEvent(new CustomEvent("app:navigate"));
+  }
 };

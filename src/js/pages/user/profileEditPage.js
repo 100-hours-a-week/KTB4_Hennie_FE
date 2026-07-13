@@ -8,13 +8,18 @@ import {
   getProfileEditFormValues,
   renderMyInfo,
 } from "../../views/user/profileEditView.js";
+import {
+  clearAccessToken,
+  setCurrentUser,
+} from "../../store/tokenStore.js";
 
 // 회원정보 수정 페이지 컨트롤러
 export const initProfileEditPage = async () => {
   try {
-    const response = await getMyInfo(1);
+    const response = await getMyInfo();
     const user = response.data || response;
 
+    setCurrentUser(user);
     renderMyInfo(user);
     bindMyInfoUpdateEvent();
     bindWithdrawEvent();
@@ -30,6 +35,7 @@ export const initProfileEditPage = async () => {
 const bindMyInfoUpdateEvent = () => {
   const form = document.querySelector(".profile-edit-form");
   const completeButton = document.querySelector(".profile-edit-complete");
+  let shouldNavigateToPosts = false;
 
   if (!form) {
     return;
@@ -37,6 +43,8 @@ const bindMyInfoUpdateEvent = () => {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    const navigateAfterUpdate = shouldNavigateToPosts;
+    shouldNavigateToPosts = false;
     clearFieldHelpers(".profile-edit-form");
 
     const { nickname, profileUrl } = getProfileEditFormValues();
@@ -48,8 +56,15 @@ const bindMyInfoUpdateEvent = () => {
       });
       const user = response.data || response;
 
+      setCurrentUser(user);
       renderMyInfo(user);
-      alert("회원정보가 수정되었습니다.");
+
+      if (navigateAfterUpdate) {
+        history.pushState(null, "", "/posts");
+        window.dispatchEvent(new CustomEvent("app:navigate"));
+      } else {
+        alert("회원정보가 수정되었습니다.");
+      }
     } catch (error) {
       handleFormError(error, {
         fieldErrors: [
@@ -71,6 +86,7 @@ const bindMyInfoUpdateEvent = () => {
   });
 
   completeButton?.addEventListener("click", () => {
+    shouldNavigateToPosts = true;
     form.requestSubmit();
   });
 };
@@ -102,7 +118,8 @@ const bindWithdrawEvent = () => {
 
   confirmButton.addEventListener("click", async () => {
     try {
-      await withdrawMyInfo(2);
+      await withdrawMyInfo();
+      clearAccessToken();
 
       alert("회원 탈퇴가 완료되었습니다.");
       closeModal(withdrawModal);

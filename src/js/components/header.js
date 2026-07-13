@@ -1,16 +1,31 @@
+import { hasAccessToken } from "../store/tokenStore.js";
+
 // 공통 헤더 컴포넌트. 페이지별로 뒤로가기/프로필 메뉴 노출 여부를 옵션으로 제어한다.
 export const Header = ({ back = false, profile = false } = {}) => `
     <header class="header">
       ${back ? renderBackButton() : ""}
-      <h1 class="header__title">아무 말 대잔치</h1>
+      <h1 class="header__title">
+        ${renderHeaderTitle()}
+      </h1>
       ${profile ? renderProfileMenu() : ""}
     </header>`;
+
+const renderHeaderTitle = () => {
+  if (
+    location.pathname === "/" ||
+    location.pathname === "/users/login" ||
+    location.pathname === "/users/signup"
+  ) {
+    return "아무 말 대잔치";
+  }
+
+  return '<a class="header__title-link" href="/posts">아무 말 대잔치</a>';
+};
 
 const renderBackButton = () => `
       <button
         type="button"
         class="header__back"
-        onclick="history.back()"
         aria-label="뒤로가기"
       >
         ‹
@@ -31,10 +46,19 @@ const renderProfileMenu = () => `
           <img src="/src/assets/images/profile-default.jpeg" alt="프로필" />
         </button>
         <nav class="header__menu" id="profileMenu">
+          ${renderProfileMenuItems()}
+        </nav>
+      </div>`;
+
+const renderProfileMenuItems = () => {
+  if (!hasAccessToken()) {
+    return '<a class="header__menu-item" href="/users/login">로그인</a>';
+  }
+
+  return `
           <a class="header__menu-item" href="/users/myInfo">회원정보 수정</a>
           <a class="header__menu-item" href="/users/myInfo/password">비밀번호 수정</a>
           <button type="button" class="header__menu-item" id="logoutBtn">
             로그아웃
-          </button>
-        </nav>
-      </div>`;
+          </button>`;
+};
