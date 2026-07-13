@@ -1,8 +1,12 @@
 import { getInternalLink, loadView, matchRoute } from "./route/router.js";
 import { Header } from "./components/header.js";
 import { initHeaderMenu } from "./components/headerMenu.js";
+import { registerRouteRenderer } from "./route/navigation.js";
+import { restoreAuthSession } from "./api/authApi.js";
 
-const App = ({ $target }) => {
+const AUTH_ENTRY_PATHS = new Set(["/users/login", "/users/signup"]);
+
+const App = async ({ $target }) => {
   const route = async () => {
     const { route: matched, params } = matchRoute(location.pathname);
 
@@ -20,6 +24,7 @@ const App = ({ $target }) => {
 
   window.addEventListener("popstate", route); // 브라우저의 앞/뒤로 이동
   window.addEventListener("app:navigate", route); // 앱 내 페이지 이동
+  registerRouteRenderer(route);
 
   // 링크 클릭 라우팅 관리
   document.addEventListener("click", (event) => {
@@ -35,7 +40,12 @@ const App = ({ $target }) => {
   });
 
   initHeaderMenu(); // 헤더 드롭다운 토글/로그아웃 (전역 1회 등록)
-  route();
+
+  if (!AUTH_ENTRY_PATHS.has(location.pathname)) {
+    await restoreAuthSession();
+  }
+
+  await route();
 };
 
 export default App;
