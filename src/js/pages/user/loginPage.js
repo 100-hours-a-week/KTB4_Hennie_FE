@@ -7,13 +7,9 @@ export const initLoginPage = () => {
 
   initPasswordToggles(".login-form");
 
-  form.addEventListener("input", (event) => {
-    syncLoginSubmitButton(form);
-  });
-
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const loginForm = getLoginFormValues(form);
+    const loginForm = getLoginFormValues();
 
     try {
       await login({
@@ -28,12 +24,7 @@ export const initLoginPage = () => {
   });
 };
 
-const getLoginFormValues = (form) => ({
+const getLoginFormValues = () => ({
   email: document.querySelector("#email")?.value.trim() || "",
   password: document.querySelector("#password")?.value || "",
 });
-
-const syncLoginSubmitButton = (form) => {
-  const submitButton = form.querySelector("button[type='submit']");
-  const loginForm = getLoginFormValues();
-};

@@ -9,9 +9,6 @@ export const setAccessToken = ({ token, expiresIn }) => {
   accessToken = token;
   accessTokenExpiresAt = getExpiresAt(expiresIn);
   currentUser = currentUser || getUserFromAccessToken(token);
-
-  //   console.log("accessToken", accessToken);
-  //   console.log("accessTokenExpiresAt", accessTokenExpiresAt);
 };
 
 export const clearAccessToken = () => {
@@ -22,7 +19,7 @@ export const clearAccessToken = () => {
 
 export const getAccessToken = () => accessToken;
 
-export const getCurrentUser = () =>
+const getCurrentUser = () =>
   currentUser ?? getUserFromAccessToken(accessToken);
 
 export const setCurrentUser = (user) => {
@@ -40,7 +37,7 @@ export const setCurrentUser = (user) => {
 
 export const getCurrentUserId = () => getCurrentUser()?.id;
 
-// 추후에 ID 기반으로 수정하고싶음 - 회원정보 수정으로 닉네임 수정 시 연관됨. 그리고 댓글 응답 데이터에 닉네임만 전달됨. 현재는 고유 닉네임이라서 별 문제 없음.
+// TODO: 게시글/댓글 응답에 작성자 ID가 추가되면 닉네임 기반 소유권 판별을 ID 기반으로 변경한다.
 export const getCurrentUserNickname = () => getCurrentUser()?.nickname;
 
 export const hasAccessToken = () => Boolean(accessToken);

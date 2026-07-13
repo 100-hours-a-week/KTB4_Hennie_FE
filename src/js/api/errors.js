@@ -15,7 +15,7 @@ const STATUS_ERROR_MESSAGE = {
   409: "이미 처리된 정보가 있습니다.",
 };
 
-export const HTTP_STATUS = {
+const HTTP_STATUS = {
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,

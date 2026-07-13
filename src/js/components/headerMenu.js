@@ -41,10 +41,9 @@ const closeMenu = (menu) => {
 
 const handleLogout = async () => {
   try {
-    const response = await logout();
-    console.log(response);
+    await logout();
   } catch (error) {
-    console.log(error);
+    console.error("로그아웃 실패", error);
   } finally {
     history.pushState(null, "", "/users/login");
     window.dispatchEvent(new CustomEvent("app:navigate"));

@@ -1,4 +1,4 @@
-import { del, get, post } from "./client.js";
+import { get, post } from "./client.js";
 import {
   clearAccessToken,
   setAccessToken,
@@ -23,7 +23,7 @@ export const login = ({ email, password }) =>
   });
 
 // 액세스 토큰 재발급용
-export const refreshToken = () =>
+const refreshToken = () =>
   post("/users/token/refresh", undefined, {
     auth: false,
     skipAuthRefresh: true,

@@ -10,7 +10,7 @@ export const getPostWriteFormValues = () => ({
     "",
 });
 
-export const isPostWriteFormFilled = () => {
+const isPostWriteFormFilled = () => {
   const { title, content } = getPostWriteFormValues();
 
   return Boolean(title && content);

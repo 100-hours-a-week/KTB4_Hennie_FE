@@ -15,7 +15,6 @@ import { openModal, closeModal } from "../../utils/modal.js";
 import { requireLogin } from "../../utils/requireLogin.js";
 import { initPostComment } from "./postComment.js";
 import {
-  getCurrentUser,
   getCurrentUserId,
   getCurrentUserNickname,
 } from "../../store/tokenStore.js";
@@ -25,7 +24,6 @@ export const initPostDetailPage = async (postId) => {
   try {
     const response = await getPost(postId);
     const post = response.data || response;
-    // console.log("게시글 상세 현재 사용자", getCurrentUser());
 
     const currentUserId = getCurrentUserId();
     const currentUserNickname = getCurrentUserNickname();
