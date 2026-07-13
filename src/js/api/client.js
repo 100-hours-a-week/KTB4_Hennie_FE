@@ -1,4 +1,14 @@
+import {
+  clearAccessToken,
+  getAccessToken,
+  hasAccessToken,
+  setAccessToken,
+  shouldRefreshAccessToken,
+} from "../store/tokenStore.js";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api"; // CORS 에러 방지
+const REFRESH_TOKEN_PATH = "/users/token/refresh";
+let refreshPromise = null;
 
 // 에러를 구분 가능한 객체로 구분
 export class ApiError extends Error {
@@ -35,8 +45,106 @@ export const del = (path, options = {}) =>
 
 // GET, DELETE
 export const request = async (path, options = {}) => {
-  //  const token = localStorage.getItem('accessToken');
-  const response = await fetch(`${API_BASE_URL}${path}`, options);
+  const authMode = options.auth ?? true;
+  const authRequired = authMode === true;
+  const skipAuthRefresh = Boolean(options.skipAuthRefresh);
+  let refreshedBeforeRequest = false;
+
+  if (authRequired && !skipAuthRefresh) {
+    refreshedBeforeRequest = await ensureValidAccessToken();
+  }
+
+  const response = await fetch(
+    `${API_BASE_URL}${path}`,
+    createFetchOptions(options, { authMode })
+  );
+  const body = await parseResponseBody(response);
+
+  if (!response.ok) {
+    if (
+      response.status === 401 &&
+      authRequired &&
+      !skipAuthRefresh &&
+      !refreshedBeforeRequest &&
+      (await refreshAccessToken())
+    ) {
+      const retryResponse = await fetch(
+        `${API_BASE_URL}${path}`,
+        createFetchOptions(options, { authMode })
+      );
+      const retryBody = await parseResponseBody(retryResponse);
+
+      if (retryResponse.ok) {
+        return retryBody;
+      }
+
+      throw new ApiError({
+        status: retryResponse.status,
+        statusText: retryResponse.statusText,
+        body: retryBody,
+      });
+    }
+
+    throw new ApiError({
+      status: response.status,
+      statusText: response.statusText,
+      body,
+    });
+  }
+
+  return body;
+};
+
+const ensureValidAccessToken = async () => {
+  if (hasAccessToken() && !shouldRefreshAccessToken()) {
+    return false;
+  }
+
+  const refreshed = await refreshAccessToken();
+
+  if (!refreshed) {
+    throw new ApiError({
+      status: 401,
+      statusText: "Unauthorized",
+      body: {
+        message: "로그인이 필요합니다.",
+      },
+    });
+  }
+
+  return true;
+};
+
+const refreshAccessToken = async () => {
+  if (!refreshPromise) {
+    refreshPromise = requestAccessToken()
+      .then((response) => {
+        const data =
+          response?.data?.token || response?.data || response?.token || response;
+
+        setAccessToken({
+          token: data?.accessToken,
+          expiresIn: data?.expiresIn,
+        });
+
+        return Boolean(data?.accessToken);
+      })
+      .catch(() => {
+        clearAccessToken();
+        return false;
+      })
+      .finally(() => {
+        refreshPromise = null;
+      });
+  }
+
+  return refreshPromise;
+};
+
+const requestAccessToken = async () => {
+  const response = await fetch(`${API_BASE_URL}${REFRESH_TOKEN_PATH}`, {
+    method: "POST",
+  });
   const body = await parseResponseBody(response);
 
   if (!response.ok) {
@@ -48,6 +156,31 @@ export const request = async (path, options = {}) => {
   }
 
   return body;
+};
+
+const createFetchOptions = (options, { authMode }) => {
+  const { auth, skipAuthRefresh, headers, ...fetchOptions } = options;
+  const token = getRequestAccessToken(authMode);
+
+  return {
+    ...fetchOptions,
+    headers: {
+      ...headers,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  };
+};
+
+const getRequestAccessToken = (authMode) => {
+  if (authMode === false) {
+    return null;
+  }
+
+  if (authMode === "optional" && shouldRefreshAccessToken()) {
+    return null;
+  }
+
+  return getAccessToken();
 };
 
 // fetch api 기반 http 통신 메서드
