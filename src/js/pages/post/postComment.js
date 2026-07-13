@@ -5,6 +5,7 @@ import {
   updateComment,
 } from "../../api/commentApi.js";
 import { handleApiError } from "../../utils/handleApiError.js";
+import { requireLogin } from "../../utils/requireLogin.js";
 import { setCommentCount } from "../../views/post/postDetailView.js";
 import {
   extractComments,
@@ -172,6 +173,10 @@ export const initPostComment = (
 
   // 댓글 작성 또는 수정 등록
   submitButton?.addEventListener("click", async () => {
+    if (!requireLogin()) {
+      return;
+    }
+
     const content = input?.value.trim() || "";
 
     if (!content) {

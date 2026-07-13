@@ -1,5 +1,6 @@
 import { getPostList } from "../../api/postApi.js";
 import { handleApiError } from "../../utils/handleApiError.js";
+import { requireLogin } from "../../utils/requireLogin.js";
 import {
   getPostListSentinel,
   renderPostList,
@@ -15,9 +16,23 @@ let hasNextPostPage = true;
 // 게시글 목록 페이지 컨트롤러
 export const initPostListPage = () => {
   resetPostListInfiniteScroll();
+  bindWriteFab();
 
   loadPostListPage(1, { append: false }).then(() => {
     observePostListSentinel();
+  });
+};
+
+// 의견 작성 플로팅 버튼: 비로그인 시 alert 후 이동 차단
+// (문서 레벨 라우터가 앵커 클릭을 가로채므로 stopPropagation으로 막는다)
+const bindWriteFab = () => {
+  const fab = document.querySelector(".post-list-fab");
+
+  fab?.addEventListener("click", (event) => {
+    if (!requireLogin()) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
   });
 };
 

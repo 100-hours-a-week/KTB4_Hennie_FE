@@ -12,6 +12,7 @@ import {
   renderCommentList,
 } from "../../views/comment/commentView.js";
 import { openModal, closeModal } from "../../utils/modal.js";
+import { requireLogin } from "../../utils/requireLogin.js";
 import { initPostComment } from "./postComment.js";
 import {
   getCurrentUser,
@@ -75,6 +76,10 @@ const bindReportButton = (postId) => {
   };
 
   reportButton.addEventListener("click", () => {
+    if (!requireLogin()) {
+      return;
+    }
+
     openModal(reportModal);
     reasonInput.focus();
   });

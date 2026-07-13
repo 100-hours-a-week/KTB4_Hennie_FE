@@ -5,6 +5,7 @@ import {
   isNotFound,
   isUnauthorized,
 } from "../api/errors.js";
+import { requireLogin } from "./requireLogin.js";
 
 // API 에러 공통 처리
 // 상태코드별로 분기하고, 처리되지 않으면 fallbackMessage로 alert.
@@ -23,7 +24,7 @@ export const handleApiError = (
     onBadRequest,
     forbiddenMessage,
     onNotFound,
-    onUnauthorized = redirectToLogin,
+    onUnauthorized = requireLogin,
   } = {}
 ) => {
   if (onBadRequest && isBadRequest(error)) {
@@ -48,11 +49,4 @@ export const handleApiError = (
 
   console.error(logLabel, error);
   alert(getApiErrorMessage(error, fallbackMessage));
-};
-
-// 로그인 페이지로 이동 (401 기본 처리)
-const redirectToLogin = () => {
-  alert("로그인이 필요합니다.");
-  history.pushState(null, "", "/users/login");
-  window.dispatchEvent(new CustomEvent("app:navigate"));
 };
