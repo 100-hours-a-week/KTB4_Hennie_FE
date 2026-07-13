@@ -9,31 +9,36 @@
     <!-- 게시글 작성 본문 -->
     <main class="post-write-main">
       <section class="post-write-card">
-        <h2 class="post-write-card__title">게시글 작성</h2>
-
-        <form class="post-write-form">
-          <!-- 제목 -->
+        <form class="post-write-form" id="postWriteForm">
+          <!-- 직무 카테고리 -->
           <div class="field">
-            <label class="field__label" for="title">제목*</label>
-            <input
-              class="field__input"
-              type="text"
-              id="title"
-              name="title"
-              maxlength="26"
-              placeholder="제목을 입력해주세요. (최대 26글자)"
-            />
+            <label class="field__label" for="category">태그</label>
+            <select class="field__select" id="category" name="category">
+              <option value="" disabled selected>직무를 선택해주세요</option>
+              <option value="FE">프론트엔드</option>
+              <option value="BE">백엔드</option>
+              <option value="AI">AI</option>
+            </select>
           </div>
 
-          <!-- 내용 -->
+          <!-- 제목 + 내용 (티스토리식 무테 에디터) -->
           <div class="field">
-            <label class="field__label" for="content">내용*</label>
-            <textarea
-              class="field__textarea"
-              id="content"
-              name="content"
-              placeholder="내용을 입력해주세요."
-            ></textarea>
+            <div class="post-write-editor">
+              <input
+                class="post-write-title"
+                type="text"
+                id="title"
+                name="title"
+                maxlength="26"
+                placeholder="제목을 입력하세요."
+              />
+              <textarea
+                class="post-write-content"
+                id="content"
+                name="content"
+                placeholder="내용을 입력하세요."
+              ></textarea>
+            </div>
             <p class="field__helper"></p>
           </div>
 
@@ -53,28 +58,31 @@
             </div>
           </div>
 
-          <div class="post-write-actions">
-            <div class="post-write-draft">
-              <button
-                type="button"
-                class="btn post-write-draft-button"
-                id="postDraftSaveBtn"
-              >
-                임시저장
-              </button>
-              <button
-                type="button"
-                class="post-write-draft-count"
-                id="postDraftCountBtn"
-                aria-label="임시 저장 목록 열기"
-              >
-                0
+          <!-- 하단 고정 액션 바 (임시저장 / 완료) -->
+          <footer class="post-write-footer">
+            <div class="post-write-footer__inner">
+              <div class="post-write-draft">
+                <button
+                  type="button"
+                  class="btn post-write-draft-button"
+                  id="postDraftSaveBtn"
+                >
+                  임시저장
+                </button>
+                <button
+                  type="button"
+                  class="post-write-draft-count"
+                  id="postDraftCountBtn"
+                  aria-label="임시 저장 목록 열기"
+                >
+                  0
+                </button>
+              </div>
+              <button type="submit" class="btn btn--primary post-write-submit">
+                완료
               </button>
             </div>
-            <button type="submit" class="btn btn--primary btn--block">
-              완료
-            </button>
-          </div>
+          </footer>
         </form>
       </section>
     </main>

@@ -1,33 +1,80 @@
 .post-write-main {
   max-width: 720px;
   margin: 0 auto;
-  padding: var(--space-8) var(--space-6);
-}
-.post-write-card__title {
-  text-align: center;
-  font-size: var(--fs-title);
-  font-weight: var(--fw-bold);
-  margin-bottom: var(--space-6);
+  /* 하단 고정 액션 바에 가려지지 않도록 여유를 둔다 */
+  padding: var(--space-8) var(--space-6) 120px;
 }
 .post-write-form {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
 }
-.post-write-form .btn {
-  margin-top: var(--space-2);
+/* 티스토리식 무테 에디터 (제목 + 내용) */
+.post-write-editor {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  overflow: hidden;
 }
-.post-write-actions {
-  display: grid;
-  grid-template-columns: minmax(112px, 0.42fr) minmax(0, 1fr);
+.post-write-title {
+  padding: var(--space-4);
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  font-size: 22px;
+  font-weight: var(--fw-bold);
+}
+.post-write-title::placeholder {
+  color: var(--color-placeholder);
+  font-weight: var(--fw-regular);
+}
+.post-write-title:focus {
+  outline: none;
+}
+.post-write-content {
+  min-height: 420px;
+  padding: var(--space-4);
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: var(--fs-lg);
+  line-height: 1.7;
+  resize: vertical;
+}
+.post-write-content::placeholder {
+  color: var(--color-placeholder);
+}
+.post-write-content:focus {
+  outline: none;
+}
+
+/* 하단 고정 액션 바 (임시저장 / 완료) */
+.post-write-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  background-color: rgba(22, 23, 26, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--color-border);
+}
+.post-write-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   gap: var(--space-3);
-  margin-top: var(--space-2);
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-6);
 }
-.post-write-actions .btn {
-  margin-top: 0;
-}
-.post-write-actions .btn--block {
-  width: auto;
+.post-write-submit {
+  min-width: 120px;
 }
 .post-write-draft {
   display: grid;
@@ -43,7 +90,7 @@
   border: 1px solid var(--color-input-border);
 }
 .post-write-draft-button:hover {
-  background-color: #f1f1f5;
+  background-color: var(--color-surface-2);
   color: var(--color-text);
 }
 .post-write-draft-count {
@@ -56,19 +103,19 @@
   border-top-right-radius: var(--radius-md);
   border-bottom-right-radius: var(--radius-md);
   background-color: var(--color-surface);
-  color: #7f6aee;
+  color: var(--color-primary);
   font-size: var(--fs-md);
   font-weight: var(--fw-bold);
 }
 .post-write-draft-count:hover {
-  background-color: #f1f1f5;
+  background-color: var(--color-surface-2);
 }
 .post-write-form .btn--primary {
-  background-color: #aca0eb;
+  background-color: var(--color-primary);
 }
 .post-write-form .post-write-submit--ready,
 .post-write-form .post-write-submit--ready:hover {
-  background-color: #7f6aee;
+  background-color: var(--color-primary);
 }
 
 .post-draft-modal__box {
@@ -94,7 +141,7 @@
   line-height: 1;
 }
 .post-draft-modal__close:hover {
-  background-color: #f1f1f5;
+  background-color: var(--color-surface-2);
   color: var(--color-text);
 }
 .post-draft-list {
@@ -124,7 +171,7 @@
   text-align: left;
 }
 .post-draft-list__content:hover {
-  background-color: #f8f8fb;
+  background-color: var(--color-surface-2);
 }
 .post-draft-list__title {
   display: block;
@@ -159,14 +206,14 @@
   padding: 0;
   border: 0;
   border-radius: var(--radius-md);
-  background-color: #fff;
-  color: #d94848;
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
   font-size: var(--fs-sm);
   font-weight: var(--fw-medium);
 }
 .post-draft-list__delete-button:hover {
-  background-color: #fff1f1;
-  color: #d94848;
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
 }
 .post-draft-list__empty {
   padding: var(--space-6) 0;
