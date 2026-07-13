@@ -1,35 +1,27 @@
 import { hasAccessToken } from "../store/tokenStore.js";
 
-// 공통 헤더 컴포넌트. 페이지별로 뒤로가기/프로필 메뉴 노출 여부를 옵션으로 제어한다.
-export const Header = ({ back = false, profile = false } = {}) => `
+// 공통 헤더 컴포넌트. 왼쪽 상단 로고 + (옵션) 프로필 메뉴.
+export const Header = ({ profile = false } = {}) => `
     <header class="header">
-      ${back ? renderBackButton() : ""}
-      <h1 class="header__title">
-        ${renderHeaderTitle()}
-      </h1>
+      ${renderLogo()}
       ${profile ? renderProfileMenu() : ""}
     </header>`;
 
-const renderHeaderTitle = () => {
-  if (
-    location.pathname === "/" ||
-    location.pathname === "/users/login" ||
-    location.pathname === "/users/signup"
-  ) {
-    return "아무 말 대잔치";
+// 로그인/회원가입에서는 로고를 링크 없이 노출하고,
+// 그 외 모든 페이지에서는 게시글 목록(/posts)으로 이동하는 링크로 감싼다.
+const renderLogo = () => {
+  const image = `<img
+          class="header__logo-img"
+          src="/src/assets/images/logo.png"
+          alt="개발바닥"
+        />`;
+
+  if (location.pathname === "/users/signup") {
+    return `<span class="header__logo">${image}</span>`;
   }
 
-  return '<a class="header__title-link" href="/posts">아무 말 대잔치</a>';
+  return `<a class="header__logo" href="/posts" aria-label="개발바닥 홈">${image}</a>`;
 };
-
-const renderBackButton = () => `
-      <button
-        type="button"
-        class="header__back"
-        aria-label="뒤로가기"
-      >
-        ‹
-      </button>`;
 
 // 프로필 아이콘 + 드롭다운 메뉴. 토글 동작은 headerMenu.js(전역 위임)가 담당.
 const renderProfileMenu = () => `

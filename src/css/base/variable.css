@@ -1,15 +1,27 @@
 :root {
-  /* Colors */
-  --color-bg: #f4f5f7;
-  --color-surface: #ffffff;
-  --color-primary: #7f6aee;
-  --color-primary-hover: #7f6aee;
-  --color-text: #1a1a1a;
-  --color-text-sub: #868e96;
-  --color-error: #e03131;
-  --color-border: #e0e0e0;
-  --color-input-border: #d5d8dd;
-  --color-placeholder: #adb5bd;
+  color-scheme: dark;
+
+  /* Colors — Neutral Charcoal + Cognac (dark only) */
+  --color-bg: #16171a;
+  --color-surface: #1f2124;
+  --color-surface-2: #26282c; /* elevated: dropdown / modal / placeholder */
+  --color-primary: #b4744a;
+  --color-primary-hover: #c5895d;
+  --color-primary-weak: rgba(180, 116, 74, 0.14); /* tinted background */
+  --color-on-primary: #ffffff;
+  --color-text: #e9eaec;
+  --color-text-sub: #9ba0a6;
+  --color-error: #e5575b;
+  --color-error-bg: rgba(229, 87, 91, 0.12);
+  --color-border: #2c2f34;
+  --color-input-bg: #1b1d20;
+  --color-input-border: #3a3e44;
+  --color-placeholder: #6b7178;
+  --color-overlay: rgba(0, 0, 0, 0.6);
+
+  /* Elevation */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
 
   /* Typography */
   --font-base: "Pretendard", -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -26,6 +38,7 @@
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
+  --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
 

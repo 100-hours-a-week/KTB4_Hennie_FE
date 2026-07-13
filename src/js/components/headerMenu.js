@@ -4,11 +4,6 @@ import { logout } from "../api/authApi";
 // 문서 전역 위임이라 페이지가 다시 그려져도 한 번만 등록하면 계속 동작한다.
 export const initHeaderMenu = () => {
   document.addEventListener("click", (event) => {
-    if (event.target.closest(".header__back")) {
-      history.back();
-      return;
-    }
-
     const menu = document.querySelector("#profileMenu");
 
     if (!menu) {

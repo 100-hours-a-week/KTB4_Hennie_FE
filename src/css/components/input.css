@@ -32,10 +32,66 @@
 }
 .field__input:disabled,
 .field__input--readonly {
-  background-color: #f1f3f5;
+  background-color: var(--color-surface-2);
   color: var(--color-text-sub);
   cursor: not-allowed;
 }
+/* 플로팅 라벨 필드 (로그인·회원가입 공용)
+   구조: <div class="field field--float"> <input placeholder=" "> <label> ... */
+.field--float {
+  position: relative;
+  gap: 0;
+}
+.field--float .field__input {
+  height: 54px;
+  padding: 18px var(--space-3) 0;
+  border-radius: var(--radius-md);
+  background-color: var(--color-input-bg);
+}
+.field--float .field__label {
+  position: absolute;
+  left: calc(var(--space-3) + 1px);
+  top: 27px; /* 인풋 높이(54px) 중앙 — 헬퍼 유무와 무관하게 인풋에 정렬 */
+  transform: translateY(-50%);
+  color: var(--color-placeholder);
+  font-weight: var(--fw-regular);
+  pointer-events: none;
+  transition: transform 0.15s ease, font-size 0.15s ease, color 0.15s ease,
+    top 0.15s ease;
+}
+.field--float .field__input:focus + .field__label,
+.field--float .field__input:not(:placeholder-shown) + .field__label {
+  top: 9px;
+  transform: none;
+  font-size: var(--fs-sm);
+  color: var(--color-text-sub);
+}
+.field--float .field__input:focus + .field__label {
+  color: var(--color-primary);
+}
+
+/* 비밀번호 표시/숨기기 토글 */
+.field--password .field__input {
+  padding-right: 64px;
+}
+.field__toggle {
+  position: absolute;
+  top: 27px;
+  right: var(--space-3);
+  transform: translateY(-50%);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+.field__toggle:hover {
+  background-color: var(--color-primary-weak);
+}
+.field--float .field__helper {
+  margin-top: var(--space-2);
+}
+
 /* 여러 줄 입력 (내용) */
 .field__textarea {
   min-height: 240px;
@@ -52,6 +108,28 @@
   color: var(--color-placeholder);
 }
 .field__textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* 셀렉트 박스 (직무 카테고리 등) */
+.field__select {
+  height: var(--field-height);
+  padding: 0 40px 0 var(--space-3);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--fs-md);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ba0a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-3) center;
+  background-size: 16px;
+}
+.field__select:focus {
   outline: none;
   border-color: var(--color-primary);
 }

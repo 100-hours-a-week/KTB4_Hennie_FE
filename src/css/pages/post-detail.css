@@ -25,10 +25,10 @@
   color: var(--color-text-sub);
 }
 .post-detail-head__avatar {
-  width: 28px;
-  height: 28px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
-  background-color: #e9ecef;
+  background-color: var(--color-surface-2);
   overflow: hidden;
 }
 .post-detail-head__avatar img {
@@ -46,7 +46,7 @@
 .post-detail-image {
   width: 100%;
   border-radius: var(--radius-md);
-  background-color: #e9ecef;
+  background-color: var(--color-surface-2);
   margin-bottom: var(--space-6);
 }
 
@@ -58,9 +58,47 @@
   margin-bottom: var(--space-4);
 }
 
+/* 통계 아이콘 행 (댓글 입력 UI 좌측 상단) */
+.post-detail-stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+.post-detail-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-md);
+  color: var(--color-text-sub);
+}
+.post-detail-stat svg {
+  width: 18px;
+  height: 18px;
+}
+/* 좋아요(클릭 가능) */
+.post-detail-stat--like {
+  transition: color 0.15s ease;
+}
+.post-detail-stat--like:hover:not(:disabled) {
+  color: var(--color-text);
+}
+.post-detail-stat--like.is-liked {
+  color: var(--color-primary);
+}
+.post-detail-stat--like.is-liked svg {
+  fill: currentColor;
+}
+.post-detail-stat--like:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
 /* 댓글 영역 간격 */
 .post-detail-comments {
   margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
 }
 .post-detail-comments .comment-form {
   margin-bottom: var(--space-6);

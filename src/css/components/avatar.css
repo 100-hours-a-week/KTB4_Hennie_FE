@@ -21,7 +21,7 @@
   height: 120px;
   margin: var(--space-2) auto 0;
   border-radius: 50%;
-  background-color: #e9ecef;
+  background-color: var(--color-surface-2);
   cursor: pointer;
   overflow: hidden;
   position: relative;
@@ -52,8 +52,8 @@
   height: 28px;
   padding: 0 var(--space-3);
   border-radius: 999px;
-  background-color: rgba(255, 255, 255, 0.88);
-  color: var(--color-text);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: var(--color-on-primary);
   font-size: var(--fs-sm);
   font-weight: var(--fw-medium);
 }

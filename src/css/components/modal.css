@@ -4,7 +4,7 @@
   display: none; /* 기본 숨김 */
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: var(--color-overlay);
   z-index: 1000;
 }
 .modal.is-open {
@@ -37,9 +37,9 @@
 }
 /* 취소(어두운) 버튼 변형 */
 .btn--dark {
-  background-color: #343a40;
-  color: #fff;
+  background-color: var(--color-surface-2);
+  color: var(--color-text);
 }
 .btn--dark:hover {
-  background-color: #212529;
+  background-color: var(--color-border);
 }
