@@ -17,5 +17,10 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      // 구조 분해로 특정 키를 제외한 나머지를 모으는 관용구 허용
+      // 예: const { auth, skipAuthRefresh, ...fetchOptions } = options
+      'no-unused-vars': ['error', { ignoreRestSiblings: true }],
+    },
   },
 ])
