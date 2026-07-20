@@ -5,7 +5,7 @@ function AppLayout() {
   return (
     <>
       <Header />
-      <main>
+      <main className="min-h-[calc(100vh-5rem)]">
         <Outlet />
       </main>
     </>
