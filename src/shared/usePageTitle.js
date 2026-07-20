@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { APP_NAME } from './config'
+
+const APP_NAME = '개발바닥'
 
 export function usePageTitle(title) {
   useEffect(() => {
