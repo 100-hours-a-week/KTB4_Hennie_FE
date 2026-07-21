@@ -33,7 +33,7 @@ export class ApiError extends Error {
     this.status = status
     this.statusText = statusText
     this.body = body
-    this.code = body?.code
+    this.code = body?.code ?? body?.message
   }
 }
 
