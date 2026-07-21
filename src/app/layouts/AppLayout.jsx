@@ -17,15 +17,15 @@ function AppLayout() {
     }
   }
 
+  if (authStatus === 'checking') {
+    return <LoadingPage />
+  }
+
   return (
     <>
-      <Header currentUser={currentUser} onLogout={handleLogout} />
+      <Header currentUser={currentUser} onLogout={handleLogout} />{' '}
       <main className="min-h-[calc(100vh-5rem)]">
-        {authStatus === 'checking' ? (
-          <LoadingPage />
-        ) : (
-          <Outlet />
-        )}
+        <Outlet />
       </main>
     </>
   )

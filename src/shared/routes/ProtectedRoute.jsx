@@ -2,13 +2,9 @@ import { Navigate, Outlet } from 'react-router'
 import { useAuth } from '../../features/auth/hook/useAuth'
 
 function ProtectedRoute() {
-  const { currentUser, authStatus } = useAuth()
+  const { currentUser } = useAuth()
 
-  if (authStatus === 'checking') {
-    return null
-  }
-
-  if (authStatus !== 'authenticated' || !currentUser) {
+  if (!currentUser) {
     return <Navigate to="/users/login" replace />
   }
 
