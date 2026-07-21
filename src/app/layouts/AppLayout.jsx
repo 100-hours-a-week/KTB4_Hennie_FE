@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from 'react-router'
 import { useAuth } from '../../features/auth/hook/useAuth'
 import Header from '../../shared/components/Header'
-import LoadingPage from '../../pages/components/LoadingPage'
+import LoadingPage from '../../shared/components/LoadingPage'
 
 function AppLayout() {
   const navigate = useNavigate()
