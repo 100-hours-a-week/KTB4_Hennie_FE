@@ -1,72 +1,20 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router'
-import { useAuth } from '../../features/auth/hook/useAuth'
+import { Link } from 'react-router'
+import { useLogin } from '../../features/auth/hook/useLogin'
 import FormField from '../../shared/components/forms/FormField'
 import PasswordField from '../../shared/components/forms/PasswordField'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
 
-const getLoginErrorMessage = (error) => {
-  if (error?.status === 400) {
-    return '이메일과 비밀번호를 다시 확인해주세요.'
-  }
-
-  if (error?.status === 401 || error?.code === 'INVALID_CREDENTIALS') {
-    return '이메일 또는 비밀번호가 올바르지 않습니다.'
-  }
-
-  if (error?.status >= 500) {
-    return '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
-  }
-
-  return '로그인에 실패했습니다. 잠시 후 다시 시도해주세요.'
-}
-
 function LoginPage() {
   usePageTitle('로그인')
 
-  const navigate = useNavigate()
-  const { login } = useAuth()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loginError, setLoginError] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const clearLoginError = () => {
-    if (loginError) {
-      setLoginError('')
-    }
-  }
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value)
-    clearLoginError()
-  }
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value)
-    clearLoginError()
-  }
-
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-
-    if (isSubmitting) {
-      return
-    }
-
-    setLoginError('')
-    setIsSubmitting(true)
-
-    try {
-      await login({ email: email.trim(), password })
-      navigate('/posts')
-    } catch (error) {
-      console.error('로그인 실패', error)
-      setLoginError(getLoginErrorMessage(error))
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+  const {
+    email,
+    password,
+    loginError,
+    handleEmailChange,
+    handlePasswordChange,
+    handleSubmit,
+  } = useLogin()
 
   return (
     <section className="flex min-h-[calc(100vh-5rem)] items-start justify-center px-6 py-8">
@@ -86,7 +34,6 @@ function LoginPage() {
             name="email"
             autoComplete="email"
             floating
-            disabled={isSubmitting}
             value={email}
             onChange={handleEmailChange}
           />
@@ -98,18 +45,16 @@ function LoginPage() {
             autoComplete="current-password"
             floating
             reserveMessageSpace
-            disabled={isSubmitting}
             error={loginError}
             value={password}
             onChange={handlePasswordChange}
           />
 
           <button
-            className="mt-2 h-[52px] w-full rounded-full bg-app-primary text-lg font-bold text-white transition-colors hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary disabled:cursor-not-allowed disabled:opacity-60"
+            className="mt-2 h-[52px] w-full rounded-full bg-app-primary text-lg font-bold text-white transition-colors hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
             type="submit"
-            disabled={isSubmitting}
           >
-            {isSubmitting ? '로그인 중...' : '로그인'}
+            로그인
           </button>
         </form>
 
