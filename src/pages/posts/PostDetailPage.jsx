@@ -1,5 +1,5 @@
 import { useParams } from 'react-router'
-import { usePageTitle } from '../../shared/usePageTitle'
+import { usePageTitle } from '../../shared/hook/usePageTitle'
 
 function PostDetailPage() {
   usePageTitle('게시글')

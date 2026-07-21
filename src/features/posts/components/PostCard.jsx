@@ -1,13 +1,10 @@
 import { Link } from 'react-router'
-import { LikeIcon, CommentIcon, ViewIcon } from './IconsList'
-
-const formatDate = (date) => {
-  if (!date) {
-    return ''
-  }
-
-  return String(date).replace('T', ' ').slice(0, 19)
-}
+import {
+  LikeIcon,
+  CommentIcon,
+  ViewIcon,
+} from '../../../shared/components/IconsList'
+import { formatDate } from '../utils/formatDate'
 
 function PostStat({ label, count, children }) {
   return (

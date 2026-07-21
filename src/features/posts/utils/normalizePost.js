@@ -1,4 +1,4 @@
-import { DEFAULT_PROFILE_PATH } from '../../../shared/constants'
+import { DEFAULT_PROFILE_PATH } from '../../../shared/utils/constants'
 
 const toCount = (value) => {
   const num = Number(value)

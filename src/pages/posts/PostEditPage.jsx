@@ -1,5 +1,5 @@
 import { useParams } from 'react-router'
-import { usePageTitle } from '../../shared/usePageTitle'
+import { usePageTitle } from '../../shared/hook/usePageTitle'
 
 function PostEditPage() {
   usePageTitle('게시글 수정')

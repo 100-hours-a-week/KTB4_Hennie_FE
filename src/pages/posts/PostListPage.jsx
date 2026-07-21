@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { getPostList } from '../../features/posts/api/postApi'
 import PostList from '../../features/posts/components/PostList'
-import { usePageTitle } from '../../shared/usePageTitle'
-import { DEFAULT_POST_PAGE_SIZE } from '../../shared/constants'
+import { usePageTitle } from '../../shared/hook/usePageTitle'
+import { DEFAULT_POST_PAGE_SIZE } from '../../shared/utils/constants'
 
 const getPostListStatus = ({ currentPage, error, hasNextPage, isLoading }) => {
   if (isLoading) {
