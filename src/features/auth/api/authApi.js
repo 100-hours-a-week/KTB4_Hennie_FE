@@ -6,21 +6,6 @@ import {
 } from '../../../shared/api/tokenManager'
 import { normalizeUser } from '../utils/normalizeUser'
 
-export const signup = ({ email, password, nickname, profileUrl }) =>
-  post(
-    '/users/signup',
-    {
-      email,
-      password,
-      nickname,
-      ...(profileUrl ? { profileUrl } : {}),
-    },
-    {
-      auth: false,
-      skipAuthRefresh: true,
-    },
-  )
-
 export const login = async ({ email, password }) => {
   const response = await post(
     '/users/login',
@@ -52,16 +37,11 @@ export const restoreAuthSession = async () => {
 }
 
 export const logout = async () => {
-  try {
-    return await post('/users/logout', undefined, {
-      auth: true,
-      credentials: 'include',
-    })
-  } finally {
-    clearAccessToken()
-  }
+  return await post('/users/logout', undefined, {
+    auth: true,
+    credentials: 'include',
+  })
 }
-
 const getCurrentUser = async () => {
   const response = await get('/users/myInfo', { auth: true })
 
