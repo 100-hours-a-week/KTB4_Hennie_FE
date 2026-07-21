@@ -1,6 +1,8 @@
 import { Route, Routes } from 'react-router'
 import AppLayout from './layouts/AppLayout'
-import NotFoundPage from '../pages/NotFoundPage'
+import GuestOnlyRoute from '../shared/routes/GuestOnlyRoute'
+import ProtectedRoute from '../shared/routes/ProtectedRoute'
+import NotFoundPage from '../pages/components/NotFoundPage'
 import LoginPage from '../pages/auth/LoginPage'
 import SignupPage from '../pages/auth/SignupPage'
 import ProfileEditPage from '../pages/profile/ProfileEditPage'
@@ -17,12 +19,16 @@ function App() {
         <Route path="/" element={<PostListPage />} />
         <Route path="/posts" element={<PostListPage />} />
         <Route path="/posts/:postId" element={<PostDetailPage />} />
-        <Route path="/posts/write" element={<PostWritePage />} />
-        <Route path="/posts/:postId/edit" element={<PostEditPage />} />
-        <Route path="/users/login" element={<LoginPage />} />
-        <Route path="/users/signup" element={<SignupPage />} />
-        <Route path="/users/myInfo" element={<ProfileEditPage />} />
-        <Route path="/users/myInfo/password" element={<PasswordEditPage />} />
+        <Route element={<GuestOnlyRoute />}>
+          <Route path="/users/login" element={<LoginPage />} />
+          <Route path="/users/signup" element={<SignupPage />} />
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/posts/write" element={<PostWritePage />} />
+          <Route path="/posts/:postId/edit" element={<PostEditPage />} />
+          <Route path="/users/myInfo" element={<ProfileEditPage />} />
+          <Route path="/users/myInfo/password" element={<PasswordEditPage />} />
+        </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

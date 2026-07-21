@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
-import { APP_NAME, LOGO_PATH, DEFAULT_PROFILE_PATH } from '../constants'
+import { APP_NAME, LOGO_PATH, DEFAULT_PROFILE_PATH } from '../utils/constants'
 
 const NO_PROFILE_PATHS = new Set(['/users/login', '/users/signup'])
 
@@ -79,7 +79,7 @@ function Header({ currentUser = null, onLogout }) {
         </Link>
       )}
 
-      {showProfile && (
+      {showProfile && currentUser && (
         <div className="absolute right-4 sm:right-6" ref={profileMenuRef}>
           <button
             className="block size-[50px] overflow-hidden rounded-full bg-app-surface-raised focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
@@ -104,40 +104,39 @@ function Header({ currentUser = null, onLogout }) {
             id="profileMenu"
             aria-label="사용자 메뉴"
           >
-            {currentUser ? (
-              <>
-                <Link
-                  className={MENU_ITEM_CLASS}
-                  to="/users/myInfo"
-                  onClick={closeMenu}
-                >
-                  회원정보 수정
-                </Link>
-                <Link
-                  className={MENU_ITEM_CLASS}
-                  to="/users/myInfo/password"
-                  onClick={closeMenu}
-                >
-                  비밀번호 수정
-                </Link>
-                <button
-                  className={MENU_ITEM_CLASS}
-                  type="button"
-                  onClick={handleLogout}
-                >
-                  로그아웃
-                </button>
-              </>
-            ) : (
-              <Link
-                className={MENU_ITEM_CLASS}
-                to="/users/login"
-                onClick={closeMenu}
-              >
-                로그인
-              </Link>
-            )}
+            <Link
+              className={MENU_ITEM_CLASS}
+              to="/users/myInfo"
+              onClick={closeMenu}
+            >
+              회원정보 수정
+            </Link>
+            <Link
+              className={MENU_ITEM_CLASS}
+              to="/users/myInfo/password"
+              onClick={closeMenu}
+            >
+              비밀번호 수정
+            </Link>
+            <button
+              className={MENU_ITEM_CLASS}
+              type="button"
+              onClick={handleLogout}
+            >
+              로그아웃
+            </button>
           </nav>
+        </div>
+      )}
+
+      {showProfile && !currentUser && (
+        <div className="absolute right-4 sm:right-6">
+          <Link
+            className="rounded-sm px-2 py-1 font-semibold text-app-text hover:text-app-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+            to="/users/login"
+          >
+            로그인
+          </Link>
         </div>
       )}
     </header>
