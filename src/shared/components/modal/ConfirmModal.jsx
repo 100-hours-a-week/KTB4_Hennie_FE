@@ -12,8 +12,10 @@ function ConfirmModal({
   pendingLabel = '처리 중...',
   isPending = false,
   closeOnBackdrop = true,
+  initialFocusRef,
   onCancel,
   onConfirm,
+  children,
 }) {
   const generatedId = useId()
   const modalRef = useRef(null)
@@ -42,7 +44,9 @@ function ConfirmModal({
     document.body.style.overflow = 'hidden'
 
     const focusFrame = requestAnimationFrame(() => {
-      cancelButtonRef.current?.focus()
+      const initialFocusElement =
+        initialFocusRef?.current ?? cancelButtonRef.current
+      initialFocusElement?.focus()
     })
 
     const handleKeyDown = (event) => {
@@ -86,7 +90,7 @@ function ConfirmModal({
       document.body.style.overflow = previousOverflow
       previousFocusRef.current?.focus()
     }
-  }, [isOpen])
+  }, [isOpen, initialFocusRef])
 
   if (!isOpen) {
     return null
@@ -119,14 +123,16 @@ function ConfirmModal({
 
         {description && (
           <p
-            className="mb-6 whitespace-pre-line text-sm text-app-text-muted"
+            className={`${children ? 'mb-3' : 'mb-6'} whitespace-pre-line text-sm text-app-text-muted`}
             id={descriptionId}
           >
             {description}
           </p>
         )}
 
-        <div className={`flex gap-3 ${description ? '' : 'mt-6'}`}>
+        {children && <div className="mb-6 text-left">{children}</div>}
+
+        <div className={`flex gap-3 ${description || children ? '' : 'mt-6'}`}>
           <button
             className={`${BUTTON_BASE_CLASS} bg-app-surface-raised text-app-text hover:bg-app-border`}
             ref={cancelButtonRef}
