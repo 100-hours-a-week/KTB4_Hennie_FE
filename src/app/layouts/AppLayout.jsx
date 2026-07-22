@@ -11,7 +11,8 @@ function AppLayout() {
     try {
       await logout()
     } catch (error) {
-      alert('로그아웃 실패', error)
+      // 서버 정리 실패와 무관하게 로컬은 이미 로그아웃 처리되어서 콘솔 에러만 띄우기
+      console.error('로그아웃 실패', error)
     } finally {
       navigate('/users/login')
     }
