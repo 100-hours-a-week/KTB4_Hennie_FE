@@ -1,12 +1,342 @@
-import { useParams } from 'react-router'
+import { useRef, useState } from 'react'
+import { Link, useParams } from 'react-router'
+import { useComments } from '../../features/posts/hook/comment/useComments'
+import { useCreateComment } from '../../features/posts/hook/comment/useCreateComment'
+import { useDeleteComment } from '../../features/posts/hook/comment/useDeleteComment'
+import { useDeletePost } from '../../features/posts/hook/useDeletePost'
+import { usePostDetail } from '../../features/posts/hook/usePostDetail'
+import { usePostLike } from '../../features/posts/hook/usePostLike'
+import { useReportPost } from '../../features/posts/hook/useReportPost'
+import { useUpdateComment } from '../../features/posts/hook/comment/useUpdateComment'
+import CommentList from '../../features/posts/components/CommentList'
+import { isOwnedByCurrentUser } from '../../features/posts/utils/isOwnedByCurrentUser'
+import { useAuth } from '../../features/auth/hook/useAuth'
+import LoadingPage from '../../shared/components/LoadingPage'
+import NotFoundPage from '../../shared/components/NotFoundPage'
+import { formatDate } from '../../features/posts/utils/formatDate'
+import {
+  CommentIcon,
+  LikeIcon,
+  ViewIcon,
+} from '../../shared/components/IconsList'
+import ConfirmModal from '../../shared/components/modal/ConfirmModal'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
 
 function PostDetailPage() {
   usePageTitle('게시글')
-
   const { postId } = useParams()
+  const { currentUser } = useAuth()
+  const { post, isLoading, error, updateLikeState } = usePostDetail(postId)
+  const { comments, commentCount, addComment, removeComment, updateComment } =
+    useComments(post)
+  const { content, isCreating, changeContent, replaceContent, submitComment } =
+    useCreateComment({
+      postId,
+      onCreated: addComment,
+    })
+  const commentInputRef = useRef(null)
+  const [editingCommentId, setEditingCommentId] = useState(null)
+  const [isEditCancelModalOpen, setIsEditCancelModalOpen] = useState(false)
 
-  return <div>PostDetailPage — postId: {postId}</div>
+  const finishCommentEdit = () => {
+    setEditingCommentId(null)
+    setIsEditCancelModalOpen(false)
+    replaceContent('')
+  }
+
+  const { isUpdatingComment, submitUpdatedComment } = useUpdateComment({
+    postId,
+    onUpdateSuccess: finishCommentEdit,
+    updateComment,
+  })
+  const {
+    deletingCommentId,
+    isDeletingComment,
+    openDeleteCommentModal,
+    closeDeleteCommentModal,
+    confirmDeleteComment,
+  } = useDeleteComment({
+    postId,
+    removeComment,
+  })
+  const {
+    isDeleteModalOpen,
+    isDeleting: isDeletingPost,
+    openDeleteModal,
+    closeDeleteModal,
+    removePost,
+  } = useDeletePost(postId)
+  const { isUpdatingLike, toggleLike } = usePostLike({
+    postId,
+    liked: post?.liked ?? false,
+    likeCount: post?.likeCount ?? 0,
+    onChange: updateLikeState,
+  })
+  const {
+    isReportModalOpen,
+    reportReason,
+    isReporting,
+    reportReasonInputRef,
+    openReportModal,
+    closeReportModal,
+    changeReportReason,
+    submitReport,
+  } = useReportPost(postId)
+
+  const isEditingComment = editingCommentId != null
+  const isCommentSubmitting = isCreating || isUpdatingComment
+
+  const startCommentEdit = (comment) => {
+    setEditingCommentId(comment.id)
+    replaceContent(comment.content)
+
+    requestAnimationFrame(() => {
+      commentInputRef.current?.focus()
+      commentInputRef.current?.setSelectionRange(
+        comment.content.length,
+        comment.content.length,
+      )
+      commentInputRef.current?.closest('form')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      })
+    })
+  }
+
+  const cancelCommentEdit = () => {
+    finishCommentEdit()
+  }
+
+  const handleCommentSubmit = (event) => {
+    if (isEditingComment) {
+      submitUpdatedComment(event, editingCommentId, content)
+      return
+    }
+
+    submitComment(event)
+  }
+
+  if (isLoading) {
+    return <LoadingPage message="게시글을 불러오는 중입니다..." />
+  }
+
+  if (error || !post) {
+    return (
+      <NotFoundPage
+        title="게시글을 찾을 수 없습니다"
+        description={error || '게시글을 찾을 수 없습니다.'}
+      />
+    )
+  }
+
+  const canManagePost = isOwnedByCurrentUser(post, currentUser)
+  const postDate = post.createdAt || post.modifiedAt
+
+  return (
+    <section className="mx-auto max-w-[720px] px-6 py-8">
+      <article>
+        <header className="mb-4 flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <h1 className="mb-2 text-2xl font-bold break-words">
+              {post.title}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-2 text-xs text-app-text-muted">
+              <span className="size-[35px] shrink-0 overflow-hidden rounded-full bg-app-surface-raised">
+                <img
+                  className="size-full object-cover"
+                  src={post.authorProfileUrl}
+                  alt="작성자"
+                />
+              </span>
+              <span>{post.authorNickname}</span>
+              {postDate && (
+                <time dateTime={postDate}>{formatDate(postDate)}</time>
+              )}
+              {post.edited && <span>(수정됨)</span>}
+            </div>
+          </div>
+
+          <div className="flex shrink-0 gap-2">
+            {canManagePost ? (
+              <>
+                <Link
+                  className="inline-flex h-8 items-center justify-center rounded-md border border-[#3a3e44] bg-app-surface px-3 text-xs font-medium text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text"
+                  to={`/posts/${postId}/edit`}
+                >
+                  수정
+                </Link>
+                <button
+                  className="inline-flex h-8 items-center justify-center rounded-md border border-[#3a3e44] bg-app-surface px-3 text-xs font-medium text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text"
+                  type="button"
+                  onClick={openDeleteModal}
+                >
+                  삭제
+                </button>
+              </>
+            ) : (
+              <button
+                className="inline-flex h-8 items-center justify-center rounded-md border border-[#3a3e44] bg-app-surface px-3 text-xs font-medium text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text"
+                type="button"
+                onClick={openReportModal}
+              >
+                신고
+              </button>
+            )}
+          </div>
+        </header>
+
+        {post.imageUrl && (
+          <img
+            className="mb-6 w-full rounded-lg bg-app-surface-raised"
+            src={post.imageUrl}
+            alt={post.title}
+          />
+        )}
+
+        <p className="mb-4 min-h-40 whitespace-pre-wrap text-sm leading-[1.8]">
+          {post.content}
+        </p>
+      </article>
+
+      <section className="mt-8 border-t border-app-border pt-6">
+        <div className="mb-4 flex items-center gap-4 text-sm text-app-text-muted">
+          <button
+            className={`inline-flex items-center gap-1 transition-colors disabled:cursor-wait disabled:opacity-70 ${post.liked ? 'text-app-primary hover:text-app-primary-hover' : 'hover:text-app-text'}`}
+            type="button"
+            aria-label={post.liked ? '좋아요 취소' : '좋아요'}
+            aria-pressed={post.liked}
+            disabled={isUpdatingLike}
+            onClick={toggleLike}
+          >
+            <LikeIcon
+              className={`size-[18px] ${post.liked ? 'fill-current' : ''}`}
+            />
+            <span>{post.likeCount}</span>
+          </button>
+          <span
+            className="inline-flex items-center gap-1"
+            aria-label={`댓글 ${commentCount}`}
+          >
+            <CommentIcon className="size-[18px]" />
+            <span>{commentCount}</span>
+          </span>
+          <span
+            className="inline-flex items-center gap-1"
+            aria-label={`조회수 ${post.viewCount}`}
+          >
+            <ViewIcon className="size-[18px]" />
+            <span>{post.viewCount}</span>
+          </span>
+        </div>
+
+        <form
+          className="mb-6 rounded-lg border border-[#3a3e44] bg-app-bg p-3"
+          onSubmit={handleCommentSubmit}
+        >
+          <textarea
+            className="min-h-[72px] w-full resize-y bg-transparent text-sm leading-[1.6] text-app-text placeholder:text-[#6b7178] focus:outline-none"
+            ref={commentInputRef}
+            name="comment"
+            placeholder="이 기술에 대한 생각을 개발자국으로 남겨보세요 🐾"
+            disabled={isCommentSubmitting}
+            value={content}
+            onChange={changeContent}
+          />
+          <div className="mt-2 flex justify-end gap-2">
+            {isEditingComment && (
+              <button
+                className="inline-flex h-8 items-center justify-center rounded-md border border-[#3a3e44] bg-app-surface px-3 text-xs font-medium text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text"
+                type="button"
+                disabled={isCommentSubmitting}
+                onClick={() => setIsEditCancelModalOpen(true)}
+              >
+                취소
+              </button>
+            )}
+            <button
+              className="inline-flex h-8 items-center justify-center rounded-md bg-app-primary px-3 text-xs font-medium text-white transition-colors hover:bg-app-primary-hover"
+              type="submit"
+              disabled={isCommentSubmitting}
+            >
+              {isEditingComment
+                ? isUpdatingComment
+                  ? '수정 중...'
+                  : '수정 등록'
+                : isCreating
+                  ? '등록 중...'
+                  : '댓글 등록'}
+            </button>
+          </div>
+        </form>
+
+        <CommentList
+          comments={comments}
+          currentUser={currentUser}
+          onEdit={startCommentEdit}
+          onDelete={openDeleteCommentModal}
+        />
+      </section>
+
+      <ConfirmModal
+        isOpen={isReportModalOpen}
+        title="게시글을 신고하시겠습니까?"
+        description="신고 사유를 입력해주세요."
+        confirmLabel="신고"
+        pendingLabel="신고 중..."
+        isPending={isReporting}
+        initialFocusRef={reportReasonInputRef}
+        onCancel={closeReportModal}
+        onConfirm={submitReport}
+      >
+        <textarea
+          className="min-h-24 w-full resize-y rounded-md border border-[#3a3e44] bg-app-bg p-3 text-sm leading-6 text-app-text placeholder:text-[#6b7178] focus:border-app-primary focus:outline-none"
+          ref={reportReasonInputRef}
+          aria-label="신고 사유"
+          maxLength={500}
+          placeholder="신고 사유"
+          disabled={isReporting}
+          value={reportReason}
+          onChange={changeReportReason}
+        />
+      </ConfirmModal>
+
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        title="게시글을 삭제하시겠습니까?"
+        description="삭제한 내용은 복구할 수 없습니다."
+        confirmLabel="확인"
+        pendingLabel="삭제 중..."
+        isPending={isDeletingPost}
+        onCancel={closeDeleteModal}
+        onConfirm={removePost}
+      />
+
+      <ConfirmModal
+        isOpen={deletingCommentId != null}
+        title="댓글을 삭제하시겠습니까?"
+        description="삭제한 내용은 복구할 수 없습니다."
+        confirmLabel="삭제"
+        pendingLabel="삭제 중..."
+        isPending={isDeletingComment}
+        onCancel={closeDeleteCommentModal}
+        onConfirm={confirmDeleteComment}
+      />
+
+      <ConfirmModal
+        isOpen={isEditCancelModalOpen}
+        title="수정을 취소하시겠습니까?"
+        description="수정 중인 내용은 저장되지 않습니다."
+        cancelLabel="계속 수정"
+        confirmLabel="수정 취소"
+        onCancel={() => {
+          setIsEditCancelModalOpen(false)
+          commentInputRef.current?.focus()
+        }}
+        onConfirm={cancelCommentEdit}
+      />
+    </section>
+  )
 }
 
 export default PostDetailPage

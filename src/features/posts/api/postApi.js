@@ -1,5 +1,5 @@
-import { del, get, post, put } from '../../../shared/api/http'
-import { normalizePostList } from '../utils/normalizePost'
+import { del, get, patch, post, put } from '../../../shared/api/http'
+import { normalizePostDetail, normalizePostList } from '../utils/normalizePost'
 import { normalizeDraft, normalizeDraftList } from '../utils/normalizeDraft'
 import { DEFAULT_POST_PAGE_SIZE } from '../../../shared/utils/constants'
 
@@ -20,6 +20,52 @@ export const getPostList = async (
 
   return normalizePostList(response?.data)
 }
+
+export const getPost = async (postId, options = {}) => {
+  const response = await get(`/posts/${postId}`, {
+    ...options,
+    auth: 'optional',
+  })
+
+  return response?.data ? normalizePostDetail(response.data) : null
+}
+
+export const deletePost = (postId) =>
+  del(`/posts/${postId}`, {
+    auth: true,
+  })
+
+export const updatePost = (postId, { title, content, imageUrl }) =>
+  patch(
+    `/posts/${postId}`,
+    {
+      title,
+      content,
+      ...(imageUrl ? { imageUrl } : {}),
+    },
+    {
+      auth: true,
+    },
+  )
+
+export const likePost = (postId) =>
+  post(`/posts/${postId}/likes`, undefined, {
+    auth: true,
+  })
+
+export const unlikePost = (postId) =>
+  del(`/posts/${postId}/likes`, {
+    auth: true,
+  })
+
+export const reportPost = (postId, { reason }) =>
+  post(
+    `/posts/${postId}/reports`,
+    { reason },
+    {
+      auth: true,
+    },
+  )
 
 export const createPost = ({ postId, title, content, imageUrl }) =>
   post(
