@@ -1,6 +1,7 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useAuth } from './useAuth'
+import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 
 // 로그인 실패 메시지 매핑 (useLogin 전용)
 const getLoginErrorMessage = (error) => {
@@ -26,8 +27,7 @@ export const useLogin = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState('')
-  // 중복 제출 방지용(UI 상태 아님, 리렌더 없음)
-  const isSubmittingRef = useRef(false)
+  const { run } = useAsyncLock()
 
   const clearLoginError = () => {
     if (loginError) {
@@ -45,25 +45,20 @@ export const useLogin = () => {
     clearLoginError()
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
 
-    if (isSubmittingRef.current) {
-      return
-    }
-
-    isSubmittingRef.current = true
     setLoginError('')
 
-    try {
-      await login({ email: email.trim(), password })
-      navigate('/posts')
-    } catch (error) {
-      console.error('로그인 실패', error)
-      setLoginError(getLoginErrorMessage(error))
-    } finally {
-      isSubmittingRef.current = false
-    }
+    return run(async () => {
+      try {
+        await login({ email: email.trim(), password })
+        navigate('/posts')
+      } catch (error) {
+        console.error('로그인 실패', error)
+        setLoginError(getLoginErrorMessage(error))
+      }
+    })
   }
 
   return {

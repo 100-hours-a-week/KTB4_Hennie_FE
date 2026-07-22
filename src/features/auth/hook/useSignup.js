@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { signup } from '../api/authApi'
+import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import {
   EMAIL_PATTERN,
   PASSWORD_PATTERN,
@@ -36,8 +37,7 @@ export const useSignup = ({ navigate }) => {
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [nickname, setNickname] = useState('')
   const [errors, setErrors] = useState(SIGNUP_EMPTY_ERRORS)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const isSubmittingRef = useRef(false)
+  const { isRunning: isSubmitting, run } = useAsyncLock()
 
   const trimmedEmail = email.trim()
   const trimmedNickname = nickname.trim()
@@ -61,53 +61,50 @@ export const useSignup = ({ navigate }) => {
     }))
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
 
-    if (!isFormValid || isSubmittingRef.current) {
+    if (!isFormValid) {
       return
     }
 
-    isSubmittingRef.current = true
-    setIsSubmitting(true)
     setErrors(SIGNUP_EMPTY_ERRORS)
 
-    try {
-      await signup({
-        email: trimmedEmail,
-        password,
-        nickname: trimmedNickname,
-      })
-
-      alert('회원가입에 성공했습니다.')
-      navigate('/users/login')
-    } catch (error) {
-      console.error('회원가입 실패', error)
-
-      const serverFieldErrors = getServerFieldErrors(error)
-
-      if (serverFieldErrors) {
-        setErrors({ ...SIGNUP_EMPTY_ERRORS, ...serverFieldErrors })
-        return
-      }
-
-      if (error?.code === 'EMAIL_ALREADY_EXISTS') {
-        setErrors({
-          ...SIGNUP_EMPTY_ERRORS,
-          email: '이미 사용중인 이메일입니다.',
+    return run(async () => {
+      try {
+        await signup({
+          email: trimmedEmail,
+          password,
+          nickname: trimmedNickname,
         })
-      } else if (error?.code === 'NICKNAME_ALREADY_EXISTS') {
-        setErrors({
-          ...SIGNUP_EMPTY_ERRORS,
-          nickname: '이미 사용중인 닉네임입니다.',
-        })
-      } else {
-        alert('회원가입에 실패했습니다.')
+
+        alert('회원가입에 성공했습니다.')
+        navigate('/users/login')
+      } catch (error) {
+        console.error('회원가입 실패', error)
+
+        const serverFieldErrors = getServerFieldErrors(error)
+
+        if (serverFieldErrors) {
+          setErrors({ ...SIGNUP_EMPTY_ERRORS, ...serverFieldErrors })
+          return
+        }
+
+        if (error?.code === 'EMAIL_ALREADY_EXISTS') {
+          setErrors({
+            ...SIGNUP_EMPTY_ERRORS,
+            email: '이미 사용중인 이메일입니다.',
+          })
+        } else if (error?.code === 'NICKNAME_ALREADY_EXISTS') {
+          setErrors({
+            ...SIGNUP_EMPTY_ERRORS,
+            nickname: '이미 사용중인 닉네임입니다.',
+          })
+        } else {
+          alert('회원가입에 실패했습니다.')
+        }
       }
-    } finally {
-      isSubmittingRef.current = false
-      setIsSubmitting(false)
-    }
+    })
   }
 
   const passwordConfirmError =

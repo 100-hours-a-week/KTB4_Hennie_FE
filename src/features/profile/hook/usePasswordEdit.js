@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { updatePassword } from '../api/profileApi'
+import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import {
   PASSWORD_PATTERN,
   PWD_EMPTY_ERRORS,
@@ -29,8 +30,7 @@ export const usePasswordEdit = ({ getPasswordErrorMessage }) => {
   const [newPassword, setNewPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [errors, setErrors] = useState(PWD_EMPTY_ERRORS)
-  // 중복 제출 방지용(UI 상태 아님, 리렌더 없음)
-  const isSubmittingRef = useRef(false)
+  const { run } = useAsyncLock()
 
   const changeField = (setter) => (event) => {
     setter(event.target.value)
@@ -38,54 +38,47 @@ export const usePasswordEdit = ({ getPasswordErrorMessage }) => {
   }
 
   // 실제 저장 프리미티브. 성공 true / 실패 false(필드 에러 또는 alert 처리).
-  const savePassword = async () => {
-    if (isSubmittingRef.current) {
-      return false
-    }
+  const savePassword = () =>
+    run(async () => {
+      try {
+        await updatePassword({ currentPassword, newPassword })
+        setCurrentPassword('')
+        setNewPassword('')
+        setPasswordConfirm('')
 
-    isSubmittingRef.current = true
+        return true
+      } catch (error) {
+        const serverFieldErrors = getServerFieldErrors(error)
 
-    try {
-      await updatePassword({ currentPassword, newPassword })
-      setCurrentPassword('')
-      setNewPassword('')
-      setPasswordConfirm('')
+        if (serverFieldErrors) {
+          setErrors({ ...PWD_EMPTY_ERRORS, ...serverFieldErrors })
+          return false
+        }
 
-      return true
-    } catch (error) {
-      const serverFieldErrors = getServerFieldErrors(error)
+        const code = error?.code
 
-      if (serverFieldErrors) {
-        setErrors({ ...PWD_EMPTY_ERRORS, ...serverFieldErrors })
+        if (code === 'INVALID_CREDENTIALS') {
+          setErrors({
+            ...PWD_EMPTY_ERRORS,
+            currentPassword: '현재 비밀번호가 일치하지 않습니다.',
+          })
+        } else if (code === 'SAME_AS_CURRENT_PASSWORD') {
+          setErrors({
+            ...PWD_EMPTY_ERRORS,
+            newPassword: '현재 비밀번호와 다른 비밀번호를 입력해주세요.',
+          })
+        } else if (error?.status === 400) {
+          setErrors({
+            ...PWD_EMPTY_ERRORS,
+            newPassword: '비밀번호를 다시 확인해주세요.',
+          })
+        } else {
+          alert(getPasswordErrorMessage(error, '비밀번호 수정에 실패했습니다.'))
+        }
+
         return false
       }
-
-      const code = error?.code
-
-      if (code === 'INVALID_CREDENTIALS') {
-        setErrors({
-          ...PWD_EMPTY_ERRORS,
-          currentPassword: '현재 비밀번호가 일치하지 않습니다.',
-        })
-      } else if (code === 'SAME_AS_CURRENT_PASSWORD') {
-        setErrors({
-          ...PWD_EMPTY_ERRORS,
-          newPassword: '현재 비밀번호와 다른 비밀번호를 입력해주세요.',
-        })
-      } else if (error?.status === 400) {
-        setErrors({
-          ...PWD_EMPTY_ERRORS,
-          newPassword: '비밀번호를 다시 확인해주세요.',
-        })
-      } else {
-        alert(getPasswordErrorMessage(error, '비밀번호 수정에 실패했습니다.'))
-      }
-
-      return false
-    } finally {
-      isSubmittingRef.current = false
-    }
-  }
+    })
 
   const handleSubmit = async (event) => {
     event.preventDefault()
