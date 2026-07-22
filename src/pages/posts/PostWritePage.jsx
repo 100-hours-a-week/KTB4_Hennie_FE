@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import DraftListModal from '../../features/posts/components/DraftListModal'
+import PostEditorFields from '../../features/posts/components/PostEditorFields'
 import { usePostDrafts } from '../../features/posts/hook/usePostDrafts'
 import { usePublishPost } from '../../features/posts/hook/usePublishPost'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
@@ -101,59 +102,16 @@ function PostWritePage() {
             </select>
           </div> */}
 
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-col overflow-hidden rounded-md border border-app-border bg-app-surface">
-              <input
-                className="border-b border-app-border bg-transparent p-4 text-[22px] font-bold text-app-text placeholder:font-normal placeholder:text-[#6b7178] focus:outline-none"
-                id="title"
-                name="title"
-                type="text"
-                maxLength={26}
-                placeholder="제목을 입력하세요."
-                disabled={isFormBusy}
-                value={title}
-                onChange={handleTitleChange}
-              />
-              <textarea
-                className="min-h-[420px] resize-y bg-transparent p-4 text-base leading-[1.7] text-app-text placeholder:text-[#6b7178] focus:outline-none"
-                id="content"
-                name="content"
-                placeholder="내용을 입력하세요."
-                disabled={isFormBusy}
-                value={content}
-                onChange={handleContentChange}
-              />
-            </div>
-            <p className="min-h-4 text-xs leading-[1.4] text-app-error">
-              {helperMessage ? `* ${helperMessage}` : ''}
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium" htmlFor="image">
-              이미지
-            </label>
-            <div className="flex items-center gap-3">
-              <label
-                className="shrink-0 cursor-pointer rounded-sm border border-[#3a3e44] bg-app-surface px-3 py-2 text-sm hover:bg-app-bg focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
-                htmlFor="image"
-              >
-                파일 선택
-                <input
-                  className="sr-only"
-                  id="image"
-                  name="image"
-                  type="file"
-                  accept="image/*"
-                  disabled={isFormBusy}
-                  onChange={handleImageChange}
-                />
-              </label>
-              <span className="min-w-0 truncate text-sm text-app-text-muted">
-                {selectedFileName || '파일을 선택해주세요.'}
-              </span>
-            </div>
-          </div>
+          <PostEditorFields
+            title={title}
+            content={content}
+            selectedFileName={selectedFileName}
+            helperMessage={helperMessage}
+            disabled={isFormBusy}
+            onTitleChange={handleTitleChange}
+            onContentChange={handleContentChange}
+            onImageChange={handleImageChange}
+          />
 
           <footer className="fixed right-0 bottom-0 left-0 z-[90] border-t border-app-border bg-app-bg/90 backdrop-blur-md">
             <div className="mx-auto flex max-w-[720px] items-center justify-end gap-3 px-6 py-3">
