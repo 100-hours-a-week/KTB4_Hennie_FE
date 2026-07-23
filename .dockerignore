@@ -1,0 +1,22 @@
+# 의존성
+node_modules
+
+# 빌드 결과물
+dist
+
+# 버전 관리 / 에디터 / OS 부산물
+.git
+.gitignore
+.vscode
+.idea
+.DS_Store
+
+# 도커 관련 파일 자체
+Dockerfile
+.dockerignore
+
+# 로그·환경파일
+npm-debug.log*
+*.log
+.env
+.env.*
