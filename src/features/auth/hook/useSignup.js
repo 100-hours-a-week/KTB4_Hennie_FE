@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { signup } from '../api/authApi'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
+import { validateImageFile } from '../../../shared/utils/validateImageFile'
 import {
   EMAIL_PATTERN,
   PASSWORD_PATTERN,
@@ -37,7 +38,22 @@ export const useSignup = ({ navigate }) => {
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [nickname, setNickname] = useState('')
   const [errors, setErrors] = useState(SIGNUP_EMPTY_ERRORS)
+  const [profileImage, setProfileImage] = useState(null)
+  const [imageError, setImageError] = useState('')
   const { isRunning: isSubmitting, run } = useAsyncLock()
+
+  const previewUrl = useMemo(
+    () => (profileImage ? URL.createObjectURL(profileImage) : ''),
+    [profileImage],
+  )
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl)
+      }
+    }
+  }, [previewUrl])
 
   const trimmedEmail = email.trim()
   const trimmedNickname = nickname.trim()
@@ -45,11 +61,27 @@ export const useSignup = ({ navigate }) => {
     EMAIL_PATTERN.test(trimmedEmail) &&
     PASSWORD_PATTERN.test(password) &&
     password === passwordConfirm &&
-    isNicknameValid(trimmedNickname)
+    isNicknameValid(trimmedNickname) &&
+    !imageError
 
   const changeField = (field, setter) => (event) => {
     setter(event.target.value)
     setErrors((currentErrors) => ({ ...currentErrors, [field]: '' }))
+  }
+
+  const handleImageChange = (event) => {
+    const file = event.target.files?.[0] || null
+    const validationError = validateImageFile(file)
+
+    if (validationError) {
+      setImageError(validationError)
+      setProfileImage(null)
+      event.target.value = ''
+      return
+    }
+
+    setImageError('')
+    setProfileImage(file)
   }
 
   const handlePasswordChange = (event) => {
@@ -76,6 +108,7 @@ export const useSignup = ({ navigate }) => {
           email: trimmedEmail,
           password,
           nickname: trimmedNickname,
+          profileImage,
         })
 
         alert('회원가입에 성공했습니다.')
@@ -119,6 +152,8 @@ export const useSignup = ({ navigate }) => {
     passwordConfirm,
     nickname,
     errors: { ...errors, passwordConfirm: passwordConfirmError },
+    previewUrl,
+    imageError,
     isFormValid,
     isSubmitting,
     handleEmailChange: changeField('email', setEmail),
@@ -128,6 +163,7 @@ export const useSignup = ({ navigate }) => {
       setPasswordConfirm,
     ),
     handleNicknameChange: changeField('nickname', setNickname),
+    handleImageChange,
     handleSubmit,
   }
 }

@@ -14,12 +14,15 @@ function SignupPage() {
     passwordConfirm,
     nickname,
     errors,
+    previewUrl,
+    imageError,
     isFormValid,
     isSubmitting,
     handleEmailChange,
     handlePasswordChange,
     handlePasswordConfirmChange,
     handleNicknameChange,
+    handleImageChange,
     handleSubmit,
   } = useSignup({ navigate })
 
@@ -37,18 +40,31 @@ function SignupPage() {
           <div className="flex flex-col gap-2">
             <span className="text-base font-medium">프로필 사진</span>
             <label
-              className="mx-auto flex size-[120px] cursor-pointer items-center justify-center rounded-full bg-app-surface-raised text-4xl text-app-text-muted transition-colors hover:bg-app-border focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
+              className="mx-auto flex size-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-app-surface-raised text-4xl text-app-text-muted transition-colors hover:bg-app-border focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
               htmlFor="profile-image"
             >
-              <span aria-hidden="true">+</span>
+              {previewUrl ? (
+                <img
+                  className="size-full object-cover"
+                  src={previewUrl}
+                  alt="프로필 미리보기"
+                />
+              ) : (
+                <span aria-hidden="true">+</span>
+              )}
               <input
                 className="sr-only"
                 id="profile-image"
+                name="profileImage"
                 type="file"
-                accept="image/*"
+                accept="image/jpeg,image/png,image/webp,image/gif"
                 disabled={isSubmitting}
+                onChange={handleImageChange}
               />
             </label>
+            <p className="min-h-4 text-center text-xs leading-[1.4] text-app-error">
+              {imageError}
+            </p>
           </div>
 
           <FormField

@@ -6,6 +6,13 @@ export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export const PASSWORD_PATTERN =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])\S{8,20}$/
 export const NICKNAME_MAX_LENGTH = 10
+export const IMAGE_MAX_SIZE_BYTES = 10 * 1024 * 1024
+export const ALLOWED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+]
 export const SIGNUP_EMPTY_ERRORS = {
     email: '',
     password: '',

@@ -6,15 +6,24 @@ import {
 } from '../../../shared/api/tokenManager'
 import { normalizeUser } from '../utils/normalizeUser'
 
-export const signup = async ({ email, password, nickname }) => {
-  return await post(
-    '/users/signup',
-    { email, password, nickname },
-    {
-      auth: false,
-      skipAuthRefresh: true,
-    },
+export const signup = async ({ email, password, nickname, profileImage }) => {
+  const formData = new FormData()
+
+  formData.append(
+    'request',
+    new Blob([JSON.stringify({ email, password, nickname })], {
+      type: 'application/json',
+    }),
   )
+
+  if (profileImage) {
+    formData.append('profileImage', profileImage)
+  }
+
+  return await post('/users/signup', formData, {
+    auth: false,
+    skipAuthRefresh: true,
+  })
 }
 
 export const login = async ({ email, password }) => {
