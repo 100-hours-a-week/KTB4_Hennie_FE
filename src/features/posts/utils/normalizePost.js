@@ -10,11 +10,7 @@ export const normalizePost = (post = {}) => ({
   title: post.title || '제목 없음',
   authorNickname:
     post.nickname || post.authorNickname || post.author?.nickname || '익명',
-  authorProfileUrl:
-    post.authorProfileUrl ||
-    post.profileUrl ||
-    post.author?.profileUrl ||
-    DEFAULT_PROFILE_PATH,
+  authorProfileUrl: post.profileUrl || DEFAULT_PROFILE_PATH,
   createdAt: post.createdAt || '',
   likeCount: toCount(post.likeCount ?? post.likes),
   commentCount: toCount(post.commentCount),
@@ -24,7 +20,7 @@ export const normalizePost = (post = {}) => ({
 export const normalizeComment = (comment = {}) => ({
   id: comment.commentId ?? null,
   authorNickname: comment.nickname || '익명',
-  authorProfileUrl: DEFAULT_PROFILE_PATH,
+  authorProfileUrl: comment.profileUrl || DEFAULT_PROFILE_PATH,
   content: comment.content || '',
   createdAt: comment.createdAt || '',
   edited: Boolean(comment.edited),
@@ -43,7 +39,7 @@ export const normalizePostDetail = (post = {}) => {
     id: post.postId ?? null,
     title: post.title || '제목 없음',
     authorNickname: post.nickname || '익명',
-    authorProfileUrl: DEFAULT_PROFILE_PATH,
+    authorProfileUrl: post.profileUrl || DEFAULT_PROFILE_PATH,
     content: post.content || '',
     images,
     imageUrl: images[0] || '',
