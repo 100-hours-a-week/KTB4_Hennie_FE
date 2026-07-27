@@ -1,15 +1,21 @@
 import { del, patch } from '../../../shared/api/http'
 import { normalizeUser } from '../../auth/utils/normalizeUser'
 
-export const updateMyInfo = async ({ nickname, profileUrl }) => {
-  const response = await patch(
-    '/users/myInfo',
-    {
-      nickname,
-      ...(profileUrl ? { profileUrl } : {}),
-    },
-    { auth: true },
+export const updateMyInfo = async ({ nickname, profileImage }) => {
+  const formData = new FormData()
+
+  formData.append(
+    'request',
+    new Blob([JSON.stringify({ nickname })], {
+      type: 'application/json',
+    }),
   )
+
+  if (profileImage) {
+    formData.append('profileImage', profileImage)
+  }
+
+  const response = await patch('/users/myInfo', formData, { auth: true })
 
   return normalizeUser(response?.data)
 }

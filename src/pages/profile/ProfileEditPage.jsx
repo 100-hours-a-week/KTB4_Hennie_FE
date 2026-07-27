@@ -22,14 +22,23 @@ function ProfileEditPage() {
   // 회원 정보 수정
   const {
     nickname,
+    previewUrl,
+    imageError,
+    isSaving,
+    profileImageInputRef,
     handleNicknameChange,
+    handleImageChange,
     handleSubmit,
     hasChanges,
-    saveNickname,
+    saveProfile,
   } = useProfileEdit({ getProfileErrorMessage })
 
   // 수정 완료
-  const { completeProfile } = useProfileComplete({ hasChanges, saveNickname })
+  const { completeProfile } = useProfileComplete({
+    hasChanges,
+    saveProfile,
+    hasImageError: Boolean(imageError),
+  })
 
   // 회원 정보 탈퇴
   const {
@@ -40,7 +49,9 @@ function ProfileEditPage() {
     withdraw: handleWithdraw,
   } = useWithdraw({ getProfileErrorMessage })
 
-  const profileImage = currentUser.profileUrl || DEFAULT_PROFILE_PATH
+  const profileImage =
+    previewUrl || currentUser.profileUrl || DEFAULT_PROFILE_PATH
+  const isBusy = isSaving || isWithdrawing
 
   return (
     <section className="flex min-h-[calc(100vh-5rem)] justify-center px-6 py-8">
@@ -50,13 +61,36 @@ function ProfileEditPage() {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2">
             <span className="text-base font-medium">프로필 사진</span>
-            <div className="mx-auto mt-2 size-[120px] overflow-hidden rounded-full bg-app-surface-raised">
+            <label
+              className="relative mx-auto mt-2 block size-[120px] cursor-pointer rounded-full bg-app-surface-raised focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
+              htmlFor="profile-image"
+              aria-label="프로필 사진 변경"
+            >
               <img
-                className="size-full object-cover"
+                className="size-full rounded-full object-cover"
                 src={profileImage}
                 alt={`${currentUser.nickname || '사용자'} 프로필`}
               />
-            </div>
+              <span
+                className="absolute right-1 bottom-1 flex size-8 items-center justify-center rounded-full border-2 border-app-bg bg-app-primary text-xl leading-none font-bold text-white"
+                aria-hidden="true"
+              >
+                +
+              </span>
+              <input
+                ref={profileImageInputRef}
+                className="sr-only"
+                id="profile-image"
+                name="profileImage"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                disabled={isBusy}
+                onChange={handleImageChange}
+              />
+            </label>
+            <p className="min-h-4 text-center text-xs leading-[1.4] text-app-error">
+              {imageError}
+            </p>
           </div>
 
           <FormField
@@ -76,7 +110,7 @@ function ProfileEditPage() {
             name="nickname"
             autoComplete="nickname"
             placeholder="수정할 닉네임"
-            disabled={isWithdrawing}
+            disabled={isBusy}
             value={nickname}
             onChange={handleNicknameChange}
           />
@@ -85,15 +119,15 @@ function ProfileEditPage() {
             <button
               className="h-11 w-full rounded-md bg-app-primary px-4 text-base font-medium text-white transition-colors hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary disabled:cursor-not-allowed disabled:opacity-60"
               type="submit"
-              disabled={isWithdrawing}
+              disabled={isBusy || Boolean(imageError)}
             >
-              수정하기
+              {isSaving ? '수정 중...' : '수정하기'}
             </button>
 
             <button
               className="text-sm text-app-text-muted underline hover:text-app-text focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
               type="button"
-              disabled={isWithdrawing}
+              disabled={isBusy}
               onClick={openWithdrawModal}
             >
               회원 탈퇴
@@ -102,7 +136,7 @@ function ProfileEditPage() {
             <button
               className="h-[42px] w-1/2 min-w-[140px] rounded-full bg-app-primary text-base font-medium text-white transition-colors hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary disabled:cursor-not-allowed disabled:opacity-60"
               type="button"
-              disabled={isWithdrawing}
+              disabled={isBusy || Boolean(imageError)}
               onClick={completeProfile}
             >
               수정 완료

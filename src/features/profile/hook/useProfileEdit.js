@@ -1,6 +1,7 @@
-import { useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useAuth } from '../../auth/hook/useAuth'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
+import { validateImageFile } from '../../../shared/utils/validateImageFile'
 import { updateMyInfo } from '../api/profileApi'
 
 // 닉네임 중복/검증 에러 판별 (useProfileEdit 전용)
@@ -12,26 +13,67 @@ export const useProfileEdit = ({ getProfileErrorMessage }) => {
   const { currentUser, updateCurrentUser } = useAuth()
 
   const [nickname, setNickname] = useState(currentUser?.nickname || '')
+  const [profileImage, setProfileImage] = useState(null)
+  const [imageError, setImageError] = useState('')
   const savedNicknameRef = useRef(currentUser?.nickname?.trim() || '')
-  const { run } = useAsyncLock()
+  const profileImageInputRef = useRef(null)
+  const { isRunning: isSaving, run } = useAsyncLock()
+
+  const previewUrl = useMemo(
+    () => (profileImage ? URL.createObjectURL(profileImage) : ''),
+    [profileImage],
+  )
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl)
+      }
+    }
+  }, [previewUrl])
 
   const handleNicknameChange = (event) => {
     setNickname(event.target.value)
   }
 
-  const hasChanges = () => nickname.trim() !== savedNicknameRef.current
+  const handleImageChange = (event) => {
+    const file = event.target.files?.[0] || null
+    const validationError = validateImageFile(file)
 
-  const saveNickname = () =>
+    if (validationError) {
+      setImageError(validationError)
+      setProfileImage(null)
+      event.target.value = ''
+      return
+    }
+
+    setImageError('')
+    setProfileImage(file)
+  }
+
+  const hasChanges = () =>
+    nickname.trim() !== savedNicknameRef.current || Boolean(profileImage)
+
+  const saveProfile = () =>
     run(async () => {
       const trimmedNickname = nickname.trim()
 
       try {
-        const updatedUser = await updateMyInfo({ nickname: trimmedNickname })
+        const updatedUser = await updateMyInfo({
+          nickname: trimmedNickname,
+          profileImage,
+        })
         const nextNickname = updatedUser?.nickname ?? trimmedNickname
 
         updateCurrentUser(updatedUser)
         setNickname(nextNickname)
+        setProfileImage(null)
+        setImageError('')
         savedNicknameRef.current = nextNickname.trim() || trimmedNickname
+
+        if (profileImageInputRef.current) {
+          profileImageInputRef.current.value = ''
+        }
 
         return true
       } catch (error) {
@@ -61,16 +103,25 @@ export const useProfileEdit = ({ getProfileErrorMessage }) => {
       return
     }
 
-    if (await saveNickname()) {
+    if (imageError) {
+      return
+    }
+
+    if (await saveProfile()) {
       alert('회원정보가 수정되었습니다.')
     }
   }
 
   return {
     nickname,
+    previewUrl,
+    imageError,
+    isSaving,
+    profileImageInputRef,
     handleNicknameChange,
+    handleImageChange,
     handleSubmit,
     hasChanges,
-    saveNickname,
+    saveProfile,
   }
 }
