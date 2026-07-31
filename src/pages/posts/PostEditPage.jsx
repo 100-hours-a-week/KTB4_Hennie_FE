@@ -29,7 +29,10 @@ function PostEditPage() {
 
   if (loadError) {
     return (
-      <NotFoundPage title="게시글을 불러올 수 없습니다" description={loadError} />
+      <NotFoundPage
+        title="게시글을 불러올 수 없습니다"
+        description={loadError}
+      />
     )
   }
 

@@ -14,13 +14,13 @@ export const ALLOWED_IMAGE_TYPES = [
   'image/gif',
 ]
 export const SIGNUP_EMPTY_ERRORS = {
-    email: '',
-    password: '',
-    passwordConfirm: '',
-    nickname: '',
-  }
+  email: '',
+  password: '',
+  passwordConfirm: '',
+  nickname: '',
+}
 export const PWD_EMPTY_ERRORS = {
-    currentPassword: '',
-    newPassword: '',
-    passwordConfirm: '',
-  }
+  currentPassword: '',
+  newPassword: '',
+  passwordConfirm: '',
+}
