@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: 린트 및 빌드
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Node 설정
+        uses: actions/setup-node@v4
+        with:
+          # package.json의 engines.node와 동일하게 고정
+          node-version: '20.19.0'
+          cache: npm
+
+      - name: 의존성 설치
+        run: npm ci
+
+      - name: 포맷 검사
+        run: npm run format:check
+
+      - name: 린트
+        run: npm run lint
+
+      - name: 빌드
+        run: npm run build
