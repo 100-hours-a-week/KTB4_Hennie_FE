@@ -72,11 +72,93 @@ export const useComments = (post) => {
     }
   }
 
+  const addReply = (commentId, reply) => {
+    if (reply?.id == null) {
+      return () => {}
+    }
+
+    setComments((prev) =>
+      prev.map((comment) =>
+        String(comment.id) === String(commentId)
+          ? {
+              ...comment,
+              replies: [...(comment.replies || []), reply],
+            }
+          : comment,
+      ),
+    )
+
+    return () => {
+      setComments((prev) =>
+        prev.map((comment) =>
+          String(comment.id) === String(commentId)
+            ? {
+                ...comment,
+                replies: (comment.replies || []).filter(
+                  (item) => item !== reply,
+                ),
+              }
+            : comment,
+        ),
+      )
+    }
+  }
+
+  const updateReply = (commentId, replyId, patch) => {
+    let previous = null
+
+    setComments((prev) =>
+      prev.map((comment) => {
+        if (String(comment.id) !== String(commentId)) {
+          return comment
+        }
+
+        return {
+          ...comment,
+          replies: (comment.replies || []).map((reply) => {
+            if (String(reply.id) === String(replyId)) {
+              previous = reply
+              return { ...reply, ...patch }
+            }
+
+            return reply
+          }),
+        }
+      }),
+    )
+
+    return () => {
+      if (!previous) {
+        return
+      }
+
+      setComments((prev) =>
+        prev.map((comment) =>
+          String(comment.id) === String(commentId)
+            ? {
+                ...comment,
+                replies: (comment.replies || []).map((reply) =>
+                  String(reply.id) === String(replyId) ? previous : reply,
+                ),
+              }
+            : comment,
+        ),
+      )
+    }
+  }
+
+  const commentCount = comments.reduce(
+    (count, comment) => count + 1 + (comment.replies?.length || 0),
+    0,
+  )
+
   return {
     comments,
-    commentCount: comments.length,
+    commentCount,
     addComment,
     removeComment,
     updateComment,
+    addReply,
+    updateReply,
   }
 }
