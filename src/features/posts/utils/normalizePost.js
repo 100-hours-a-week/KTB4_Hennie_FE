@@ -5,11 +5,27 @@ const toCount = (value) => {
   return Number.isFinite(num) ? num : 0
 }
 
+const normalizeReplyTarget = (target) => {
+  if (!target) {
+    return null
+  }
+
+  return {
+    commentId: target.commentId ?? null,
+    authorId: target.authorId ?? null,
+    nickname: target.nickname || '알 수 없음',
+    deleted: Boolean(target.deleted),
+  }
+}
+
 export const normalizePost = (post = {}) => ({
   id: post.postId ?? post.id ?? null,
   title: post.title || '제목 없음',
   authorNickname:
-    post.nickname || post.authorNickname || post.author?.nickname || '익명',
+    post.nickname ||
+    post.authorNickname ||
+    post.author?.nickname ||
+    '알 수 없음',
   authorProfileUrl: post.profileUrl || DEFAULT_PROFILE_PATH,
   createdAt: post.createdAt || '',
   likeCount: toCount(post.likeCount ?? post.likes),
@@ -18,9 +34,11 @@ export const normalizePost = (post = {}) => ({
 })
 
 export const normalizeComment = (comment = {}) => ({
-  id: comment.commentId ?? null,
-  authorNickname: comment.nickname || '익명',
+  id: comment.commentId ?? comment.replyId ?? null,
+  authorId: comment.authorId ?? null,
+  authorNickname: comment.nickname || '알 수 없음',
   authorProfileUrl: comment.profileUrl || DEFAULT_PROFILE_PATH,
+  replyTo: normalizeReplyTarget(comment.replyTo),
   content: comment.content || '',
   createdAt: comment.createdAt || '',
   edited: Boolean(comment.edited),
@@ -38,7 +56,7 @@ export const normalizePostDetail = (post = {}) => {
   return {
     id: post.postId ?? null,
     title: post.title || '제목 없음',
-    authorNickname: post.nickname || '익명',
+    authorNickname: post.nickname || '알 수 없음',
     authorProfileUrl: post.profileUrl || DEFAULT_PROFILE_PATH,
     content: post.content || '',
     images,
