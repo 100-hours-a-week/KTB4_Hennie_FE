@@ -3,11 +3,14 @@ import { Link, useParams } from 'react-router'
 import { useComments } from '../../features/posts/hook/comment/useComments'
 import { useCreateComment } from '../../features/posts/hook/comment/useCreateComment'
 import { useDeleteComment } from '../../features/posts/hook/comment/useDeleteComment'
+import { useReplyEditor } from '../../features/posts/hook/comment/useReplyEditor'
+import { useReplies } from '../../features/posts/hook/comment/useReplies'
 import { useDeletePost } from '../../features/posts/hook/useDeletePost'
 import { usePostDetail } from '../../features/posts/hook/usePostDetail'
 import { usePostLike } from '../../features/posts/hook/usePostLike'
 import { useReportPost } from '../../features/posts/hook/useReportPost'
 import { useUpdateComment } from '../../features/posts/hook/comment/useUpdateComment'
+import CommentForm from '../../features/posts/components/CommentForm'
 import CommentList from '../../features/posts/components/CommentList'
 import { isOwnedByCurrentUser } from '../../features/posts/utils/isOwnedByCurrentUser'
 import { useAuth } from '../../features/auth/hook/useAuth'
@@ -27,8 +30,15 @@ function PostDetailPage() {
   const { postId } = useParams()
   const { currentUser } = useAuth()
   const { post, isLoading, error, updateLikeState } = usePostDetail(postId)
-  const { comments, commentCount, addComment, removeComment, updateComment } =
-    useComments(post)
+  const {
+    comments,
+    commentCount,
+    addComment,
+    removeComment,
+    updateComment,
+    addReply,
+    updateReply: updateReplyInList,
+  } = useComments(post)
   const { content, isCreating, changeContent, replaceContent, submitComment } =
     useCreateComment({
       postId,
@@ -38,7 +48,7 @@ function PostDetailPage() {
   const [editingCommentId, setEditingCommentId] = useState(null)
   const [isEditCancelModalOpen, setIsEditCancelModalOpen] = useState(false)
 
-  const finishCommentEdit = () => {
+  const resetCommentForm = () => {
     setEditingCommentId(null)
     setIsEditCancelModalOpen(false)
     replaceContent('')
@@ -46,7 +56,7 @@ function PostDetailPage() {
 
   const { isUpdatingComment, submitUpdatedComment } = useUpdateComment({
     postId,
-    onUpdateSuccess: finishCommentEdit,
+    onUpdateSuccess: resetCommentForm,
     updateComment,
   })
   const {
@@ -58,6 +68,43 @@ function PostDetailPage() {
   } = useDeleteComment({
     postId,
     removeComment,
+  })
+  const {
+    deletingReply,
+    isCreatingReply,
+    isUpdatingReply,
+    isDeletingReply,
+    createReply,
+    updateReply: submitReplyUpdate,
+    openDeleteReplyModal,
+    closeDeleteReplyModal,
+    confirmDeleteReply,
+  } = useReplies({
+    postId,
+    addReply,
+    updateReply: updateReplyInList,
+  })
+  const {
+    inputRef: replyInputRef,
+    editor: replyEditor,
+    content: replyContent,
+    isEditing: isEditingReply,
+    isSubmitting: isReplySubmitting,
+    startCreate: startReply,
+    startEdit: startReplyEdit,
+    changeContent: changeReplyContent,
+    submit: submitReply,
+    reset: resetReplyEditor,
+  } = useReplyEditor({
+    createReply,
+    updateReply: submitReplyUpdate,
+    isCreatingReply,
+    isUpdatingReply,
+    onStart: () => {
+      if (editingCommentId != null) {
+        resetCommentForm()
+      }
+    },
   })
   const {
     isDeleteModalOpen,
@@ -86,15 +133,12 @@ function PostDetailPage() {
   const isEditingComment = editingCommentId != null
   const isCommentSubmitting = isCreating || isUpdatingComment
 
-  const startCommentEdit = (comment) => {
-    setEditingCommentId(comment.id)
-    replaceContent(comment.content)
-
+  const focusCommentForm = (nextContent = '') => {
     requestAnimationFrame(() => {
       commentInputRef.current?.focus()
       commentInputRef.current?.setSelectionRange(
-        comment.content.length,
-        comment.content.length,
+        nextContent.length,
+        nextContent.length,
       )
       commentInputRef.current?.closest('form')?.scrollIntoView({
         behavior: 'smooth',
@@ -103,8 +147,21 @@ function PostDetailPage() {
     })
   }
 
-  const cancelCommentEdit = () => {
-    finishCommentEdit()
+  const startCommentEdit = (comment) => {
+    resetReplyEditor()
+    setEditingCommentId(comment.id)
+    replaceContent(comment.content)
+    focusCommentForm(comment.content)
+  }
+
+  const cancelActiveEdit = () => {
+    if (isEditingReply) {
+      resetReplyEditor()
+      setIsEditCancelModalOpen(false)
+      return
+    }
+
+    resetCommentForm()
   }
 
   const handleCommentSubmit = (event) => {
@@ -230,51 +287,40 @@ function PostDetailPage() {
           </span>
         </div>
 
-        <form
-          className="mb-6 rounded-lg border border-[#3a3e44] bg-app-bg p-3"
+        <CommentForm
+          className="mb-6"
+          inputRef={commentInputRef}
+          value={content}
+          placeholder="이 기술에 대한 생각을 개발자국으로 남겨보세요 🐾"
+          isPending={isCommentSubmitting}
+          submitLabel={isEditingComment ? '수정 등록' : '댓글 등록'}
+          pendingLabel={isEditingComment ? '수정 중...' : '등록 중...'}
+          onChange={changeContent}
           onSubmit={handleCommentSubmit}
-        >
-          <textarea
-            className="min-h-[72px] w-full resize-y bg-transparent text-sm leading-[1.6] text-app-text placeholder:text-[#6b7178] focus:outline-none"
-            ref={commentInputRef}
-            name="comment"
-            placeholder="이 기술에 대한 생각을 개발자국으로 남겨보세요 🐾"
-            disabled={isCommentSubmitting}
-            value={content}
-            onChange={changeContent}
-          />
-          <div className="mt-2 flex justify-end gap-2">
-            {isEditingComment && (
-              <button
-                className="inline-flex h-8 items-center justify-center rounded-md border border-[#3a3e44] bg-app-surface px-3 text-xs font-medium text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text"
-                type="button"
-                disabled={isCommentSubmitting}
-                onClick={() => setIsEditCancelModalOpen(true)}
-              >
-                취소
-              </button>
-            )}
-            <button
-              className="inline-flex h-8 items-center justify-center rounded-md bg-app-primary px-3 text-xs font-medium text-white transition-colors hover:bg-app-primary-hover"
-              type="submit"
-              disabled={isCommentSubmitting}
-            >
-              {isEditingComment
-                ? isUpdatingComment
-                  ? '수정 중...'
-                  : '수정 등록'
-                : isCreating
-                  ? '등록 중...'
-                  : '댓글 등록'}
-            </button>
-          </div>
-        </form>
+          onCancel={
+            isEditingComment ? () => setIsEditCancelModalOpen(true) : undefined
+          }
+        />
 
         <CommentList
           comments={comments}
           currentUser={currentUser}
           onEdit={startCommentEdit}
           onDelete={openDeleteCommentModal}
+          onReply={startReply}
+          onEditReply={startReplyEdit}
+          onDeleteReply={openDeleteReplyModal}
+          replyEditor={replyEditor}
+          replyContent={replyContent}
+          replyInputRef={replyInputRef}
+          isReplySubmitting={isReplySubmitting}
+          onReplyContentChange={changeReplyContent}
+          onReplySubmit={submitReply}
+          onReplyCancel={
+            isEditingReply
+              ? () => setIsEditCancelModalOpen(true)
+              : resetReplyEditor
+          }
         />
       </section>
 
@@ -324,6 +370,17 @@ function PostDetailPage() {
       />
 
       <ConfirmModal
+        isOpen={deletingReply != null}
+        title="답글을 삭제하시겠습니까?"
+        description="삭제한 내용은 복구할 수 없습니다."
+        confirmLabel="삭제"
+        pendingLabel="삭제 중..."
+        isPending={isDeletingReply}
+        onCancel={closeDeleteReplyModal}
+        onConfirm={confirmDeleteReply}
+      />
+
+      <ConfirmModal
         isOpen={isEditCancelModalOpen}
         title="수정을 취소하시겠습니까?"
         description="수정 중인 내용은 저장되지 않습니다."
@@ -331,9 +388,13 @@ function PostDetailPage() {
         confirmLabel="수정 취소"
         onCancel={() => {
           setIsEditCancelModalOpen(false)
-          commentInputRef.current?.focus()
+          if (isEditingReply) {
+            replyInputRef.current?.focus()
+          } else {
+            commentInputRef.current?.focus()
+          }
         }}
-        onConfirm={cancelCommentEdit}
+        onConfirm={cancelActiveEdit}
       />
     </section>
   )

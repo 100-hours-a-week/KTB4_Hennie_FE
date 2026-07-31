@@ -1,7 +1,24 @@
-import { formatDate } from '../utils/formatDate'
-import { isOwnedByCurrentUser } from '../utils/isOwnedByCurrentUser'
+import { useReplyThreadVisibility } from '../hook/comment/useReplyThreadVisibility'
+import CommentItem from './CommentItem'
 
-function CommentList({ comments, currentUser, onEdit, onDelete }) {
+function CommentList({
+  comments,
+  currentUser,
+  onEdit,
+  onDelete,
+  onReply,
+  onEditReply,
+  onDeleteReply,
+  replyEditor,
+  replyContent,
+  replyInputRef,
+  isReplySubmitting,
+  onReplyContentChange,
+  onReplySubmit,
+  onReplyCancel,
+}) {
+  const { isExpanded, setExpanded } = useReplyThreadVisibility()
+
   if (comments.length === 0) {
     return (
       <ul className="flex flex-col">
@@ -15,61 +32,53 @@ function CommentList({ comments, currentUser, onEdit, onDelete }) {
   return (
     <ul className="flex flex-col">
       {comments.map((comment) => {
-        const canManage = isOwnedByCurrentUser(comment, currentUser)
+        const replies = Array.isArray(comment.replies) ? comment.replies : []
+        const isReplyFormOpen =
+          String(replyEditor?.commentId) === String(comment.id)
+        const isReplyThreadExpanded = isExpanded(comment.id) || isReplyFormOpen
+        const showReplyThread =
+          isReplyFormOpen || (replies.length > 0 && isReplyThreadExpanded)
+
+        const openReply = (target) => {
+          setExpanded(comment.id, true)
+          onReply?.(comment, target)
+        }
+
+        const openReplyEdit = (reply) => {
+          setExpanded(comment.id, true)
+          onEditReply?.(comment, reply)
+        }
+
+        const toggleReplyThread = () => {
+          if (isReplyThreadExpanded && isReplyFormOpen) {
+            onReplyCancel?.()
+          }
+          setExpanded(comment.id, !isReplyThreadExpanded)
+        }
 
         return (
-          <li
-            className="flex flex-col gap-2 border-b border-app-border py-4"
+          <CommentItem
             key={comment.id}
-          >
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex min-w-0 items-center gap-2">
-                <span className="size-[35px] shrink-0 overflow-hidden rounded-full bg-app-surface-raised">
-                  <img
-                    className="size-full object-cover"
-                    src={comment.authorProfileUrl}
-                    alt="작성자"
-                  />
-                </span>
-                <span className="text-xs font-medium">
-                  {comment.authorNickname}
-                </span>
-                {comment.createdAt && (
-                  <time
-                    className="text-xs text-app-text-muted"
-                    dateTime={comment.createdAt}
-                  >
-                    {formatDate(comment.createdAt)}
-                  </time>
-                )}
-                {comment.edited && (
-                  <span className="text-xs text-app-text-muted">(수정됨)</span>
-                )}
-              </div>
-
-              {!comment.deleted && comment.id != null && canManage && (
-                <div className="flex shrink-0 gap-2">
-                  <button
-                    className="inline-flex h-8 items-center justify-center rounded-md border border-[#3a3e44] bg-app-surface px-3 text-xs font-medium text-app-text-muted hover:bg-app-surface-raised hover:text-app-text"
-                    type="button"
-                    onClick={() => onEdit(comment)}
-                  >
-                    수정
-                  </button>
-                  <button
-                    className="inline-flex h-8 items-center justify-center rounded-md border border-[#3a3e44] bg-app-surface px-3 text-xs font-medium text-app-text-muted hover:bg-app-surface-raised hover:text-app-text"
-                    type="button"
-                    onClick={() => onDelete(comment.id)}
-                  >
-                    삭제
-                  </button>
-                </div>
-              )}
-            </div>
-            <p className="pl-[43px] text-sm whitespace-pre-wrap">
-              {comment.content}
-            </p>
-          </li>
+            comment={comment}
+            currentUser={currentUser}
+            isReplyThreadExpanded={isReplyThreadExpanded}
+            showReplyThread={showReplyThread}
+            replyEditor={isReplyFormOpen ? replyEditor : null}
+            replyForm={{
+              content: replyContent,
+              inputRef: replyInputRef,
+              isSubmitting: isReplySubmitting,
+              onContentChange: onReplyContentChange,
+              onSubmit: onReplySubmit,
+              onCancel: onReplyCancel,
+            }}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            onReply={openReply}
+            onToggleReplyThread={toggleReplyThread}
+            onEditReply={openReplyEdit}
+            onDeleteReply={onDeleteReply}
+          />
         )
       })}
     </ul>
