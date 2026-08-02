@@ -1,15 +1,40 @@
+import { POST_CATEGORY_OPTIONS } from '../utils/postCategory'
+
 function PostEditorFields({
   title,
   content,
-  selectedFileName,
+  category = '',
   helperMessage,
   disabled = false,
   onTitleChange,
   onContentChange,
-  onImageChange,
+  onCategoryChange,
 }) {
   return (
     <>
+      <div className="flex flex-col gap-2">
+        <label className="text-sm font-medium" htmlFor="category">
+          유형
+        </label>
+        <select
+          className="h-11 rounded-sm border border-[#3a3e44] bg-app-surface px-3 text-sm text-app-text focus:border-app-primary focus:outline-none disabled:cursor-not-allowed disabled:text-app-text-muted"
+          id="category"
+          name="category"
+          disabled={disabled}
+          value={category}
+          onChange={onCategoryChange}
+        >
+          <option value="" disabled>
+            직무를 선택해주세요
+          </option>
+          {POST_CATEGORY_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="flex flex-col gap-2">
         <div className="flex flex-col overflow-hidden rounded-md border border-app-border bg-app-surface">
           <input
@@ -36,32 +61,6 @@ function PostEditorFields({
         <p className="min-h-4 text-xs leading-[1.4] text-app-error">
           {helperMessage ? `* ${helperMessage}` : ''}
         </p>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium" htmlFor="image">
-          이미지
-        </label>
-        <div className="flex items-center gap-3">
-          <label
-            className="shrink-0 cursor-pointer rounded-sm border border-[#3a3e44] bg-app-surface px-3 py-2 text-sm hover:bg-app-bg focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
-            htmlFor="image"
-          >
-            파일 선택
-            <input
-              className="sr-only"
-              id="image"
-              name="image"
-              type="file"
-              accept="image/*"
-              disabled={disabled}
-              onChange={onImageChange}
-            />
-          </label>
-          <span className="min-w-0 truncate text-sm text-app-text-muted">
-            {selectedFileName || '파일을 선택해주세요.'}
-          </span>
-        </div>
       </div>
     </>
   )

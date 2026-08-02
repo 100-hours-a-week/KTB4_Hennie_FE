@@ -10,8 +10,8 @@ function PostWritePage() {
   const [isDraftModalOpen, setIsDraftModalOpen] = useState(false)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [category, setCategory] = useState('')
   const [formError, setFormError] = useState('')
-  const [selectedFileName, setSelectedFileName] = useState('')
 
   const {
     draftPostId,
@@ -29,10 +29,12 @@ function PostWritePage() {
     enabled: true,
     title,
     content,
+    category,
     setFormError,
     loadDraftIntoForm: (draft) => {
       setTitle(draft.title)
       setContent(draft.content)
+      setCategory(draft.category)
       setFormError('')
     },
   })
@@ -43,10 +45,12 @@ function PostWritePage() {
   const { isPublishing, publishPost } = usePublishPost({
     title,
     content,
+    category,
     draftPostId,
     isBlocked: isDraftBusy,
     setFormError,
   })
+
   const isFormBusy = isDraftBusy || isPublishing
 
   const handleTitleChange = (event) => {
@@ -59,8 +63,9 @@ function PostWritePage() {
     setFormError('')
   }
 
-  const handleImageChange = (event) => {
-    setSelectedFileName(event.target.files?.[0]?.name || '')
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value)
+    setFormError('')
   }
 
   const handleOpenDraftModal = async () => {
@@ -75,42 +80,28 @@ function PostWritePage() {
     }
   }
 
-  const isPublishReady = Boolean(title.trim() && content.trim())
+  const isPublishReady = Boolean(title.trim() && content.trim() && category)
   const helperMessage =
-    formError || (!isPublishReady ? '제목,내용을 모두 작성해주세요' : '')
+    formError ||
+    (!title.trim() || !content.trim()
+      ? '제목,내용을 모두 작성해주세요'
+      : !category
+        ? '유형을 선택해주세요'
+        : '')
 
   return (
     <>
       <section className="mx-auto max-w-[720px] px-6 pt-8 pb-[120px]">
         <form className="flex flex-col gap-6" onSubmit={publishPost}>
-          {/* <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium" htmlFor="category">
-              태그
-            </label>
-            <select
-              className="h-11 rounded-sm border border-[#3a3e44] bg-app-surface px-3 text-sm text-app-text focus:border-app-primary focus:outline-none"
-              id="category"
-              name="category"
-              defaultValue=""
-            >
-              <option value="" disabled>
-                직무를 선택해주세요
-              </option>
-              <option value="FE">프론트엔드</option>
-              <option value="BE">백엔드</option>
-              <option value="AI">AI</option>
-            </select>
-          </div> */}
-
           <PostEditorFields
             title={title}
             content={content}
-            selectedFileName={selectedFileName}
+            category={category}
             helperMessage={helperMessage}
             disabled={isFormBusy}
             onTitleChange={handleTitleChange}
             onContentChange={handleContentChange}
-            onImageChange={handleImageChange}
+            onCategoryChange={handleCategoryChange}
           />
 
           <footer className="fixed right-0 bottom-0 left-0 z-[90] border-t border-app-border bg-app-bg/90 backdrop-blur-md">

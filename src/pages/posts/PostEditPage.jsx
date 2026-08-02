@@ -12,14 +12,14 @@ function PostEditPage() {
   const {
     title,
     content,
-    selectedFileName,
+    category,
     formError,
     loadError,
     isLoading,
     isUpdating,
     changeTitle,
     changeContent,
-    changeImage,
+    changeCategory,
     submitPostEdit,
   } = useEditPost(postId)
 
@@ -36,9 +36,14 @@ function PostEditPage() {
     )
   }
 
-  const isEditReady = Boolean(title.trim() && content.trim())
+  const isEditReady = Boolean(title.trim() && content.trim() && category)
   const helperMessage =
-    formError || (!isEditReady ? '제목,내용을 모두 작성해주세요' : '')
+    formError ||
+    (!title.trim() || !content.trim()
+      ? '제목,내용을 모두 작성해주세요'
+      : !category
+        ? '유형을 선택해주세요'
+        : '')
 
   return (
     <section className="mx-auto max-w-[720px] px-6 pt-8 pb-[120px]">
@@ -46,12 +51,12 @@ function PostEditPage() {
         <PostEditorFields
           title={title}
           content={content}
-          selectedFileName={selectedFileName}
+          category={category}
           helperMessage={helperMessage}
           disabled={isUpdating}
           onTitleChange={changeTitle}
           onContentChange={changeContent}
-          onImageChange={changeImage}
+          onCategoryChange={changeCategory}
         />
 
         <footer className="fixed right-0 bottom-0 left-0 z-[90] border-t border-app-border bg-app-bg/90 backdrop-blur-md">

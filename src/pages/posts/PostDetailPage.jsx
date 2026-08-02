@@ -17,6 +17,7 @@ import { useAuth } from '../../features/auth/hook/useAuth'
 import LoadingPage from '../../shared/components/LoadingPage'
 import NotFoundPage from '../../shared/components/NotFoundPage'
 import { formatDate } from '../../features/posts/utils/formatDate'
+import { getPostCategoryLabel } from '../../features/posts/utils/postCategory'
 import {
   CommentIcon,
   LikeIcon,
@@ -194,9 +195,16 @@ function PostDetailPage() {
       <article>
         <header className="mb-4 flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <h1 className="mb-2 text-2xl font-bold break-words">
-              {post.title}
-            </h1>
+            <div className="mb-2 flex items-center gap-2">
+              {getPostCategoryLabel(post.category) && (
+                <span className="inline-flex h-8 shrink-0 items-center justify-center rounded-md bg-app-surface-raised px-3 text-xs font-medium text-app-primary">
+                  {getPostCategoryLabel(post.category)}
+                </span>
+              )}
+              <h1 className="min-w-0 text-2xl font-bold break-words">
+                {post.title}
+              </h1>
+            </div>
 
             <div className="flex flex-wrap items-center gap-2 text-xs text-app-text-muted">
               <span className="size-[35px] shrink-0 overflow-hidden rounded-full bg-app-surface-raised">
@@ -242,14 +250,6 @@ function PostDetailPage() {
             )}
           </div>
         </header>
-
-        {post.imageUrl && (
-          <img
-            className="mb-6 w-full rounded-lg bg-app-surface-raised"
-            src={post.imageUrl}
-            alt={post.title}
-          />
-        )}
 
         <p className="mb-4 min-h-40 whitespace-pre-wrap text-sm leading-[1.8]">
           {post.content}
