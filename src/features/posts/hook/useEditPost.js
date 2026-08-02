@@ -17,7 +17,7 @@ export const useEditPost = (postId) => {
   const [loadError, setLoadError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const { isRunning: isUpdating, run } = useAsyncLock()
-  const originalRef = useRef(EMPTY_ORIGINAL)   // 부분 수정용 원본
+  const originalRef = useRef(EMPTY_ORIGINAL) // 부분 수정용 원본
 
   useEffect(() => {
     const controller = new AbortController()
