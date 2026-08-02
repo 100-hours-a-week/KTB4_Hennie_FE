@@ -21,6 +21,7 @@ const normalizeReplyTarget = (target) => {
 export const normalizePost = (post = {}) => ({
   id: post.postId ?? post.id ?? null,
   title: post.title || '제목 없음',
+  category: post.category || null,
   authorNickname:
     post.nickname ||
     post.authorNickname ||
@@ -51,7 +52,6 @@ export const normalizeComment = (comment = {}) => ({
 export const normalizePostDetail = (post = {}) => {
   const comments = Array.isArray(post.comments) ? post.comments : []
   const normalizedComments = comments.map(normalizeComment)
-  const images = Array.isArray(post.images) ? post.images : []
 
   return {
     id: post.postId ?? null,
@@ -59,8 +59,7 @@ export const normalizePostDetail = (post = {}) => {
     authorNickname: post.nickname || '알 수 없음',
     authorProfileUrl: post.profileUrl || DEFAULT_PROFILE_PATH,
     content: post.content || '',
-    images,
-    imageUrl: images[0] || '',
+    category: post.category || null,
     createdAt: post.createdAt || '',
     modifiedAt: post.modifiedAt || '',
     edited: Boolean(post.edited),

@@ -6,6 +6,7 @@ import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 export const usePublishPost = ({
   title,
   content,
+  category,
   draftPostId,
   isBlocked,
   setFormError,
@@ -26,6 +27,11 @@ export const usePublishPost = ({
       return
     }
 
+    if (!category) {
+      setFormError('유형을 선택해주세요')
+      return
+    }
+
     if (isBlocked) {
       return
     }
@@ -36,7 +42,7 @@ export const usePublishPost = ({
           postId: draftPostId,
           title: trimmedTitle,
           content: trimmedContent,
-          imageUrl: '',
+          category,
         })
 
         alert('게시글이 등록되었습니다.')

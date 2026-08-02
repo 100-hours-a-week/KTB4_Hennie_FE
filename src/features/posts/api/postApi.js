@@ -35,13 +35,14 @@ export const deletePost = (postId) =>
     auth: true,
   })
 
-export const updatePost = (postId, { title, content, imageUrl }) =>
+export const updatePost = (postId, { title, content, category }) =>
   patch(
     `/posts/${postId}`,
     {
-      title,
-      content,
-      ...(imageUrl ? { imageUrl } : {}),
+      // 부분 수정
+      ...(title !== undefined ? { title } : {}),
+      ...(content !== undefined ? { content } : {}),
+      ...(category !== undefined ? { category } : {}),
     },
     {
       auth: true,
@@ -67,14 +68,14 @@ export const reportPost = (postId, { reason }) =>
     },
   )
 
-export const createPost = ({ postId, title, content, imageUrl }) =>
+export const createPost = ({ postId, title, content, category }) =>
   post(
     '/posts',
     {
       ...(postId ? { postId: Number(postId) } : {}),
       title,
       content,
-      images: imageUrl ? [imageUrl] : [],
+      ...(category ? { category } : {}),
     },
     { auth: true },
   )
@@ -91,13 +92,13 @@ export const getDraft = async (postId) => {
   return normalizeDraft(response?.data)
 }
 
-export const saveDraft = async ({ title, content, image }) => {
+export const saveDraft = async ({ title, content, category }) => {
   const response = await post(
     '/posts/drafts',
     {
       title,
       content,
-      ...(image ? { image } : {}),
+      ...(category ? { category } : {}),
     },
     { auth: true },
   )
@@ -105,13 +106,13 @@ export const saveDraft = async ({ title, content, image }) => {
   return normalizeDraft(response?.data)
 }
 
-export const updateDraft = async (postId, { title, content, image }) => {
+export const updateDraft = async (postId, { title, content, category }) => {
   const response = await put(
     `/posts/drafts/${postId}`,
     {
       title,
       content,
-      ...(image ? { image } : {}),
+      ...(category ? { category } : {}),
     },
     { auth: true },
   )

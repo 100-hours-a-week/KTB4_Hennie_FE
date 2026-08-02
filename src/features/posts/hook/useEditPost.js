@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { getHttpErrorMessage } from '../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
@@ -6,15 +6,18 @@ import { getPost, updatePost } from '../api/postApi'
 
 const isValidPostId = (postId) => /^\d+$/.test(postId || '')
 
+const EMPTY_ORIGINAL = { title: '', content: '', category: '' }
+
 export const useEditPost = (postId) => {
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [selectedFileName, setSelectedFileName] = useState('')
+  const [category, setCategory] = useState('')
   const [formError, setFormError] = useState('')
   const [loadError, setLoadError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const { isRunning: isUpdating, run } = useAsyncLock()
+  const originalRef = useRef(EMPTY_ORIGINAL)   // 부분 수정용 원본
 
   useEffect(() => {
     const controller = new AbortController()
@@ -27,7 +30,8 @@ export const useEditPost = (postId) => {
 
       setTitle('')
       setContent('')
-      setSelectedFileName('')
+      setCategory('')
+      originalRef.current = EMPTY_ORIGINAL
       setFormError('')
       setLoadError('')
       setIsLoading(true)
@@ -40,6 +44,7 @@ export const useEditPost = (postId) => {
 
       try {
         const post = await getPost(postId, { signal: controller.signal })
+        const loadedCategory = post.category
 
         if (!post) {
           setLoadError('게시글을 찾을 수 없습니다.')
@@ -48,6 +53,12 @@ export const useEditPost = (postId) => {
 
         setTitle(post.title)
         setContent(post.content)
+        setCategory(loadedCategory)
+        originalRef.current = {
+          title: post.title,
+          content: post.content,
+          category: loadedCategory,
+        }
       } catch (error) {
         if (error.name === 'AbortError') {
           return
@@ -82,8 +93,9 @@ export const useEditPost = (postId) => {
     setFormError('')
   }
 
-  const changeImage = (event) => {
-    setSelectedFileName(event.target.files?.[0]?.name || '')
+  const changeCategory = (event) => {
+    setCategory(event.target.value)
+    setFormError('')
   }
 
   const submitPostEdit = (event) => {
@@ -99,13 +111,28 @@ export const useEditPost = (postId) => {
       return
     }
 
+    if (!category) {
+      setFormError('유형을 선택해주세요')
+      return
+    }
+
+    const original = originalRef.current
+    const changes = {
+      ...(trimmedTitle !== original.title ? { title: trimmedTitle } : {}),
+      ...(trimmedContent !== original.content
+        ? { content: trimmedContent }
+        : {}),
+      ...(category !== original.category ? { category } : {}),
+    }
+
+    if (Object.keys(changes).length === 0) {
+      setFormError('변경된 내용이 없습니다')
+      return
+    }
+
     return run(async () => {
       try {
-        await updatePost(postId, {
-          title: trimmedTitle,
-          content: trimmedContent,
-          imageUrl: '',
-        })
+        await updatePost(postId, changes)
 
         alert('게시글이 수정되었습니다.')
         navigate(`/posts/${postId}`)
@@ -113,7 +140,12 @@ export const useEditPost = (postId) => {
         console.error('게시글 수정 실패', error)
 
         if (error?.status === 400) {
-          setFormError('제목,내용을 모두 작성해주세요')
+          setFormError(
+            error?.code === 'noChangedValue' ||
+              error?.code === 'NO_UPDATE_FIELD'
+              ? '변경된 내용이 없습니다'
+              : '제목,내용을 모두 작성해주세요',
+          )
         } else if (error?.status === 404) {
           alert('게시글을 찾을 수 없습니다.')
         } else {
@@ -131,14 +163,14 @@ export const useEditPost = (postId) => {
   return {
     title,
     content,
-    selectedFileName,
+    category,
     formError,
     loadError,
     isLoading,
     isUpdating,
     changeTitle,
     changeContent,
-    changeImage,
+    changeCategory,
     submitPostEdit,
   }
 }

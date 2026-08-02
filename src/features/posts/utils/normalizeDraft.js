@@ -9,7 +9,7 @@ export const normalizeDraft = (draft = {}) => ({
   id: draft.postId ?? draft.id ?? null,
   title: draft.title || '',
   content: draft.content || '',
-  images: Array.isArray(draft.images) ? draft.images : [],
+  category: draft.category || null,
   status: draft.status || 'DRAFT',
   createdAt: draft.createdAt || '',
   modifiedAt: draft.modifiedAt || '',

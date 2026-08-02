@@ -13,6 +13,7 @@ export const usePostDrafts = ({
   enabled,
   title,
   content,
+  category,
   setFormError,
   loadDraftIntoForm,
 }) => {
@@ -230,6 +231,7 @@ export const usePostDrafts = ({
       const payload = {
         title: trimmedTitle,
         content: trimmedContent,
+        category,
       }
       const savedDraft = isNewDraft
         ? await saveDraft(payload)
