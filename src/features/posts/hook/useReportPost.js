@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { getHttpErrorMessage } from '../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import { reportPost } from '../api/postApi'
+import { isReportReason } from '../utils/reportReason'
 import { useNavigateLogin } from './useNavigateLogin'
 
 export const useReportPost = (postId) => {
@@ -33,10 +34,10 @@ export const useReportPost = (postId) => {
   }
 
   const submitReport = () => {
-    const reason = reportReason.trim()
+    const reason = reportReason
 
-    if (!reason) {
-      alert('신고 사유를 입력해주세요.')
+    if (!isReportReason(reason)) {
+      alert('신고 사유를 선택해주세요.')
       reportReasonInputRef.current?.focus()
       return
     }
