@@ -79,6 +79,32 @@ function Header({ currentUser = null, onLogout }) {
         </Link>
       )}
 
+      <nav className="ml-6 flex items-center" aria-label="주요 메뉴">
+        <Link
+          className={`rounded-sm px-2 py-1 text-sm font-semibold transition-colors duration-150 hover:text-app-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary ${
+            pathname === '/posts' ? 'text-app-primary' : 'text-app-text'
+          }`}
+          to="/posts"
+          onClick={closeMenu}
+        >
+          개발 토론
+        </Link>
+      </nav>
+
+      <nav className="ml-6 flex items-center" aria-label="주요 메뉴">
+        <Link
+          className={`rounded-sm px-2 py-1 text-sm font-semibold transition-colors duration-150 hover:text-app-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary ${
+            pathname === '/tech-enterprises'
+              ? 'text-app-primary'
+              : 'text-app-text'
+          }`}
+          to="/tech-enterprises"
+          onClick={closeMenu}
+        >
+          기술 원문
+        </Link>
+      </nav>
+
       {showProfile && currentUser && (
         <div className="absolute right-4 sm:right-6" ref={profileMenuRef}>
           <button
