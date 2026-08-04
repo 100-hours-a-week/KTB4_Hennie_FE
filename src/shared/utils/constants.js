@@ -6,6 +6,8 @@ export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export const PASSWORD_PATTERN =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])\S{8,20}$/
 export const NICKNAME_MAX_LENGTH = 10
+export const TITLE_MAX_LENGTH = 100
+export const COMMENT_MAX_LENGTH = 3000
 export const IMAGE_MAX_SIZE_BYTES = 10 * 1024 * 1024
 export const ALLOWED_IMAGE_TYPES = [
   'image/jpeg',
