@@ -24,7 +24,7 @@ function TechEnterpriseSection({ section }) {
     <section>
       <div className="mb-6">
         <h2 className="text-xl font-bold text-app-text md:text-2xl">
-          {section.emoji} {section.title}
+          {section.title}
         </h2>
         <p className="mt-1 text-sm text-app-text-muted">
           {section.description}
@@ -50,8 +50,7 @@ function TechEnterprisePage() {
           기업 <strong className="font-bold">개발</strong> 부서가 남긴 기술{' '}
           <strong className="font-bold">발자국</strong>을 따라
           <br />
-          <strong className="font-bold">원문</strong>을
-          읽어보세요...🐾
+          <strong className="font-bold">원문</strong>을 읽어보세요...🐾
         </p>
       </div>
 

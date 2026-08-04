@@ -82,9 +82,7 @@ function Header({ currentUser = null, onLogout }) {
       <nav className="ml-6 flex items-center" aria-label="주요 메뉴">
         <Link
           className={`rounded-sm px-2 py-1 text-sm font-semibold transition-colors duration-150 hover:text-app-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary ${
-            pathname === '/posts'
-              ? 'text-app-primary'
-              : 'text-app-text'
+            pathname === '/posts' ? 'text-app-primary' : 'text-app-text'
           }`}
           to="/posts"
           onClick={closeMenu}
