@@ -18,6 +18,7 @@ import LoadingPage from '../../shared/components/LoadingPage'
 import NotFoundPage from '../../shared/components/NotFoundPage'
 import { formatDate } from '../../features/posts/utils/formatDate'
 import { getPostCategoryLabel } from '../../features/posts/utils/postCategory'
+import { REPORT_REASON_OPTIONS } from '../../features/posts/utils/reportReason'
 import {
   CommentIcon,
   LikeIcon,
@@ -327,7 +328,7 @@ function PostDetailPage() {
       <ConfirmModal
         isOpen={isReportModalOpen}
         title="게시글을 신고하시겠습니까?"
-        description="신고 사유를 입력해주세요."
+        description="신고 사유를 선택해주세요."
         confirmLabel="신고"
         pendingLabel="신고 중..."
         isPending={isReporting}
@@ -335,16 +336,26 @@ function PostDetailPage() {
         onCancel={closeReportModal}
         onConfirm={submitReport}
       >
-        <textarea
-          className="min-h-24 w-full resize-y rounded-md border border-[#3a3e44] bg-app-bg p-3 text-sm leading-6 text-app-text placeholder:text-[#6b7178] focus:border-app-primary focus:outline-none"
-          ref={reportReasonInputRef}
-          aria-label="신고 사유"
-          maxLength={500}
-          placeholder="신고 사유"
-          disabled={isReporting}
-          value={reportReason}
-          onChange={changeReportReason}
-        />
+        <fieldset className="flex flex-col gap-1" disabled={isReporting}>
+          <legend className="sr-only">신고 사유</legend>
+          {REPORT_REASON_OPTIONS.map((option, index) => (
+            <label
+              className="flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm leading-6 text-app-text hover:bg-app-surface-raised has-disabled:cursor-not-allowed has-disabled:opacity-60"
+              key={option.value}
+            >
+              <input
+                className="size-4 shrink-0 accent-app-primary"
+                ref={index === 0 ? reportReasonInputRef : undefined}
+                type="radio"
+                name="reportReason"
+                value={option.value}
+                checked={reportReason === option.value}
+                onChange={changeReportReason}
+              />
+              {option.label}
+            </label>
+          ))}
+        </fieldset>
       </ConfirmModal>
 
       <ConfirmModal
