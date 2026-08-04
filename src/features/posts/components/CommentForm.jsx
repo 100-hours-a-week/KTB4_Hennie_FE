@@ -1,4 +1,5 @@
 import { useId } from 'react'
+import { COMMENT_MAX_LENGTH } from '../../../shared/utils/constants'
 
 function CommentForm({
   value,
@@ -40,6 +41,7 @@ function CommentForm({
         id={resolvedInputId}
         name={name}
         placeholder={placeholder}
+        maxLength={COMMENT_MAX_LENGTH}
         autoFocus={autoFocus}
         disabled={isPending}
         value={value}

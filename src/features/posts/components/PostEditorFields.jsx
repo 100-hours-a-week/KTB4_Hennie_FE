@@ -1,4 +1,5 @@
 import { POST_CATEGORY_OPTIONS } from '../utils/postCategory'
+import { TITLE_MAX_LENGTH } from '../../../shared/utils/constants'
 
 function PostEditorFields({
   title,
@@ -42,7 +43,7 @@ function PostEditorFields({
             id="title"
             name="title"
             type="text"
-            maxLength={26}
+            maxLength={TITLE_MAX_LENGTH}
             placeholder="제목을 입력하세요."
             disabled={disabled}
             value={title}
