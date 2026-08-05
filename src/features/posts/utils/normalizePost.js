@@ -1,9 +1,5 @@
 import { DEFAULT_PROFILE_PATH } from '../../../shared/utils/constants'
-
-const toCount = (value) => {
-  const num = Number(value)
-  return Number.isFinite(num) ? num : 0
-}
+import { toCount } from '../../../shared/utils/countValue'
 
 const normalizeReplyTarget = (target) => {
   if (!target) {

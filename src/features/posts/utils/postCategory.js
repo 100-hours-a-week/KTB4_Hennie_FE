@@ -1,7 +1,7 @@
 const POST_THUMBNAILS = {
-  FE: '/assets/thumbnail_fe.png',
-  BE: '/assets/thumbnail_be.png',
-  AI: '/assets/thumbnail_ai.png',
+  FE: '/assets/thumbnail/thumbnail_fe.png',
+  BE: '/assets/thumbnail/thumbnail_be.png',
+  AI: '/assets/thumbnail/thumbnail_ai.png',
 }
 
 export const POST_CATEGORY_OPTIONS = [

@@ -16,7 +16,7 @@ import { isOwnedByCurrentUser } from '../../features/posts/utils/isOwnedByCurren
 import { useAuth } from '../../features/auth/hook/useAuth'
 import LoadingPage from '../../shared/components/LoadingPage'
 import NotFoundPage from '../../shared/components/NotFoundPage'
-import { formatDate } from '../../features/posts/utils/formatDate'
+import { formatDate } from '../../shared/utils/formatDate'
 import { getPostCategoryLabel } from '../../features/posts/utils/postCategory'
 import { REPORT_REASON_OPTIONS } from '../../features/posts/utils/reportReason'
 import {

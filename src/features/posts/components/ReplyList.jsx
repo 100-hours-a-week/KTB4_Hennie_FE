@@ -1,4 +1,4 @@
-import { formatDate } from '../utils/formatDate'
+import { formatDate } from '../../../shared/utils/formatDate'
 import { isOwnedByCurrentUser } from '../utils/isOwnedByCurrentUser'
 
 function ReplyList({
