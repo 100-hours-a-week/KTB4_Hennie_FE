@@ -3,23 +3,10 @@ import { Link } from 'react-router'
 import { getPostList } from '../../features/posts/api/postApi'
 import PostList from '../../features/posts/components/PostList'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
-import { DEFAULT_POST_PAGE_SIZE } from '../../shared/utils/constants'
+import { DEFAULT_PAGE_SIZE } from '../../shared/utils/constants'
+import { getListStatusMessage } from '../../shared/utils/listStatusMessage'
 
-const getPostListStatus = ({ currentPage, error, hasNextPage, isLoading }) => {
-  if (isLoading) {
-    return '게시글을 불러오는 중입니다.'
-  }
-
-  if (error) {
-    return error
-  }
-
-  if (!hasNextPage && currentPage > 1) {
-    return '더 불러올 게시글이 없습니다.'
-  }
-
-  return ''
-}
+const POST_LIST_LABEL = '게시글'
 
 function PostListPage() {
   usePageTitle('게시글 목록')
@@ -54,7 +41,7 @@ function PostListPage() {
       const { posts: nextPosts, pagination } = await getPostList(
         {
           page,
-          size: DEFAULT_POST_PAGE_SIZE,
+          size: DEFAULT_PAGE_SIZE,
         },
         { signal: controller.signal },
       )
@@ -127,7 +114,8 @@ function PostListPage() {
     }
   }, [currentPage, error, hasNextPage, isLoading, loadPostListPage])
 
-  const statusMessage = getPostListStatus({
+  const statusMessage = getListStatusMessage({
+    label: POST_LIST_LABEL,
     currentPage,
     error,
     hasNextPage,

@@ -1,5 +1,5 @@
 import { useEffect, useEffectEvent, useRef } from 'react'
-import { formatDate } from '../utils/formatDate'
+import { formatDate } from '../../../shared/utils/formatDate'
 
 function DraftListModal({
   isOpen,

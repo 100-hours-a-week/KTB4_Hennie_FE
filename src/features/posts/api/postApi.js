@@ -1,12 +1,13 @@
 import { del, get, patch, post, put } from '../../../shared/api/http'
 import { normalizePostDetail, normalizePostList } from '../utils/normalizePost'
 import { normalizeDraft, normalizeDraftList } from '../utils/normalizeDraft'
-import { DEFAULT_POST_PAGE_SIZE } from '../../../shared/utils/constants'
-
-const DEFAULT_POST_PAGE = 1
+import {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+} from '../../../shared/utils/constants'
 
 export const getPostList = async (
-  { page = DEFAULT_POST_PAGE, size = DEFAULT_POST_PAGE_SIZE } = {},
+  { page = DEFAULT_PAGE, size = DEFAULT_PAGE_SIZE } = {},
   options = {},
 ) => {
   const response = await get('/posts', {

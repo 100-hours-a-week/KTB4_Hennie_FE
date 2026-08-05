@@ -12,6 +12,7 @@ import PostWritePage from '../pages/posts/PostWritePage'
 import PostDetailPage from '../pages/posts/PostDetailPage'
 import PostEditPage from '../pages/posts/PostEditPage'
 import TechEnterprisePage from '../pages/tech/TechEnterprisePage'
+import TechArticleListPage from '../pages/tech/TechArticleListPage'
 
 function App() {
   return (
@@ -21,6 +22,10 @@ function App() {
         <Route path="/posts" element={<PostListPage />} />
         <Route path="/posts/:postId" element={<PostDetailPage />} />
         <Route path="/tech-enterprises" element={<TechEnterprisePage />} />
+        <Route
+          path="/tech-enterprises/:enterprise"
+          element={<TechArticleListPage />}
+        />
         <Route element={<GuestOnlyRoute />}>
           <Route path="/users/login" element={<LoginPage />} />
           <Route path="/users/signup" element={<SignupPage />} />

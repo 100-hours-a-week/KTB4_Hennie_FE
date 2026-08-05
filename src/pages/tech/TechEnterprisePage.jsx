@@ -1,44 +1,15 @@
+import TechEnterpriseSection from '../../features/tech/components/TechEnterpriseSection'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
-import { TECH_ENTERPRISE_SECTIONS } from '../../features/tech/utils/techEnterprises'
+import { TECH_ENTERPRISES } from '../../shared/utils/constants'
 
-function TechEnterpriseCard({ enterprise }) {
-  return (
-    <a
-      className="group flex flex-col items-center gap-3 rounded-xl border border-app-border bg-app-surface p-6 transition-[border-color,background-color] duration-200 hover:border-app-primary/50 hover:bg-app-surface-raised focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
-      href={enterprise.href}
-      target="_blank"
-      rel="noreferrer"
-    >
-      <span className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-app-surface-raised text-sm text-app-text-muted uppercase transition-transform duration-200 group-hover:scale-110">
-        {enterprise.initials}
-      </span>
-      <span className="text-center text-sm font-medium text-app-text-muted transition-colors duration-200 group-hover:text-app-text">
-        {enterprise.name}
-      </span>
-    </a>
-  )
-}
-
-function TechEnterpriseSection({ section }) {
-  return (
-    <section>
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-app-text md:text-2xl">
-          {section.title}
-        </h2>
-        <p className="mt-1 text-sm text-app-text-muted">
-          {section.description}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {section.enterprises.map((enterprise) => (
-          <TechEnterpriseCard enterprise={enterprise} key={enterprise.code} />
-        ))}
-      </div>
-    </section>
-  )
-}
+const TECH_ENTERPRISE_SECTIONS = [
+  {
+    id: 'enterprises',
+    title: '테크 기업',
+    description: '기업 개발 부서가 운영하는 블로그',
+    enterprises: TECH_ENTERPRISES,
+  },
+]
 
 function TechEnterprisePage() {
   usePageTitle('기술 원문')

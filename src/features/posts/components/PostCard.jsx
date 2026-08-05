@@ -4,7 +4,9 @@ import {
   CommentIcon,
   ViewIcon,
 } from '../../../shared/components/IconsList'
-import { formatDate } from '../utils/formatDate'
+import { formatDate } from '../../../shared/utils/formatDate'
+import { truncateText } from '../../../shared/utils/truncateText'
+import { LIST_TITLE_MAX_LENGTH } from '../../../shared/utils/constants'
 import { getPostCategoryLabel, getPostThumbnail } from '../utils/postCategory'
 
 function PostStat({ label, count, children }) {
@@ -46,8 +48,11 @@ function PostCard({ post }) {
               )}
             </div>
 
-            <h2 className="mb-4 text-base leading-[1.4] font-bold break-words">
-              {post.title}
+            <h2
+              className="mb-4 line-clamp-2 text-base leading-[1.4] font-bold break-words"
+              title={post.title}
+            >
+              {truncateText(post.title, LIST_TITLE_MAX_LENGTH)}
             </h2>
 
             <div className="mt-auto flex items-center gap-4 border-t border-app-border pt-3">

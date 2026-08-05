@@ -1,9 +1,4 @@
-export const MAX_DRAFT_COUNT = 10
-
-const toCount = (value) => {
-  const number = Number(value)
-  return Number.isInteger(number) && number >= 0 ? number : 0
-}
+import { toCount } from '../../../shared/utils/countValue'
 
 export const normalizeDraft = (draft = {}) => ({
   id: draft.postId ?? draft.id ?? null,

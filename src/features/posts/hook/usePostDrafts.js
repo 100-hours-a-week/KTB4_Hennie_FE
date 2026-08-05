@@ -6,8 +6,8 @@ import {
   saveDraft,
   updateDraft,
 } from '../api/postApi'
-import { MAX_DRAFT_COUNT } from '../utils/normalizeDraft'
 import { getHttpErrorMessage } from '../../../shared/utils/httpErrorMessage'
+import { MAX_DRAFT_COUNT } from '../../../shared/utils/constants'
 
 export const usePostDrafts = ({
   enabled,
