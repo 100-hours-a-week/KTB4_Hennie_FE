@@ -1,41 +1,4 @@
-export const TECH_ENTERPRISES = [
-  {
-    code: 'KAKAO',
-    name: '카카오',
-    initials: 'ka',
-    href: 'https://tech.kakao.com',
-  },
-  {
-    code: 'NAVER_D2',
-    name: '네이버 D2',
-    initials: 'na',
-    href: 'https://d2.naver.com',
-  },
-  {
-    code: 'TOSS',
-    name: '토스',
-    initials: 'to',
-    href: 'https://toss.tech',
-  },
-  {
-    code: 'WOOWA',
-    name: '우아한형제들',
-    initials: 'wo',
-    href: 'https://techblog.woowahan.com',
-  },
-  {
-    code: 'DAANGN',
-    name: '당근',
-    initials: 'da',
-    href: 'https://medium.com/daangn',
-  },
-  {
-    code: 'OLIVE_YOUNG',
-    name: '올리브영',
-    initials: 'ol',
-    href: 'https://oliveyoung.tech',
-  },
-]
+import { TECH_ENTERPRISES } from '../../../shared/utils/constants'
 
 export const TECH_ENTERPRISE_SECTIONS = [
   {
@@ -46,5 +9,8 @@ export const TECH_ENTERPRISE_SECTIONS = [
   },
 ]
 
+export const getTechEnterprise = (code) =>
+  TECH_ENTERPRISES.find((enterprise) => enterprise.code === code) ?? null
+
 export const getTechEnterpriseName = (code) =>
-  TECH_ENTERPRISES.find((enterprise) => enterprise.code === code)?.name ?? ''
+  getTechEnterprise(code)?.name ?? ''
