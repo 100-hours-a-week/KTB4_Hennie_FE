@@ -44,6 +44,7 @@ export const TECH_ENTERPRISES = [
   },
   {
     code: 'OLIVE_YOUNG',
+    slug: 'OLIVEYOUNG',
     name: '올리브영',
     logoUrl: '/assets/enterprise/enterprise_olive_young.png',
     href: 'https://oliveyoung.tech',
