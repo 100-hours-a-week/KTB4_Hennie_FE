@@ -6,6 +6,7 @@ import NotFoundPage from '../shared/components/NotFoundPage'
 import LoginPage from '../pages/auth/LoginPage'
 import SignupPage from '../pages/auth/SignupPage'
 import MyPage from '../pages/profile/MyPage'
+import NotificationCenterPage from '../pages/notifications/NotificationCenterPage'
 import PostListPage from '../pages/posts/PostListPage'
 import PostWritePage from '../pages/posts/PostWritePage'
 import PostDetailPage from '../pages/posts/PostDetailPage'
@@ -32,6 +33,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/posts/write" element={<PostWritePage />} />
           <Route path="/posts/:postId/edit" element={<PostEditPage />} />
+          <Route path="/notifications" element={<NotificationCenterPage />} />
           <Route path="/users/myInfo" element={<MyPage />} />
           <Route
             path="/users/myInfo/password"

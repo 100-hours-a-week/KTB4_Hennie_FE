@@ -66,3 +66,28 @@ export function CheckIcon({ className }) {
     </Icon>
   )
 }
+
+export function ChevronDownIcon({ className }) {
+  return (
+    <Icon className={className}>
+      <path d="m6 9 6 6 6-6" />
+    </Icon>
+  )
+}
+
+export function PawIcon({ className }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <ellipse cx="5.5" cy="11" rx="1.8" ry="2.4" />
+      <ellipse cx="10" cy="7.3" rx="1.9" ry="2.6" />
+      <ellipse cx="14.5" cy="7.3" rx="1.9" ry="2.6" />
+      <ellipse cx="18.5" cy="11" rx="1.8" ry="2.4" />
+      <path d="M12 12.3c-2.7 0-5.1 2.2-5.1 4.8 0 1.8 1.4 3 3.2 3 .9 0 1.4-.35 1.9-.35s1 .35 1.9.35c1.8 0 3.2-1.2 3.2-3 0-2.6-2.4-4.8-5.1-4.8z" />
+    </svg>
+  )
+}
