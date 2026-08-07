@@ -30,7 +30,7 @@ export const usePasswordEdit = ({ getPasswordErrorMessage }) => {
   const [newPassword, setNewPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [errors, setErrors] = useState(PWD_EMPTY_ERRORS)
-  const { run } = useAsyncLock()
+  const { isRunning: isSaving, run } = useAsyncLock()
 
   const changeField = (setter) => (event) => {
     setter(event.target.value)
@@ -119,6 +119,7 @@ export const usePasswordEdit = ({ getPasswordErrorMessage }) => {
     newPassword,
     passwordConfirm,
     errors,
+    isSaving,
     handleCurrentPasswordChange: changeField(setCurrentPassword),
     handleNewPasswordChange: changeField(setNewPassword),
     handlePasswordConfirmChange: changeField(setPasswordConfirm),
