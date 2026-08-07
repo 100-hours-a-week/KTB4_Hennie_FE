@@ -25,7 +25,7 @@ function PostCard({ post }) {
   return (
     <li>
       <Link
-        className="block cursor-pointer overflow-hidden rounded-lg border border-app-border bg-app-surface px-6 py-4 shadow-[0_1px_3px_rgb(0_0_0/40%)] transition-[box-shadow,border-color,background-color] duration-150 hover:border-[#3a3e44] hover:bg-app-surface-raised hover:shadow-dropdown focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+        className="block overflow-hidden rounded-lg border border-app-border bg-app-surface px-6 py-4 shadow-[0_1px_3px_rgb(0_0_0/40%)] transition-[box-shadow,border-color,background-color] duration-150 hover:border-[#3a3e44] hover:bg-app-surface-raised hover:shadow-dropdown focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
         to={`/posts/${post.id}`}
       >
         <div className="flex gap-4">
