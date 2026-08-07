@@ -40,7 +40,7 @@ function SignupPage() {
           <div className="flex flex-col gap-2">
             <span className="text-base font-medium">프로필 사진</span>
             <label
-              className="mx-auto flex size-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-app-surface-raised text-4xl text-app-text-muted transition-colors hover:bg-app-border focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
+              className="mx-auto flex size-[120px] items-center justify-center overflow-hidden rounded-full bg-app-surface-raised text-4xl text-app-text-muted transition-colors hover:bg-app-border focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
               htmlFor="profile-image"
             >
               {previewUrl ? (
