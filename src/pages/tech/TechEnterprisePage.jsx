@@ -1,18 +1,18 @@
 import TechEnterpriseSection from '../../features/tech/components/TechEnterpriseSection'
+import { useEnterpriseSubscription } from '../../features/tech/hook/useEnterpriseSubscription'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
 import { TECH_ENTERPRISES } from '../../shared/utils/constants'
 
-const TECH_ENTERPRISE_SECTIONS = [
-  {
+function TechEnterprisePage() {
+  usePageTitle('기술 원문')
+
+  const { isSubscribed, toggleSubscription } = useEnterpriseSubscription()
+  const section = {
     id: 'enterprises',
     title: '테크 기업',
     description: '기업 개발 부서가 운영하는 블로그',
     enterprises: TECH_ENTERPRISES,
-  },
-]
-
-function TechEnterprisePage() {
-  usePageTitle('기술 원문')
+  }
 
   return (
     <div className="mx-auto max-w-[1200px] px-6 pt-8 pb-24">
@@ -25,11 +25,11 @@ function TechEnterprisePage() {
         </p>
       </div>
 
-      <div className="flex flex-col gap-12">
-        {TECH_ENTERPRISE_SECTIONS.map((section) => (
-          <TechEnterpriseSection section={section} key={section.id} />
-        ))}
-      </div>
+      <TechEnterpriseSection
+        section={section}
+        isSubscribed={isSubscribed}
+        onToggleSubscription={toggleSubscription}
+      />
     </div>
   )
 }

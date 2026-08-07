@@ -1,6 +1,16 @@
 import TechEnterpriseCard from './TechEnterpriseCard'
 
-function TechEnterpriseSection({ section }) {
+function TechEnterpriseSection({
+  section,
+  isSubscribed,
+  onToggleSubscription,
+  emptyMessage = '',
+}) {
+  const enterprises = Array.isArray(section.enterprises)
+    ? section.enterprises
+    : []
+  const isEmpty = enterprises.length === 0
+
   return (
     <section>
       <div className="mb-6">
@@ -12,11 +22,22 @@ function TechEnterpriseSection({ section }) {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {section.enterprises.map((enterprise) => (
-          <TechEnterpriseCard enterprise={enterprise} key={enterprise.code} />
-        ))}
-      </div>
+      {isEmpty && emptyMessage ? (
+        <p className="rounded-xl border border-dashed border-app-border py-10 text-center text-sm text-app-text-muted">
+          {emptyMessage}
+        </p>
+      ) : (
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+          {enterprises.map((enterprise) => (
+            <TechEnterpriseCard
+              enterprise={enterprise}
+              isSubscribed={isSubscribed?.(enterprise.code)}
+              key={enterprise.code}
+              onToggle={onToggleSubscription}
+            />
+          ))}
+        </div>
+      )}
     </section>
   )
 }

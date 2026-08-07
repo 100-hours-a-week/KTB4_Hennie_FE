@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useParams } from 'react-router'
 import TechArticleList from '../../features/tech/components/TechArticleList'
 import TechEnterpriseHeader from '../../features/tech/components/TechEnterpriseHeader'
+import { useEnterpriseSubscription } from '../../features/tech/hook/useEnterpriseSubscription'
 import { useTechArticleList } from '../../features/tech/hook/useTechArticleList'
 import { getTechEnterprise } from '../../features/tech/utils/techEnterprises'
 import NotFoundPage from '../../shared/components/NotFoundPage'
@@ -17,6 +18,7 @@ function TechArticleListPage() {
   const sentinelRef = useRef(null)
   const { articles, currentPage, error, hasNextPage, isLoading, loadNextPage } =
     useTechArticleList(enterprise?.code)
+  const { isSubscribed, toggleSubscription } = useEnterpriseSubscription()
 
   useEffect(() => {
     const sentinel = sentinelRef.current
@@ -67,7 +69,11 @@ function TechArticleListPage() {
 
   return (
     <section className="mx-auto max-w-[720px] px-6 pt-8 pb-24">
-      <TechEnterpriseHeader enterprise={enterprise} />
+      <TechEnterpriseHeader
+        enterprise={enterprise}
+        isSubscribed={isSubscribed(enterprise.code)}
+        onToggleSubscription={toggleSubscription}
+      />
 
       <TechArticleList articles={articles} />
 

@@ -1,8 +1,10 @@
 import { Link } from 'react-router'
+import SubscribeButton from './SubscribeButton'
 import TechEnterpriseLogo from './TechEnterpriseLogo'
 
-function TechEnterpriseCard({ enterprise }) {
+function TechEnterpriseCard({ enterprise, isSubscribed = false, onToggle }) {
   return (
+    <div className="relative">
       <Link
         className="group flex flex-col items-center gap-3 rounded-xl border border-app-border bg-app-surface p-6 transition-[border-color,background-color] duration-200 hover:border-app-primary/50 hover:bg-app-surface-raised focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
         to={`/tech-enterprises/${enterprise.slug || enterprise.code}`}
@@ -15,6 +17,15 @@ function TechEnterpriseCard({ enterprise }) {
           {enterprise.name}
         </span>
       </Link>
+
+      <SubscribeButton
+        className="absolute top-2 right-2 z-10"
+        enterpriseName={enterprise.name}
+        isSubscribed={isSubscribed}
+        compact
+        onToggle={() => onToggle?.(enterprise.code)}
+      />
+    </div>
   )
 }
 

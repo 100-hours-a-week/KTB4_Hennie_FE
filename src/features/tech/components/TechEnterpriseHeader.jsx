@@ -1,7 +1,12 @@
 import { Link } from 'react-router'
+import SubscribeButton from './SubscribeButton'
 import TechEnterpriseLogo from './TechEnterpriseLogo'
 
-function TechEnterpriseHeader({ enterprise }) {
+function TechEnterpriseHeader({
+  enterprise,
+  isSubscribed = false,
+  onToggleSubscription,
+}) {
   return (
     <div className="mb-6 flex items-center gap-3">
       <TechEnterpriseLogo enterprise={enterprise} />
@@ -18,12 +23,21 @@ function TechEnterpriseHeader({ enterprise }) {
         </a>
       </div>
 
-      <Link
-        className="ml-auto shrink-0 rounded-md border border-app-border px-3 py-1.5 text-xs font-medium text-app-text-muted hover:border-app-primary/50 hover:text-app-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
-        to="/tech-enterprises"
-      >
-        기업 목록
-      </Link>
+      <div className="ml-auto flex shrink-0 items-center gap-2">
+        <SubscribeButton
+          className="w-[88px]"
+          enterpriseName={enterprise.name}
+          isSubscribed={isSubscribed}
+          onToggle={() => onToggleSubscription?.(enterprise.code)}
+        />
+
+        <Link
+          className="inline-flex h-9 w-[88px] items-center justify-center rounded-md border border-app-border px-3 text-sm font-medium text-app-text-muted transition-[border-color,color] duration-150 hover:border-app-primary/50 hover:text-app-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+          to="/tech-enterprises"
+        >
+          기업 목록
+        </Link>
+      </div>
     </div>
   )
 }
