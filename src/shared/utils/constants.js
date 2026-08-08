@@ -68,3 +68,10 @@ export const PWD_EMPTY_ERRORS = {
   newPassword: '',
   passwordConfirm: '',
 }
+export const NOTIFICATION_PAGE_SIZE = 20
+export const NOTIFICATION_TYPE_LABEL = {
+  POST_COMMENT: '게시글 댓글',
+  COMMENT_REPLY: '댓글 답글',
+  REPLY_REPLY: '답글',
+  SUBSCRIBED_ENTERPRISE_ARTICLE: '기업 기술 원문',
+}
