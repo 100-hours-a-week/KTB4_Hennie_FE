@@ -16,6 +16,7 @@
     "preview": "vite preview --port"
   },
   "dependencies": {
+    "eventsource": "^4.1.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-error-boundary": "^6.1.2",

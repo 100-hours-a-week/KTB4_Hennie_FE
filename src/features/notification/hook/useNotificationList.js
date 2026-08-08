@@ -20,8 +20,14 @@ const mergeNotifications = (currentNotifications, nextNotifications) => {
   ]
 }
 
-export function useNotificationList({ sessionKey, clearError, reportError }) {
+export function useNotificationList({
+  sessionKey,
+  refreshSignal,
+  clearError,
+  reportError,
+}) {
   const requestControllerRef = useRef(null)
+  const lastRefreshSignalRef = useRef(refreshSignal)
   const [notifications, setNotifications] = useState([])
   const [pagination, setPagination] = useState(INITIAL_PAGINATION)
   const [isLoading, setIsLoading] = useState(false)
@@ -120,6 +126,25 @@ export function useNotificationList({ sessionKey, clearError, reportError }) {
     }
   }, [clearError, refreshNotifications, resetNotifications, sessionKey])
 
+  useEffect(() => {
+    if (lastRefreshSignalRef.current === refreshSignal) {
+      return undefined
+    }
+
+    lastRefreshSignalRef.current = refreshSignal
+    let isActive = true
+
+    queueMicrotask(() => {
+      if (isActive && sessionKey != null) {
+        refreshNotifications()
+      }
+    })
+
+    return () => {
+      isActive = false
+    }
+  }, [refreshNotifications, refreshSignal, sessionKey])
+
   const loadNextPage = useCallback(() => {
     if (!pagination.hasNext || isLoading || isLoadingNext) {
       return Promise.resolve(false)
@@ -140,7 +165,6 @@ export function useNotificationList({ sessionKey, clearError, reportError }) {
   return {
     notifications,
     pagination,
-    isLoading,
     isLoadingNext,
     refreshNotifications,
     loadNextPage,

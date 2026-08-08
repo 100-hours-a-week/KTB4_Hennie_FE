@@ -1,46 +1,24 @@
-import { useCallback, useState } from 'react'
-import { useAuth } from '../../features/auth/hook/useAuth'
 import NotificationList from '../../features/notification/components/NotificationList'
-import { useNotification } from '../../features/notification/hook/useNotification'
-import { useNotificationList } from '../../features/notification/hook/useNotificationList'
-import { useNotificationReadActions } from '../../features/notification/hook/useNotificationReadActions'
+import { useNotificationCenter } from '../../features/notification/hook/useNotificationCenter'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
 
 function NotificationPage() {
   usePageTitle('알림 센터')
 
-  const { currentUser } = useAuth()
-  const { unreadCount, unreadCountError, refreshUnreadCount } =
-    useNotification()
-  const [error, setError] = useState('')
-  const clearError = useCallback(() => setError(''), [])
-  const reportError = useCallback((message) => setError(message), [])
-  const sessionKey = currentUser?.id ?? null
-
   const {
     notifications,
     pagination,
-    isLoading,
+    unreadCount,
+    pendingReadIds,
     isLoadingNext,
-    refreshNotifications,
+    isMarkingAllRead,
+    error,
+    refresh,
     loadNextPage,
-  } = useNotificationList({ sessionKey, clearError, reportError })
-  const { pendingReadIds, isMarkingAllRead, markAsRead, markAllAsRead } =
-    useNotificationReadActions({
-      sessionKey,
-      clearError,
-      refreshNotifications,
-      refreshUnreadCount,
-      reportError,
-    })
+    markAsRead,
+    markAllAsRead,
+  } = useNotificationCenter()
   const hasNotifications = notifications.length > 0
-  const isInitialLoading = isLoading && !hasNotifications
-  const visibleError = error || unreadCountError
-
-  const handleRetry = () => {
-    refreshNotifications()
-    refreshUnreadCount()
-  }
 
   return (
     <section className="mx-auto w-full max-w-[720px] px-6 py-8 pb-24">
@@ -62,30 +40,23 @@ function NotificationPage() {
         </button>
       </header>
 
-      {visibleError && (
+      {error && (
         <div
           className="mb-4 flex items-center justify-between gap-4 rounded-lg border border-app-error/40 bg-app-error/10 px-4 py-3"
           role="alert"
         >
-          <p className="text-sm text-app-error">{visibleError}</p>
+          <p className="text-sm text-app-error">{error}</p>
           <button
             className="shrink-0 text-xs font-medium text-app-text underline hover:text-white"
             type="button"
-            onClick={handleRetry}
+            onClick={refresh}
           >
             다시 시도
           </button>
         </div>
       )}
 
-      {isInitialLoading ? (
-        <p
-          className="py-14 text-center text-sm text-app-text-muted"
-          aria-live="polite"
-        >
-          알림을 불러오는 중입니다.
-        </p>
-      ) : hasNotifications ? (
+      {hasNotifications ? (
         <NotificationList
           notifications={notifications}
           pagination={pagination}
