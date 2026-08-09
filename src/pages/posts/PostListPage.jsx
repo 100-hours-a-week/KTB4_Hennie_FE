@@ -11,7 +11,8 @@ function PostListPage() {
   usePageTitle('게시글 목록')
 
   const sentinelRef = useRef(null)
-  const requestControllerRef = useRef(null)
+  const lifecycleControllerRef = useRef(null)
+  const isRequestingRef = useRef(false)
   const [posts, setPosts] = useState(null)
   const [currentPage, setCurrentPage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
@@ -19,17 +20,17 @@ function PostListPage() {
   const [error, setError] = useState('')
 
   const loadPostListPage = useCallback(async (page, { append }) => {
-    requestControllerRef.current?.abort()
-    const controller = new AbortController()
-    requestControllerRef.current = controller
+    const signal = lifecycleControllerRef.current?.signal
+
+    if (!signal || signal.aborted || isRequestingRef.current) {
+      return
+    }
+
+    isRequestingRef.current = true
 
     await Promise.resolve()
 
-    if (controller.signal.aborted) {
-      if (requestControllerRef.current === controller) {
-        requestControllerRef.current = null
-      }
-
+    if (signal.aborted) {
       return
     }
 
@@ -42,8 +43,12 @@ function PostListPage() {
           page,
           size: DEFAULT_PAGE_SIZE,
         },
-        { signal: controller.signal },
+        { signal },
       )
+
+      if (signal.aborted) {
+        return
+      }
 
       setPosts((currentPosts) =>
         append ? [...(currentPosts || []), ...nextPosts] : nextPosts,
@@ -51,23 +56,23 @@ function PostListPage() {
       setCurrentPage(page)
       setHasNextPage(pagination.hasNext)
     } catch (requestError) {
-      if (requestError.name !== 'AbortError') {
+      if (requestError.name !== 'AbortError' && !signal.aborted) {
         console.error('게시글 목록 조회 실패', requestError)
         setError('게시글 목록을 불러오지 못했습니다.')
       }
     } finally {
-      if (requestControllerRef.current === controller) {
-        requestControllerRef.current = null
-
-        if (!controller.signal.aborted) {
-          setIsLoading(false)
-        }
+      if (!signal.aborted) {
+        isRequestingRef.current = false
+        setIsLoading(false)
       }
     }
   }, [])
 
   useEffect(() => {
     let isActive = true
+    const controller = new AbortController()
+    lifecycleControllerRef.current = controller
+    isRequestingRef.current = false
 
     queueMicrotask(() => {
       if (isActive) {
@@ -79,7 +84,12 @@ function PostListPage() {
 
     return () => {
       isActive = false
-      requestControllerRef.current?.abort()
+      controller.abort()
+
+      if (lifecycleControllerRef.current === controller) {
+        lifecycleControllerRef.current = null
+        isRequestingRef.current = false
+      }
     }
   }, [loadPostListPage])
 
