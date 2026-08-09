@@ -3,7 +3,8 @@ import { getTechArticleList } from '../api/techArticleApi'
 import { getTechArticleErrorMessage } from '../utils/techArticleErrorMessage'
 
 export function useTechArticleList(enterprise) {
-  const requestControllerRef = useRef(null)
+  const lifecycleControllerRef = useRef(null)
+  const isRequestingRef = useRef(false)
   const [articles, setArticles] = useState(null)
   const [currentPage, setCurrentPage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
@@ -12,10 +13,7 @@ export function useTechArticleList(enterprise) {
 
   const loadPage = useCallback(
     async (page, { append }) => {
-      requestControllerRef.current?.abort()
-
       if (!enterprise) {
-        requestControllerRef.current = null
         setArticles([])
         setCurrentPage(0)
         setIsLoading(false)
@@ -24,16 +22,17 @@ export function useTechArticleList(enterprise) {
         return
       }
 
-      const controller = new AbortController()
-      requestControllerRef.current = controller
+      const signal = lifecycleControllerRef.current?.signal
+
+      if (!signal || signal.aborted || isRequestingRef.current) {
+        return
+      }
+
+      isRequestingRef.current = true
 
       await Promise.resolve()
 
-      if (controller.signal.aborted) {
-        if (requestControllerRef.current === controller) {
-          requestControllerRef.current = null
-        }
-
+      if (signal.aborted) {
         return
       }
 
@@ -53,8 +52,12 @@ export function useTechArticleList(enterprise) {
             enterprise,
             page,
           },
-          { signal: controller.signal },
+          { signal },
         )
+
+        if (signal.aborted) {
+          return
+        }
 
         setArticles((currentArticles) =>
           append ? [...(currentArticles || []), ...nextArticles] : nextArticles,
@@ -62,17 +65,14 @@ export function useTechArticleList(enterprise) {
         setCurrentPage(page)
         setHasNextPage(pagination.hasNext)
       } catch (requestError) {
-        if (requestError.name !== 'AbortError') {
+        if (requestError.name !== 'AbortError' && !signal.aborted) {
           console.error('기술 원문 목록 조회 실패', requestError)
           setError(getTechArticleErrorMessage(requestError))
         }
       } finally {
-        if (requestControllerRef.current === controller) {
-          requestControllerRef.current = null
-
-          if (!controller.signal.aborted) {
-            setIsLoading(false)
-          }
+        if (!signal.aborted) {
+          isRequestingRef.current = false
+          setIsLoading(false)
         }
       }
     },
@@ -81,6 +81,9 @@ export function useTechArticleList(enterprise) {
 
   useEffect(() => {
     let isActive = true
+    const controller = new AbortController()
+    lifecycleControllerRef.current = controller
+    isRequestingRef.current = false
 
     queueMicrotask(() => {
       if (isActive) {
@@ -92,7 +95,12 @@ export function useTechArticleList(enterprise) {
 
     return () => {
       isActive = false
-      requestControllerRef.current?.abort()
+      controller.abort()
+
+      if (lifecycleControllerRef.current === controller) {
+        lifecycleControllerRef.current = null
+        isRequestingRef.current = false
+      }
     }
   }, [loadPage])
 
