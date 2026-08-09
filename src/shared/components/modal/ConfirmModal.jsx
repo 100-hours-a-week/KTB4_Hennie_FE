@@ -1,6 +1,6 @@
 import { useEffect, useEffectEvent, useId, useRef } from 'react'
 
-const BUTTON_BASE_CLASS = 'app-btn app-btn-md min-w-20'
+const BUTTON_BASE_CLASS = 'app-btn app-btn-md min-h-11 flex-1'
 
 function ConfirmModal({
   isOpen,
@@ -108,7 +108,7 @@ function ConfirmModal({
       onMouseDown={handleBackdropClick}
     >
       <section
-        className="w-full max-w-sm rounded-2xl border border-app-border bg-app-surface p-6 text-center shadow-modal"
+        className="w-full max-w-sm rounded-lg border border-app-border bg-app-surface p-6 text-center shadow-modal"
         ref={modalRef}
         role="dialog"
         aria-modal="true"
@@ -131,9 +131,7 @@ function ConfirmModal({
 
         {children && <div className="mb-6 text-left">{children}</div>}
 
-        <div
-          className={`flex justify-end gap-2 ${description || children ? '' : 'mt-6'}`}
-        >
+        <div className={`flex gap-3 ${description || children ? '' : 'mt-6'}`}>
           <button
             className={`${BUTTON_BASE_CLASS} app-btn-outline`}
             ref={cancelButtonRef}
