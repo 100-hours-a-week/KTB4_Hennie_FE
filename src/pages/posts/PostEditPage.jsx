@@ -46,7 +46,7 @@ function PostEditPage() {
         : '')
 
   return (
-    <section className="mx-auto max-w-[720px] px-6 pt-8 pb-[120px]">
+    <section className="mx-auto max-w-[760px] px-4 pt-6 pb-[112px] sm:px-6 sm:pt-8">
       <form className="flex flex-col gap-6" onSubmit={submitPostEdit}>
         <PostEditorFields
           title={title}
@@ -59,10 +59,10 @@ function PostEditPage() {
           onCategoryChange={changeCategory}
         />
 
-        <footer className="fixed right-0 bottom-0 left-0 z-[90] border-t border-app-border bg-app-bg/90 backdrop-blur-md">
-          <div className="mx-auto flex max-w-[720px] items-center justify-end gap-3 px-6 py-3">
+        <footer className="fixed right-0 bottom-0 left-0 z-[90] border-t border-app-border bg-app-bg">
+          <div className="mx-auto flex max-w-[760px] items-center justify-end gap-3 px-4 py-3 sm:px-6">
             <button
-              className="h-11 min-w-[120px] rounded-md bg-app-primary px-4 text-sm font-bold text-white hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary disabled:cursor-not-allowed disabled:bg-app-surface-raised disabled:text-app-text-muted"
+              className="app-btn app-btn-primary app-btn-md min-w-[104px]"
               type="submit"
               disabled={!isEditReady || isUpdating}
             >

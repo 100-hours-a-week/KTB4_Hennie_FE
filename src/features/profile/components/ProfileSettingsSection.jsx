@@ -38,27 +38,25 @@ function ProfileSettingsSection() {
 
   return (
     <section
-      className="scroll-mt-28 rounded-xl border border-app-border bg-app-surface p-5 sm:p-6"
+      className="scroll-mt-24"
       id="profile"
       aria-labelledby="profile-settings-title"
     >
-      <div className="mb-6 border-b border-app-border pb-4">
-        <h2 className="text-lg font-bold" id="profile-settings-title">
+      <div className="app-section-header">
+        <h2 className="app-section-title" id="profile-settings-title">
           회원정보
         </h2>
-        <p className="mt-1 text-sm text-app-text-muted">
+        <p className="app-section-description">
           프로필 사진과 닉네임을 변경할 수 있습니다.
         </p>
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="grid gap-6 md:grid-cols-[160px_minmax(0,1fr)] md:items-start">
-          <div className="flex flex-col items-center gap-2">
-            <span className="self-start text-sm font-medium md:self-center">
-              프로필 사진
-            </span>
+        <div className="grid gap-6 md:grid-cols-[140px_minmax(0,1fr)] md:items-start">
+          <div className="flex flex-col items-start gap-2">
+            <span className="app-field-label">프로필 사진</span>
             <label
-              className="relative block size-[120px] rounded-full bg-app-surface-raised focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
+              className="group relative block size-24 cursor-pointer rounded-full bg-app-surface-raised focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
               htmlFor="my-profile-image"
               aria-label="프로필 사진 변경"
             >
@@ -68,7 +66,7 @@ function ProfileSettingsSection() {
                 alt={`${currentUser?.nickname || '사용자'} 프로필`}
               />
               <span
-                className="absolute right-1 bottom-1 flex size-8 items-center justify-center rounded-full border-2 border-app-surface bg-app-primary text-xl leading-none font-bold text-white"
+                className="absolute right-0 bottom-0 flex size-7 items-center justify-center rounded-full border-2 border-app-bg bg-app-primary text-base leading-none font-bold text-app-primary-ink transition-colors group-hover:bg-app-primary-hover"
                 aria-hidden="true"
               >
                 +
@@ -84,7 +82,7 @@ function ProfileSettingsSection() {
                 onChange={handleImageChange}
               />
             </label>
-            <p className="min-h-4 text-center text-xs leading-[1.4] text-app-error">
+            <p className="min-h-4 text-xs leading-[1.5] text-app-error">
               {imageError}
             </p>
           </div>
@@ -115,7 +113,7 @@ function ProfileSettingsSection() {
 
         <div className="mt-6 flex flex-col-reverse gap-3 border-t border-app-border pt-5 sm:flex-row sm:items-center sm:justify-between">
           <button
-            className="self-center text-sm text-app-text-muted underline hover:text-app-error focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary sm:self-auto"
+            className="self-center rounded-md text-sm text-app-text-subtle underline underline-offset-4 transition-colors hover:text-app-error sm:self-auto"
             type="button"
             disabled={isBusy}
             onClick={openWithdrawModal}
@@ -123,7 +121,7 @@ function ProfileSettingsSection() {
             회원 탈퇴
           </button>
           <button
-            className="h-11 rounded-md bg-app-primary px-6 text-sm font-medium text-white transition-colors hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary disabled:opacity-60"
+            className="app-btn app-btn-primary app-btn-md px-6"
             type="submit"
             disabled={isBusy || Boolean(imageError)}
           >

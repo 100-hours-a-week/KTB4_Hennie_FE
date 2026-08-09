@@ -11,15 +11,14 @@ function NotFoundPage({
 
   return (
     <section
-      className="mx-auto max-w-[720px] px-6 py-12 text-center"
+      className="mx-auto flex max-w-[520px] flex-col items-center px-6 py-20 text-center"
       role="alert"
     >
-      <h1 className="mb-2 text-2xl font-bold">{title}</h1>
-      <p className="mb-6 text-sm text-app-text-muted">{description}</p>
-      <Link
-        className="inline-flex h-10 items-center justify-center rounded-md bg-app-primary px-4 text-sm font-medium text-white hover:bg-app-primary-hover"
-        to={to}
-      >
+      <h1 className="mb-2 text-xl font-bold">{title}</h1>
+      <p className="mb-6 text-sm leading-7 text-app-text-muted">
+        {description}
+      </p>
+      <Link className="app-btn app-btn-outline app-btn-sm" to={to}>
         {linkLabel}
       </Link>
     </section>

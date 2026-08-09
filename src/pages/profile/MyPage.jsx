@@ -17,11 +17,11 @@ function MyPage() {
   const profileImage = currentUser?.profileUrl || DEFAULT_PROFILE_PATH
 
   return (
-    <section className="mx-auto w-full max-w-[1120px] px-6 py-8 pb-24">
-      <div className="grid items-start gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
-        <aside className="rounded-xl border border-app-border bg-app-surface p-5 lg:sticky lg:top-28">
-          <div className="flex items-center gap-3 border-b border-app-border pb-5 lg:flex-col lg:text-center">
-            <span className="size-16 shrink-0 overflow-hidden rounded-full bg-app-surface-raised">
+    <section className="mx-auto w-full max-w-[960px] px-4 py-6 pb-20 sm:px-6 sm:py-8">
+      <div className="grid items-start gap-8 lg:grid-cols-[200px_minmax(0,1fr)]">
+        <aside className="border-b border-app-border pb-5 lg:sticky lg:top-20 lg:border-b-0 lg:pb-0">
+          <div className="flex items-center gap-3 pb-4">
+            <span className="size-10 shrink-0 overflow-hidden rounded-full bg-app-surface-raised">
               <img
                 className="size-full object-cover"
                 src={profileImage}
@@ -29,7 +29,7 @@ function MyPage() {
               />
             </span>
             <div className="min-w-0">
-              <p className="truncate font-bold">
+              <p className="truncate text-sm font-bold">
                 {currentUser?.nickname || '사용자'}
               </p>
               <p className="mt-1 truncate text-xs text-app-text-muted">
@@ -39,12 +39,12 @@ function MyPage() {
           </div>
 
           <nav
-            className="mt-3 flex gap-2 overflow-x-auto lg:flex-col"
+            className="flex gap-1 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0"
             aria-label="마이페이지 메뉴"
           >
             {MY_PAGE_SECTIONS.map((section) => (
               <a
-                className="shrink-0 rounded-md px-3 py-2 text-sm text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+                className="shrink-0 rounded-md px-2.5 py-1.5 text-[13px] font-medium text-app-text-muted transition-colors hover:bg-app-surface hover:text-app-text"
                 href={`#${section.id}`}
                 key={section.id}
               >
@@ -54,7 +54,7 @@ function MyPage() {
           </nav>
         </aside>
 
-        <div className="flex min-w-0 flex-col gap-6">
+        <div className="flex min-w-0 flex-col gap-10">
           <ProfileSettingsSection />
           <PasswordSettingsSection />
           <SubscribedEnterpriseSection />

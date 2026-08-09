@@ -14,21 +14,15 @@ function TechEnterpriseSection({
 
   return (
     <section>
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-app-text md:text-2xl">
-          {section.title}
-        </h2>
-        <p className="mt-1 text-sm text-app-text-muted">
-          {section.description}
-        </p>
+      <div className="mb-4">
+        <h2 className="app-section-title">{section.title}</h2>
+        <p className="app-section-description">{section.description}</p>
       </div>
 
       {isEmpty && emptyMessage ? (
-        <p className="rounded-xl border border-dashed border-app-border py-10 text-center text-sm text-app-text-muted">
-          {emptyMessage}
-        </p>
+        <p className="app-empty">{emptyMessage}</p>
       ) : (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
           {enterprises.map((enterprise) => {
             const subscribed = isSubscribed?.(enterprise.code) ?? false
 

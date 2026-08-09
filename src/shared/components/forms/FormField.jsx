@@ -1,12 +1,11 @@
 import { useId } from 'react'
 
-const INPUT_BASE_CLASS =
-  'peer h-11 w-full rounded-sm border border-[#3a3e44] bg-app-surface px-3 text-sm text-app-text placeholder:text-[#6b7178] focus:border-app-primary focus:outline-none disabled:cursor-not-allowed disabled:bg-app-surface-raised disabled:text-app-text-muted read-only:cursor-not-allowed read-only:bg-app-surface-raised read-only:text-app-text-muted'
+const INPUT_BASE_CLASS = 'peer app-input'
 
-const FLOATING_INPUT_CLASS = 'h-[54px] rounded-md bg-[#1b1d20] pt-[18px] pb-0'
+const FLOATING_INPUT_CLASS = 'h-14 pt-5 pb-1'
 
 const FLOATING_LABEL_CLASS =
-  'pointer-events-none absolute top-[9px] left-[13px] text-xs text-app-text-muted transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-sm peer-placeholder-shown:text-[#6b7178] peer-focus:top-[9px] peer-focus:translate-y-0 peer-focus:text-xs peer-focus:text-app-primary'
+  'pointer-events-none absolute top-2 left-3.5 text-[11px] font-semibold text-app-text-muted transition-all duration-150 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-placeholder-shown:text-app-text-subtle peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-[11px] peer-focus:font-semibold peer-focus:text-app-primary'
 
 const joinClassNames = (...classNames) => classNames.filter(Boolean).join(' ')
 
@@ -43,8 +42,8 @@ function FormField({
       className={joinClassNames(
         INPUT_BASE_CLASS,
         floating && FLOATING_INPUT_CLASS,
-        endAdornment && 'pr-16',
-        error && 'border-app-error',
+        endAdornment && 'pr-14',
+        error && 'app-input-invalid',
         inputClassName,
       )}
       id={inputId}
@@ -56,9 +55,9 @@ function FormField({
   )
 
   return (
-    <div className={joinClassNames('flex flex-col gap-2', className)}>
+    <div className={joinClassNames('flex flex-col gap-1.5', className)}>
       {!floating && (
-        <label className="text-sm font-medium" htmlFor={inputId}>
+        <label className="app-field-label" htmlFor={inputId}>
           {label}
         </label>
       )}
@@ -73,7 +72,7 @@ function FormField({
         )}
 
         {endAdornment && (
-          <div className="absolute top-1/2 right-3 -translate-y-1/2">
+          <div className="absolute top-1/2 right-2.5 -translate-y-1/2">
             {endAdornment}
           </div>
         )}
@@ -82,7 +81,7 @@ function FormField({
       {hasMessageArea && (
         <p
           className={joinClassNames(
-            'min-h-4 whitespace-pre-line text-xs leading-[1.4]',
+            'min-h-4 whitespace-pre-line px-0.5 text-xs leading-[1.5]',
             error ? 'text-app-error' : 'text-app-text-muted',
             messageClassName,
           )}

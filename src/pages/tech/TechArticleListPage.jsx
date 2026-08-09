@@ -80,7 +80,7 @@ function TechArticleListPage() {
   })
 
   return (
-    <section className="mx-auto max-w-[720px] px-6 pt-8 pb-24">
+    <section className="mx-auto max-w-[840px] px-4 pt-5 pb-20 sm:px-6 sm:pt-6">
       <TechEnterpriseHeader
         enterprise={enterprise}
         isSubscribed={isSubscribed(enterprise.code)}
@@ -94,11 +94,7 @@ function TechArticleListPage() {
 
       <TechArticleList articles={articles} />
 
-      <div
-        className="min-h-10 py-5 text-center text-xs text-app-text-muted"
-        ref={sentinelRef}
-        aria-live="polite"
-      >
+      <div className="app-list-status" ref={sentinelRef} aria-live="polite">
         {statusMessage}
       </div>
     </section>

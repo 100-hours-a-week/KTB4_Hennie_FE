@@ -24,19 +24,19 @@ function CommentForm({
 
   return (
     <form
-      className={`${className} rounded-lg border border-[#3a3e44] bg-app-bg p-3`}
+      className={`${className} rounded-md border border-app-border bg-app-bg p-3 transition-colors duration-100 focus-within:border-app-border-strong`}
       onSubmit={onSubmit}
     >
       {label && (
         <label
-          className="mb-2 block text-xs font-medium text-app-text-muted"
+          className="mb-2 block text-xs font-semibold text-app-text-muted"
           htmlFor={resolvedInputId}
         >
           {label}
         </label>
       )}
       <textarea
-        className="min-h-[72px] w-full resize-y bg-transparent text-sm leading-[1.6] text-app-text placeholder:text-[#6b7178] focus:outline-none"
+        className="min-h-[76px] w-full resize-y bg-transparent text-sm leading-[1.7] text-app-text placeholder:text-app-text-subtle focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
         ref={inputRef}
         id={resolvedInputId}
         name={name}
@@ -47,10 +47,10 @@ function CommentForm({
         value={value}
         onChange={onChange}
       />
-      <div className="mt-2 flex justify-end gap-2">
+      <div className="mt-2.5 flex justify-end gap-2 border-t border-app-border pt-2.5">
         {onCancel && (
           <button
-            className="inline-flex h-8 items-center justify-center rounded-md border border-[#3a3e44] bg-app-surface px-3 text-xs font-medium text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text disabled:cursor-not-allowed disabled:opacity-50"
+            className="app-btn app-btn-outline app-btn-xs"
             type="button"
             disabled={isPending}
             onClick={onCancel}
@@ -59,7 +59,7 @@ function CommentForm({
           </button>
         )}
         <button
-          className="inline-flex h-8 items-center justify-center rounded-md bg-app-primary px-3 text-xs font-medium text-white transition-colors hover:bg-app-primary-hover disabled:cursor-not-allowed disabled:opacity-50"
+          className="app-btn app-btn-primary app-btn-xs"
           type="submit"
           disabled={isPending || submitDisabled}
         >

@@ -10,13 +10,15 @@ function TechEnterpriseHeader({
   onToggleSubscription,
 }) {
   return (
-    <div className="mb-6 flex items-center gap-3">
-      <TechEnterpriseLogo enterprise={enterprise} />
+    <div className="mb-5 flex flex-wrap items-center gap-3 border-b border-app-border pb-4">
+      <TechEnterpriseLogo enterprise={enterprise} className="size-9 p-1.5" />
 
       <div className="min-w-0">
-        <h1 className="truncate text-xl font-bold">{enterprise.name}</h1>
+        <h1 className="truncate text-lg font-bold sm:text-xl">
+          {enterprise.name}
+        </h1>
         <a
-          className="text-xs text-app-text-muted hover:text-app-primary"
+          className="text-xs text-app-text-subtle underline-offset-4 transition-colors hover:text-app-text hover:underline"
           href={enterprise.href}
           target="_blank"
           rel="noreferrer"
@@ -36,7 +38,7 @@ function TechEnterpriseHeader({
         />
 
         <Link
-          className="inline-flex h-9 w-[88px] items-center justify-center rounded-md border border-app-border px-3 text-sm font-medium text-app-text-muted transition-[border-color,color] duration-150 hover:border-app-primary/50 hover:text-app-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+          className="app-btn app-btn-ghost app-btn-sm"
           to="/tech-enterprises"
         >
           기업 목록

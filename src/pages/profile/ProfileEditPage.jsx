@@ -54,15 +54,15 @@ function ProfileEditPage() {
   const isBusy = isSaving || isWithdrawing
 
   return (
-    <section className="flex min-h-[calc(100vh-5rem)] justify-center px-6 py-8">
-      <div className="flex w-full max-w-[400px] flex-col gap-6">
+    <section className="flex min-h-[calc(100vh-4rem)] justify-center px-4 py-10 sm:px-6">
+      <div className="flex w-full max-w-[420px] flex-col gap-6 rounded-2xl border border-app-border bg-app-surface p-7 shadow-card sm:p-9">
         <h1 className="text-center text-2xl font-bold">회원정보 수정</h1>
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2">
-            <span className="text-base font-medium">프로필 사진</span>
+            <span className="app-field-label">프로필 사진</span>
             <label
-              className="relative mx-auto mt-2 block size-[120px] cursor-pointer rounded-full bg-app-surface-raised focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
+              className="group relative mx-auto mt-2 block size-[112px] cursor-pointer rounded-full bg-app-surface-raised ring-1 ring-app-border focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
               htmlFor="profile-image"
               aria-label="프로필 사진 변경"
             >
@@ -72,7 +72,7 @@ function ProfileEditPage() {
                 alt={`${currentUser.nickname || '사용자'} 프로필`}
               />
               <span
-                className="absolute right-1 bottom-1 flex size-8 items-center justify-center rounded-full border-2 border-app-bg bg-app-primary text-xl leading-none font-bold text-white"
+                className="absolute right-0.5 bottom-0.5 flex size-8 items-center justify-center rounded-full border-2 border-app-surface bg-app-primary text-xl leading-none font-bold text-app-primary-ink transition-colors group-hover:bg-app-primary-hover"
                 aria-hidden="true"
               >
                 +
@@ -88,7 +88,7 @@ function ProfileEditPage() {
                 onChange={handleImageChange}
               />
             </label>
-            <p className="min-h-4 text-center text-xs leading-[1.4] text-app-error">
+            <p className="min-h-4 text-center text-xs leading-[1.5] text-app-error">
               {imageError}
             </p>
           </div>
@@ -117,7 +117,7 @@ function ProfileEditPage() {
 
           <div className="mt-2 flex flex-col items-center gap-3">
             <button
-              className="h-11 w-full rounded-md bg-app-primary px-4 text-base font-medium text-white transition-colors hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary disabled:cursor-not-allowed disabled:opacity-60"
+              className="app-btn app-btn-primary app-btn-md w-full"
               type="submit"
               disabled={isBusy || Boolean(imageError)}
             >
@@ -125,7 +125,7 @@ function ProfileEditPage() {
             </button>
 
             <button
-              className="text-sm text-app-text-muted underline hover:text-app-text focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+              className="rounded-md text-sm text-app-text-subtle underline underline-offset-4 transition-colors hover:text-app-error"
               type="button"
               disabled={isBusy}
               onClick={openWithdrawModal}
@@ -134,7 +134,7 @@ function ProfileEditPage() {
             </button>
 
             <button
-              className="h-[42px] w-1/2 min-w-[140px] rounded-full bg-app-primary text-base font-medium text-white transition-colors hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary disabled:cursor-not-allowed disabled:opacity-60"
+              className="app-btn app-btn-outline app-btn-md w-1/2 min-w-[140px]"
               type="button"
               disabled={isBusy || Boolean(imageError)}
               onClick={completeProfile}

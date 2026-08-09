@@ -1,17 +1,16 @@
 import { BellIcon, CheckIcon } from '../../../shared/components/IconsList'
 
-const BASE_CLASS =
-  'inline-flex shrink-0 items-center justify-center gap-1.5 rounded-md font-medium transition-[background-color,border-color,color] duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary disabled:cursor-not-allowed disabled:opacity-50'
+const BASE_CLASS = 'app-btn disabled:opacity-50'
 
 const SUBSCRIBED_CLASS =
-  'border border-app-border bg-app-surface text-app-text-muted hover:border-app-primary/50 hover:text-app-text'
+  'border border-app-border-strong bg-app-surface text-app-text-muted hover:border-app-text-subtle hover:text-app-text'
 
 const UNSUBSCRIBED_CLASS =
-  'border border-transparent bg-app-primary text-white hover:bg-app-primary-hover'
+  'border border-app-primary/40 bg-app-primary/10 font-semibold text-app-primary hover:border-app-primary/70 hover:bg-app-primary/18'
 
 const SIZE_CLASS = {
-  default: 'h-9 px-3 text-sm',
-  compact: 'size-8 text-xs',
+  default: 'app-btn-sm',
+  compact: 'size-7 text-xs',
 }
 
 function SubscribeButton({

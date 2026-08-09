@@ -8,10 +8,7 @@ function TechArticleList({ articles }) {
   const isEmpty = Array.isArray(articles) && articles.length === 0
 
   return (
-    <ul
-      className="flex flex-col gap-4"
-      aria-label={`${TECH_ARTICLE_LIST_LABEL} 목록`}
-    >
+    <ul className="app-list" aria-label={`${TECH_ARTICLE_LIST_LABEL} 목록`}>
       {isEmpty && <EmptyListMessage label={TECH_ARTICLE_LIST_LABEL} />}
 
       {articleItems.map((article) => (

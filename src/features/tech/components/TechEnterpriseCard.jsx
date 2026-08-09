@@ -12,14 +12,11 @@ function TechEnterpriseCard({
   return (
     <div className="relative">
       <Link
-        className="group flex flex-col items-center gap-3 rounded-xl border border-app-border bg-app-surface p-6 transition-[border-color,background-color] duration-200 hover:border-app-primary/50 hover:bg-app-surface-raised focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+        className="group flex flex-col items-center gap-3 rounded-md border border-app-border bg-app-surface px-4 py-6 transition-colors duration-100 hover:border-app-border-strong hover:bg-app-surface-raised"
         to={`/tech-enterprises/${enterprise.slug}`}
       >
-        <TechEnterpriseLogo
-          enterprise={enterprise}
-          className="size-12 p-1.5 transition-transform duration-200 group-hover:scale-110"
-        />
-        <span className="text-center text-sm font-medium text-app-text-muted transition-colors duration-200 group-hover:text-app-text">
+        <TechEnterpriseLogo enterprise={enterprise} className="size-12 p-1.5" />
+        <span className="max-w-full truncate text-center text-sm font-medium text-app-text">
           {enterprise.name}
         </span>
       </Link>

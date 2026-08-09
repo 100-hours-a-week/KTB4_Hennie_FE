@@ -40,7 +40,7 @@ function NotificationItem({
   const content = (
     <>
       <span
-        className={`size-2 shrink-0 rounded-full ${
+        className={`hidden size-1.5 shrink-0 rounded-full sm:block ${
           isUnread ? 'bg-app-primary' : 'bg-transparent'
         }`}
         aria-hidden="true"
@@ -48,12 +48,12 @@ function NotificationItem({
 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span className="text-xs font-medium text-app-primary">
+          <span className="app-chip">
             {getNotificationTypeLabel(notification.type)}
           </span>
           {notification.createdAt && (
             <time
-              className="text-xs text-app-text-muted"
+              className="text-xs text-app-text-subtle"
               dateTime={notification.createdAt}
             >
               {formatDate(notification.createdAt)}
@@ -61,8 +61,8 @@ function NotificationItem({
           )}
         </div>
         <p
-          className={`mt-1 text-sm leading-6 ${
-            isUnread ? 'text-app-text' : 'text-app-text-muted'
+          className={`mt-1 text-sm leading-[1.6] ${
+            isUnread ? 'font-medium text-app-text' : 'text-app-text-muted'
           }`}
         >
           {notification.message}
@@ -73,13 +73,13 @@ function NotificationItem({
 
   return (
     <li
-      className={`flex items-center gap-4 border-b border-app-border px-5 py-4 last:border-b-0 ${
-        isUnread ? 'bg-app-surface-raised/60' : ''
+      className={`flex items-center gap-3 border-b border-app-border py-3.5 pr-3 pl-3 transition-colors hover:bg-app-surface sm:pl-4 ${
+        isUnread ? 'border-l-2 border-l-app-primary pl-[10px] sm:pl-[14px]' : ''
       }`}
     >
       {targetPath ? (
         <Link
-          className="flex min-w-0 flex-1 items-center gap-4 rounded-sm transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+          className="flex min-w-0 flex-1 items-center gap-3 rounded-sm"
           to={targetPath}
           onClick={handleNotificationClick}
         >
@@ -91,7 +91,7 @@ function NotificationItem({
 
       {isUnread && (
         <button
-          className="shrink-0 rounded-md border border-app-border px-3 py-2 text-xs font-medium text-app-text-muted transition-colors hover:border-app-primary/50 hover:text-app-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary disabled:opacity-50"
+          className="app-action shrink-0"
           type="button"
           disabled={isPending}
           onClick={() => onMarkAsRead(notification.id)}

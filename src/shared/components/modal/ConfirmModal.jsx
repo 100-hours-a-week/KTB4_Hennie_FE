@@ -1,7 +1,6 @@
 import { useEffect, useEffectEvent, useId, useRef } from 'react'
 
-const BUTTON_BASE_CLASS =
-  'min-h-11 flex-1 rounded-md px-4 py-2.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary'
+const BUTTON_BASE_CLASS = 'app-btn app-btn-md min-w-20'
 
 function ConfirmModal({
   isOpen,
@@ -104,12 +103,12 @@ function ConfirmModal({
 
   return (
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60 px-4"
+      className="fixed inset-0 z-[1000] flex items-center justify-center bg-app-bg-sunken/80 px-4 backdrop-blur-sm"
       role="presentation"
       onMouseDown={handleBackdropClick}
     >
       <section
-        className="w-full max-w-80 rounded-lg border border-app-border bg-app-surface p-6 text-center shadow-dropdown"
+        className="w-full max-w-sm rounded-2xl border border-app-border bg-app-surface p-6 text-center shadow-modal"
         ref={modalRef}
         role="dialog"
         aria-modal="true"
@@ -117,13 +116,13 @@ function ConfirmModal({
         aria-describedby={description ? descriptionId : undefined}
         aria-busy={isPending}
       >
-        <h2 className="mb-2 text-base font-bold" id={titleId}>
+        <h2 className="mb-2 text-lg font-bold" id={titleId}>
           {title}
         </h2>
 
         {description && (
           <p
-            className={`${children ? 'mb-3' : 'mb-6'} whitespace-pre-line text-sm text-app-text-muted`}
+            className={`${children ? 'mb-4' : 'mb-7'} whitespace-pre-line text-sm leading-6 text-app-text-muted`}
             id={descriptionId}
           >
             {description}
@@ -132,9 +131,11 @@ function ConfirmModal({
 
         {children && <div className="mb-6 text-left">{children}</div>}
 
-        <div className={`flex gap-3 ${description || children ? '' : 'mt-6'}`}>
+        <div
+          className={`flex justify-end gap-2 ${description || children ? '' : 'mt-6'}`}
+        >
           <button
-            className={`${BUTTON_BASE_CLASS} bg-app-surface-raised text-app-text hover:bg-app-border`}
+            className={`${BUTTON_BASE_CLASS} app-btn-outline`}
             ref={cancelButtonRef}
             type="button"
             disabled={isPending}
@@ -143,7 +144,7 @@ function ConfirmModal({
             {cancelLabel}
           </button>
           <button
-            className={`${BUTTON_BASE_CLASS} bg-app-primary text-white hover:bg-app-primary-hover`}
+            className={`${BUTTON_BASE_CLASS} app-btn-primary`}
             type="button"
             disabled={isPending}
             onClick={onConfirm}
