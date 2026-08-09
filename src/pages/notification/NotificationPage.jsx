@@ -1,9 +1,11 @@
 import NotificationList from '../../features/notification/components/NotificationList'
 import { useNotificationCenter } from '../../features/notification/hook/useNotificationCenter'
+import { useEnterpriseCatalog } from '../../features/tech/hook/useEnterpriseCatalog'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
 
 function NotificationPage() {
   usePageTitle('알림 센터')
+  const { getEnterpriseById } = useEnterpriseCatalog()
 
   const {
     notifications,
@@ -63,6 +65,7 @@ function NotificationPage() {
           unreadCount={unreadCount}
           pendingReadIds={pendingReadIds}
           isLoadingNext={isLoadingNext}
+          getEnterpriseById={getEnterpriseById}
           onLoadNextPage={loadNextPage}
           onMarkAsRead={markAsRead}
         />

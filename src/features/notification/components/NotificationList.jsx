@@ -6,6 +6,7 @@ function NotificationList({
   unreadCount,
   pendingReadIds,
   isLoadingNext,
+  getEnterpriseById,
   onLoadNextPage,
   onMarkAsRead,
 }) {
@@ -23,6 +24,7 @@ function NotificationList({
             key={notification.id}
             notification={notification}
             isPending={pendingReadIds.has(notification.id)}
+            getEnterpriseById={getEnterpriseById}
             onMarkAsRead={onMarkAsRead}
           />
         ))}

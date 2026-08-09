@@ -2,11 +2,29 @@ import { Link } from 'react-router'
 import { formatDate } from '../../../shared/utils/formatDate'
 import { getNotificationTypeLabel } from '../utils/notificationType'
 
-function NotificationItem({ notification, isPending, onMarkAsRead }) {
-  const isUnread = notification.readAt == null
-  const hasPostTarget = notification.postId != null
+const ENTERPRISE_ARTICLE_NOTIFICATION_TYPE = 'SUBSCRIBED_ENTERPRISE_ARTICLE'
 
-  const handlePostClick = (event) => {
+function NotificationItem({
+  notification,
+  isPending,
+  getEnterpriseById,
+  onMarkAsRead,
+}) {
+  const isUnread = notification.readAt == null
+  const enterprise =
+    notification.type === ENTERPRISE_ARTICLE_NOTIFICATION_TYPE
+      ? getEnterpriseById(notification.enterpriseId)
+      : null
+  const targetPath =
+    notification.type === ENTERPRISE_ARTICLE_NOTIFICATION_TYPE
+      ? enterprise
+        ? `/tech-enterprises/${enterprise.slug}`
+        : '/tech-enterprises'
+      : notification.postId != null
+        ? `/posts/${notification.postId}`
+        : null
+
+  const handleNotificationClick = (event) => {
     if (!isUnread || isPending) {
       return
     }
@@ -59,11 +77,11 @@ function NotificationItem({ notification, isPending, onMarkAsRead }) {
         isUnread ? 'bg-app-surface-raised/60' : ''
       }`}
     >
-      {hasPostTarget ? (
+      {targetPath ? (
         <Link
           className="flex min-w-0 flex-1 items-center gap-4 rounded-sm transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
-          to={`/posts/${notification.postId}`}
-          onClick={handlePostClick}
+          to={targetPath}
+          onClick={handleNotificationClick}
         >
           {content}
         </Link>
