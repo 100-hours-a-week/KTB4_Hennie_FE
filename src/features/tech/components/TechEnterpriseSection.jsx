@@ -3,6 +3,7 @@ import TechEnterpriseCard from './TechEnterpriseCard'
 function TechEnterpriseSection({
   section,
   isSubscribed,
+  isSubscriptionPending,
   onToggleSubscription,
   emptyMessage = '',
 }) {
@@ -28,14 +29,23 @@ function TechEnterpriseSection({
         </p>
       ) : (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-          {enterprises.map((enterprise) => (
-            <TechEnterpriseCard
-              enterprise={enterprise}
-              isSubscribed={isSubscribed?.(enterprise.code)}
-              key={enterprise.code}
-              onToggle={onToggleSubscription}
-            />
-          ))}
+          {enterprises.map((enterprise) => {
+            const subscribed = isSubscribed?.(enterprise.code) ?? false
+
+            return (
+              <TechEnterpriseCard
+                enterprise={enterprise}
+                isSubscribed={subscribed}
+                isSubscriptionPending={isSubscriptionPending?.(enterprise.code)}
+                key={enterprise.code}
+                onToggle={onToggleSubscription}
+                subscriptionDisabled={
+                  enterprise.id == null ||
+                  (!subscribed && enterprise.isActive !== true)
+                }
+              />
+            )
+          })}
         </div>
       )}
     </section>

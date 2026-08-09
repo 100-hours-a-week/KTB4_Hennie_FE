@@ -23,7 +23,7 @@ function App() {
         <Route path="/posts/:postId" element={<PostDetailPage />} />
         <Route path="/tech-enterprises" element={<TechEnterprisePage />} />
         <Route
-          path="/tech-enterprises/:enterprise"
+          path="/tech-enterprises/:enterpriseSlug"
           element={<TechArticleListPage />}
         />
         <Route element={<GuestOnlyRoute />}>
