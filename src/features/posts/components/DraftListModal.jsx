@@ -58,23 +58,23 @@ function DraftListModal({
 
   return (
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-app-bg-sunken/80 px-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/65 px-4"
       role="presentation"
       onMouseDown={handleBackdropClick}
     >
       <section
-        className="w-full max-w-[440px] rounded-2xl border border-app-border bg-app-surface p-6 shadow-modal"
+        className="w-full max-w-[420px] rounded-lg border border-app-border bg-app-surface p-5 shadow-modal"
         role="dialog"
         aria-modal="true"
         aria-labelledby="draft-list-title"
         aria-busy={isPending}
       >
         <div className="mb-4 flex items-center justify-between gap-3">
-          <h2 className="text-lg font-bold" id="draft-list-title">
+          <h2 className="text-base font-bold" id="draft-list-title">
             임시 저장 목록
           </h2>
           <button
-            className="flex size-9 items-center justify-center rounded-full text-xl leading-none text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex size-8 items-center justify-center rounded-md text-lg leading-none text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text disabled:cursor-not-allowed disabled:opacity-60"
             ref={closeButtonRef}
             type="button"
             aria-label="임시 저장 목록 닫기"
@@ -97,7 +97,7 @@ function DraftListModal({
 
               return (
                 <li
-                  className="grid min-h-[68px] grid-cols-[minmax(0,1fr)_80px] overflow-hidden rounded-xl border border-app-border bg-app-bg-sunken transition-colors duration-150 hover:border-app-border-strong"
+                  className="grid min-h-[60px] grid-cols-[minmax(0,1fr)_72px] overflow-hidden rounded-md border border-app-border transition-colors duration-100 hover:bg-app-surface"
                   key={postId}
                 >
                   <button
@@ -117,10 +117,10 @@ function DraftListModal({
                   </button>
                   <div className="flex items-center justify-center">
                     {isEditing ? (
-                      <span className="app-chip">편집중</span>
+                      <span className="app-chip-neutral">편집중</span>
                     ) : (
                       <button
-                        className="app-btn app-btn-danger h-8 w-14 text-xs"
+                        className="app-action text-app-error hover:text-app-error"
                         type="button"
                         disabled={isPending || !onDelete}
                         onClick={() => onDelete?.(postId)}

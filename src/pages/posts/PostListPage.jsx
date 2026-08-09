@@ -132,14 +132,14 @@ function PostListPage() {
   })
 
   return (
-    <section className="mx-auto max-w-[760px] px-4 pt-6 pb-24 sm:px-6 sm:pt-10">
-      <p className="app-hero mb-8 text-base leading-[1.75] font-medium text-app-text-muted sm:text-lg">
+    <section className="mx-auto max-w-[840px] px-4 pt-6 pb-20 sm:px-6 sm:pt-8">
+      <p className="app-page-intro">
         기업 <strong className="font-bold text-app-primary">개발</strong> 부서가
         남긴 기술 <strong className="font-bold text-app-primary">발자국</strong>
         을 따라
         <br />
         <strong className="font-bold text-app-text">개발자국(의견)</strong>을
-        남겨보세요
+        남겨보세요...🐾
       </p>
 
       <PostList posts={posts} />

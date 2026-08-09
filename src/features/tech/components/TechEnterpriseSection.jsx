@@ -14,13 +14,9 @@ function TechEnterpriseSection({
 
   return (
     <section>
-      <div className="mb-5">
-        <h2 className="text-xl font-bold text-app-text md:text-2xl">
-          {section.title}
-        </h2>
-        <p className="mt-1.5 text-sm text-app-text-muted">
-          {section.description}
-        </p>
+      <div className="mb-4">
+        <h2 className="app-section-title">{section.title}</h2>
+        <p className="app-section-description">{section.description}</p>
       </div>
 
       {isEmpty && emptyMessage ? (

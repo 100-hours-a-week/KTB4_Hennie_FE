@@ -3,13 +3,14 @@ import { BellIcon, CheckIcon } from '../../../shared/components/IconsList'
 const BASE_CLASS = 'app-btn disabled:opacity-50'
 
 const SUBSCRIBED_CLASS =
-  'border border-app-primary/35 bg-app-primary/12 text-app-primary hover:border-app-primary/60 hover:bg-app-primary/20'
+  'border border-app-border-strong bg-app-surface text-app-text-muted hover:border-app-text-subtle hover:text-app-text'
 
-const UNSUBSCRIBED_CLASS = 'app-btn-primary'
+const UNSUBSCRIBED_CLASS =
+  'border border-app-primary/40 bg-app-primary/10 font-semibold text-app-primary hover:border-app-primary/70 hover:bg-app-primary/18'
 
 const SIZE_CLASS = {
   default: 'app-btn-sm',
-  compact: 'size-8 rounded-full text-xs',
+  compact: 'size-7 text-xs',
 }
 
 function SubscribeButton({

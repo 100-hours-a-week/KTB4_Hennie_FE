@@ -21,17 +21,17 @@ function CommentItem({
   const replyThreadId = `reply-thread-${comment.id}`
 
   return (
-    <li className="flex flex-col gap-2.5 border-b border-app-border py-5 last:border-b-0">
+    <li className="flex flex-col gap-2 border-b border-app-border py-4 last:border-b-0">
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
-          <span className="size-9 shrink-0 overflow-hidden rounded-full bg-app-surface-raised ring-1 ring-app-border">
+          <span className="size-7 shrink-0 overflow-hidden rounded-full bg-app-surface-raised">
             <img
               className="size-full object-cover"
               src={comment.authorProfileUrl}
               alt="작성자"
             />
           </span>
-          <span className="text-sm font-semibold">
+          <span className="text-[13px] font-semibold">
             {comment.authorNickname}
           </span>
           {comment.createdAt && (
@@ -67,12 +67,12 @@ function CommentItem({
         )}
       </div>
 
-      <p className="pl-11 text-[15px] leading-[1.75] whitespace-pre-wrap">
+      <p className="pl-9 text-sm leading-[1.75] whitespace-pre-wrap">
         {comment.content}
       </p>
 
       {!comment.deleted && comment.id != null && (
-        <div className="flex items-center gap-3 pl-11">
+        <div className="flex items-center gap-3 pl-9">
           <button
             className="rounded-md text-xs font-semibold text-app-primary transition-colors hover:text-app-primary-hover"
             type="button"

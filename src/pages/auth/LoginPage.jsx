@@ -18,9 +18,9 @@ function LoginPage() {
 
   return (
     <section className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12 sm:px-6">
-      <div className="flex w-full max-w-[420px] flex-col gap-6 rounded-2xl border border-app-border bg-app-surface p-7 shadow-modal sm:p-9">
+      <div className="flex w-full max-w-[380px] flex-col gap-6">
         <div className="flex flex-col gap-1.5">
-          <h1 className="text-[28px] leading-tight font-bold">로그인</h1>
+          <h1 className="text-xl font-bold">로그인</h1>
           <p className="text-sm text-app-text-muted">
             개발이 남긴 발자국을 따라가다
           </p>
@@ -51,7 +51,7 @@ function LoginPage() {
           />
 
           <button
-            className="app-btn app-btn-primary app-btn-lg mt-1 w-full text-base"
+            className="app-btn app-btn-primary app-btn-lg mt-1 w-full"
             type="submit"
           >
             로그인

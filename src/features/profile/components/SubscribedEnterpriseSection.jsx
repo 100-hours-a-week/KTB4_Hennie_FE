@@ -16,22 +16,20 @@ function SubscribedEnterpriseSection() {
 
   return (
     <section
-      className="app-panel scroll-mt-20"
+      className="scroll-mt-24"
       id="subscriptions"
       aria-labelledby="subscription-settings-title"
     >
-      <div className="app-panel-header flex flex-wrap items-end justify-between gap-3">
+      <div className="app-section-header flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="app-panel-title" id="subscription-settings-title">
+          <h2 className="app-section-title" id="subscription-settings-title">
             구독한 기업
           </h2>
-          <p className="app-panel-description">
+          <p className="app-section-description">
             새 기술 원문 알림을 받을 기업을 관리합니다.
           </p>
         </div>
-        <span className="app-chip px-3 py-1 text-xs">
-          {subscribedCount}곳 구독 중
-        </span>
+        <span className="app-chip-neutral">{subscribedCount}곳 구독 중</span>
       </div>
 
       {subscriptionError && (
@@ -57,7 +55,7 @@ function SubscribedEnterpriseSection() {
             아직 구독한 기업이 없습니다.
           </p>
           <Link
-            className="app-btn app-btn-primary app-btn-sm mt-5"
+            className="app-btn app-btn-outline app-btn-sm mt-4"
             to="/tech-enterprises"
           >
             기업 둘러보기

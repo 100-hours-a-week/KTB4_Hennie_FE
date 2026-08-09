@@ -12,20 +12,17 @@ function TechEnterpriseCard({
   return (
     <div className="relative">
       <Link
-        className="app-card app-card-interactive group flex flex-col items-center gap-3.5 px-4 py-7 hover:border-app-primary/45"
+        className="group flex flex-col items-center gap-3 rounded-md border border-app-border bg-app-surface px-4 py-6 transition-colors duration-100 hover:border-app-border-strong hover:bg-app-surface-raised"
         to={`/tech-enterprises/${enterprise.slug}`}
       >
-        <TechEnterpriseLogo
-          enterprise={enterprise}
-          className="size-14 p-2 transition-transform duration-200 group-hover:scale-105"
-        />
-        <span className="text-center text-sm font-semibold text-app-text-muted transition-colors duration-200 group-hover:text-app-text">
+        <TechEnterpriseLogo enterprise={enterprise} className="size-12 p-1.5" />
+        <span className="max-w-full truncate text-center text-sm font-medium text-app-text">
           {enterprise.name}
         </span>
       </Link>
 
       <SubscribeButton
-        className="absolute top-2.5 right-2.5 z-10"
+        className="absolute top-2 right-2 z-10"
         enterpriseName={enterprise.name}
         isSubscribed={isSubscribed}
         isPending={isSubscriptionPending}

@@ -91,7 +91,7 @@ function PostWritePage() {
 
   return (
     <>
-      <section className="mx-auto max-w-[760px] px-4 pt-6 pb-[128px] sm:px-6 sm:pt-10">
+      <section className="mx-auto max-w-[760px] px-4 pt-6 pb-[112px] sm:px-6 sm:pt-8">
         <form className="flex flex-col gap-6" onSubmit={publishPost}>
           <PostEditorFields
             title={title}
@@ -104,11 +104,11 @@ function PostWritePage() {
             onCategoryChange={handleCategoryChange}
           />
 
-          <footer className="fixed right-0 bottom-0 left-0 z-[90] border-t border-app-border bg-app-bg/90 shadow-sticky backdrop-blur-xl">
+          <footer className="fixed right-0 bottom-0 left-0 z-[90] border-t border-app-border bg-app-bg">
             <div className="mx-auto flex max-w-[760px] items-center justify-end gap-3 px-4 py-3 sm:px-6">
               <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_36px] items-stretch">
                 <button
-                  className="app-btn app-btn-outline h-11 rounded-r-none px-4"
+                  className="app-btn app-btn-outline h-10 rounded-r-none px-4"
                   type="button"
                   disabled={isFormBusy}
                   onClick={saveCurrentDraft}
@@ -116,7 +116,7 @@ function PostWritePage() {
                   {isSavingDraft ? '저장 중...' : '임시저장'}
                 </button>
                 <button
-                  className="app-btn app-btn-outline h-11 rounded-l-none border-l-0 px-0 font-bold text-app-primary"
+                  className="app-btn app-btn-outline h-10 rounded-l-none border-l-0 px-0 font-semibold text-app-primary"
                   type="button"
                   aria-label="임시 저장 목록 열기"
                   disabled={isFormBusy || isLoadingDrafts}
@@ -127,7 +127,7 @@ function PostWritePage() {
               </div>
 
               <button
-                className="app-btn app-btn-primary app-btn-md min-w-[120px] font-bold"
+                className="app-btn app-btn-primary app-btn-md min-w-[104px]"
                 type="submit"
                 disabled={!isPublishReady || isFormBusy}
               >

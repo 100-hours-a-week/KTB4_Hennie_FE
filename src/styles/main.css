@@ -17,6 +17,11 @@
   --color-app-border: #2a2a33;
   --color-app-border-strong: #3b3b47;
 
+  /* 카테고리 (정보 구분용 보조 색) */
+  --color-app-fe: #7cc4ff;
+  --color-app-be: #6fdca4;
+  --color-app-ai: #bda3ff;
+
   /* 텍스트 (모두 표면 대비 4.5:1 이상) */
   --color-app-text: #f3f1ef;
   --color-app-text-muted: #a7a5b0;
@@ -126,87 +131,116 @@
 }
 
 @layer components {
-  /* ---------- 버튼 ---------- */
+  /* ---------- 버튼: primary / secondary / text action 3단계 ---------- */
   .app-btn {
-    @apply inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg font-semibold whitespace-nowrap transition-[background-color,border-color,color,box-shadow] duration-150 disabled:cursor-not-allowed;
+    @apply inline-flex shrink-0 items-center justify-center gap-1.5 rounded-md font-medium whitespace-nowrap transition-[background-color,border-color,color] duration-100 disabled:cursor-not-allowed;
   }
 
   .app-btn-primary {
-    @apply border border-transparent bg-app-primary text-app-primary-ink hover:bg-app-primary-hover active:bg-app-primary-strong disabled:border-app-border disabled:bg-app-surface-raised disabled:text-app-text-subtle;
+    @apply border border-transparent bg-app-primary font-semibold text-app-primary-ink hover:bg-app-primary-hover active:bg-app-primary-strong disabled:border-app-border disabled:bg-app-surface-raised disabled:text-app-text-subtle;
   }
 
   .app-btn-outline {
-    @apply border border-app-border-strong bg-app-surface text-app-text-muted hover:border-app-primary/45 hover:bg-app-surface-raised hover:text-app-text disabled:opacity-50 disabled:hover:border-app-border-strong disabled:hover:bg-app-surface disabled:hover:text-app-text-muted;
+    @apply border border-app-border-strong bg-app-surface text-app-text hover:border-app-text-subtle hover:bg-app-surface-raised disabled:opacity-45 disabled:hover:border-app-border-strong disabled:hover:bg-app-surface;
   }
 
   .app-btn-ghost {
-    @apply border border-transparent text-app-text-muted hover:bg-app-surface-raised hover:text-app-text disabled:opacity-50;
+    @apply border border-transparent text-app-text-muted hover:bg-app-surface-raised hover:text-app-text disabled:opacity-45;
   }
 
   .app-btn-danger {
-    @apply border border-app-error/30 bg-app-error/12 text-app-error hover:border-app-error/50 hover:bg-app-error/20 disabled:opacity-50;
+    @apply border border-app-border-strong bg-app-surface text-app-error hover:border-app-error/50 hover:bg-app-error/10 disabled:opacity-45;
+  }
+
+  /* 텍스트 액션: 목록·본문 안에서 쓰는 최소 강조 버튼 */
+  .app-action {
+    @apply rounded-sm text-[13px] font-medium text-app-text-muted transition-colors duration-100 hover:text-app-text disabled:cursor-not-allowed disabled:opacity-45;
   }
 
   .app-btn-lg {
-    @apply h-13 px-6 text-base;
+    @apply h-11 px-5 text-[15px];
   }
 
   .app-btn-md {
-    @apply h-11 px-5 text-sm;
+    @apply h-10 px-4 text-sm;
   }
 
   .app-btn-sm {
-    @apply h-9 px-3.5 text-[13px];
+    @apply h-8 px-3 text-[13px];
   }
 
   .app-btn-xs {
-    @apply h-8 px-3 text-xs;
+    @apply h-7 px-2.5 text-xs;
   }
 
-  /* ---------- 표면 ---------- */
-  .app-card {
-    @apply rounded-2xl border border-app-border bg-app-surface shadow-card;
+  /* ---------- 영역 구분: 카드 대신 구분선과 명도차 ---------- */
+  .app-block {
+    @apply rounded-md border border-app-border bg-app-surface;
   }
 
-  .app-card-interactive {
-    @apply transition-[background-color,border-color,box-shadow,transform] duration-150 hover:border-app-border-strong hover:bg-app-surface-raised hover:shadow-card-hover md:hover:-translate-y-px;
+  /* 목록: 행 사이 구분선. 개별 행을 카드로 감싸지 않는다 */
+  .app-list {
+    @apply border-t border-app-border;
   }
 
-  .app-panel {
-    @apply rounded-2xl border border-app-border bg-app-surface p-5 sm:p-7;
+  .app-list-row {
+    @apply block border-b border-app-border px-3 py-3.5 transition-colors duration-100 hover:bg-app-surface sm:px-4;
   }
 
-  .app-panel-header {
-    @apply mb-6 border-b border-app-border pb-4;
+  /* 섹션: 제목 + 밑줄, 배경 없음 */
+  .app-section-title {
+    @apply text-[15px] font-bold text-app-text;
   }
 
-  .app-panel-title {
-    @apply text-lg font-bold text-app-text;
+  .app-section-description {
+    @apply mt-1 text-[13px] text-app-text-muted;
   }
 
-  .app-panel-description {
-    @apply mt-1 text-sm text-app-text-muted;
+  .app-section-header {
+    @apply mb-5 border-b border-app-border pb-3;
   }
 
-  /* ---------- 라벨 · 뱃지 ---------- */
+  /* 페이지 상단: 큰 hero 대신 좌측 정렬 소형 인트로 */
+  .app-page-intro {
+    @apply mb-6 border-b border-app-border pb-5 text-[15px] leading-[1.7] text-app-text-muted;
+  }
+
+  /* ---------- 라벨 ---------- */
   .app-chip {
-    @apply inline-flex shrink-0 items-center justify-center rounded-full border border-app-primary/25 bg-app-primary/12 px-2.5 py-0.5 text-[11px] font-bold tracking-wide text-app-primary;
+    @apply inline-flex shrink-0 items-center justify-center rounded-sm border border-app-primary/30 bg-app-primary/10 px-1.5 py-px text-[11px] font-bold tracking-wide text-app-primary;
+  }
+
+  .app-chip-FE {
+    @apply border-app-fe/30 bg-app-fe/10 text-app-fe;
+  }
+
+  .app-chip-BE {
+    @apply border-app-be/30 bg-app-be/10 text-app-be;
+  }
+
+  .app-chip-AI {
+    @apply border-app-ai/30 bg-app-ai/10 text-app-ai;
   }
 
   .app-chip-neutral {
-    @apply inline-flex shrink-0 items-center justify-center rounded-full border border-app-border bg-app-surface-raised px-2.5 py-0.5 text-[11px] font-semibold text-app-text-muted;
+    @apply inline-flex shrink-0 items-center justify-center rounded-sm border border-app-border bg-app-surface-raised px-1.5 py-px text-[11px] font-medium text-app-text-muted;
+  }
+
+  /* 목록 메타: 구분점으로 이어 붙이는 한 줄 정보 */
+  .app-meta {
+    @apply flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-app-text-subtle;
   }
 
   /* ---------- 폼 ---------- */
   .app-input {
-    @apply h-12 w-full rounded-lg border border-app-border-strong bg-app-bg-sunken px-3.5 text-sm text-app-text transition-[border-color,background-color] duration-150 placeholder:text-app-text-subtle focus:border-app-primary focus:bg-app-surface focus:outline-none disabled:cursor-not-allowed disabled:bg-app-surface-raised disabled:text-app-text-subtle read-only:cursor-not-allowed read-only:border-app-border read-only:bg-app-surface-raised read-only:text-app-text-muted;
+    @apply h-10 w-full rounded-md border border-app-border-strong bg-app-bg px-3 text-sm text-app-text transition-[border-color] duration-100 placeholder:text-app-text-subtle focus:border-app-primary focus:outline-none disabled:cursor-not-allowed disabled:bg-app-surface disabled:text-app-text-subtle read-only:cursor-not-allowed read-only:border-app-border read-only:bg-app-surface read-only:text-app-text-muted;
   }
 
   .app-select {
-    @apply h-12 w-full appearance-none rounded-lg border border-app-border-strong bg-app-bg-sunken bg-no-repeat pr-10 pl-3.5 text-sm text-app-text transition-[border-color,background-color] duration-150 focus:border-app-primary focus:outline-none disabled:cursor-not-allowed disabled:bg-app-surface-raised disabled:text-app-text-subtle;
+    @apply h-10 w-full appearance-none rounded-md border border-app-border-strong bg-app-bg bg-no-repeat pr-9 pl-3 text-sm text-app-text transition-[border-color] duration-100 focus:border-app-primary focus:outline-none disabled:cursor-not-allowed disabled:bg-app-surface disabled:text-app-text-subtle;
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a7a5b0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-position: right 0.75rem center;
-    background-size: 1.125rem;
+    background-position: right 0.625rem center;
+    background-size: 1rem;
   }
 
   .app-input-invalid {
@@ -214,70 +248,37 @@
   }
 
   .app-field-label {
-    @apply text-[13px] font-semibold text-app-text-muted;
+    @apply text-[13px] font-medium text-app-text-muted;
   }
 
-  /* ---------- 상태 표시 ---------- */
+  /* ---------- 상태 ---------- */
   .app-alert-error {
-    @apply flex flex-wrap items-center justify-between gap-3 rounded-xl border border-app-error/35 bg-app-error/10 px-4 py-3;
+    @apply flex flex-wrap items-center justify-between gap-3 rounded-md border-l-2 border-app-error bg-app-error/8 py-2.5 pr-3 pl-3.5;
   }
 
   .app-empty {
-    @apply rounded-2xl border border-dashed border-app-border bg-app-surface/40 px-6 py-14 text-center text-sm text-app-text-muted;
+    @apply border-b border-app-border px-4 py-12 text-center text-sm text-app-text-muted;
   }
 
-  /* 로딩 문구 앞의 회전하는 발바닥 인디케이터 */
   .app-loading {
-    @apply inline-flex items-center justify-center gap-2.5 text-sm text-app-text-muted;
+    @apply inline-flex items-center justify-center gap-2 text-sm text-app-text-muted;
   }
 
   .app-loading::before {
     content: '';
-    width: 1rem;
-    height: 1rem;
+    width: 0.875rem;
+    height: 0.875rem;
     flex-shrink: 0;
     border-radius: 9999px;
     border: 2px solid
-      color-mix(in srgb, var(--color-app-primary) 25%, transparent);
+      color-mix(in srgb, var(--color-app-text-subtle) 45%, transparent);
     border-top-color: var(--color-app-primary);
     animation: app-spin 0.7s linear infinite;
   }
 
   /* 무한 스크롤 감지 영역 겸 상태 문구 (관찰 대상이라 항상 높이를 유지) */
   .app-list-status {
-    @apply flex min-h-12 items-center justify-center px-4 py-6 text-center text-sm text-app-text-muted;
-  }
-
-  /* ---------- 히어로 ---------- */
-  .app-hero {
-    @apply relative overflow-hidden rounded-2xl border border-app-border px-6 py-9 text-center sm:px-10 sm:py-11;
-    background-image:
-      radial-gradient(
-        120% 120% at 50% -30%,
-        color-mix(in srgb, var(--color-app-primary) 12%, transparent) 0%,
-        transparent 62%
-      ),
-      linear-gradient(
-        180deg,
-        var(--color-app-surface) 0%,
-        var(--color-app-bg) 100%
-      );
-  }
-
-  .app-hero::after {
-    content: '';
-    position: absolute;
-    inset-block-end: -0.75rem;
-    inset-inline-end: -0.5rem;
-    width: 7.5rem;
-    height: 7.5rem;
-    opacity: 0.06;
-    transform: rotate(-18deg);
-    background-color: var(--color-app-primary);
-    mask-image: url('/assets/paw.svg');
-    mask-size: contain;
-    mask-repeat: no-repeat;
-    pointer-events: none;
+    @apply flex min-h-11 items-center justify-center px-4 py-5 text-center text-[13px] text-app-text-subtle;
   }
 }
 

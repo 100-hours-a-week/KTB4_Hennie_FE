@@ -80,7 +80,7 @@ function TechArticleListPage() {
   })
 
   return (
-    <section className="mx-auto max-w-[760px] px-4 pt-6 pb-24 sm:px-6 sm:pt-10">
+    <section className="mx-auto max-w-[840px] px-4 pt-5 pb-20 sm:px-6 sm:pt-6">
       <TechEnterpriseHeader
         enterprise={enterprise}
         isSubscribed={isSubscribed(enterprise.code)}

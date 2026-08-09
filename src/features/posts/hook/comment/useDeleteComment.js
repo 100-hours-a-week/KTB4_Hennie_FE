@@ -3,7 +3,7 @@ import { getHttpErrorMessage } from '../../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../../shared/hook/useAsyncLock'
 import { deleteComment } from '../../api/commentApi'
 
-export const useDeleteComment = ({ postId, removeComment }) => {
+export const useDeleteComment = ({ postId, removeComment, refreshPost }) => {
   const [deletingCommentId, setDeletingCommentId] = useState(null)
   const { isRunning: isDeletingComment, run } = useAsyncLock()
 
@@ -47,6 +47,13 @@ export const useDeleteComment = ({ postId, removeComment }) => {
             }),
           )
         }
+
+        return
+      }
+      try {
+        await refreshPost?.()
+      } catch (refreshError) {
+        console.error('댓글 삭제 후 게시글 재조회 실패', refreshError)
       }
     })
   }

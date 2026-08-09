@@ -28,9 +28,9 @@ function SignupPage() {
 
   return (
     <section className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12 sm:px-6">
-      <div className="flex w-full max-w-[420px] flex-col gap-6 rounded-2xl border border-app-border bg-app-surface p-7 shadow-modal sm:p-9">
+      <div className="flex w-full max-w-[380px] flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <h1 className="text-[28px] leading-tight font-bold">회원가입</h1>
+          <h1 className="text-xl font-bold">회원가입</h1>
           <p className="text-sm text-app-text-muted">
             개발바닥에서 나만의 개발자국을 남겨보세요
           </p>
@@ -40,7 +40,7 @@ function SignupPage() {
           <div className="flex flex-col gap-2">
             <span className="app-field-label">프로필 사진</span>
             <label
-              className="mx-auto flex size-[112px] cursor-pointer items-center justify-center overflow-hidden rounded-full border border-dashed border-app-border-strong bg-app-bg-sunken text-3xl text-app-text-subtle transition-colors hover:border-app-primary/60 hover:text-app-primary focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
+              className="mx-auto flex size-24 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-dashed border-app-border-strong bg-app-surface text-2xl text-app-text-subtle transition-colors hover:border-app-text-subtle hover:text-app-text focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
               htmlFor="profile-image"
             >
               {previewUrl ? (
@@ -122,7 +122,7 @@ function SignupPage() {
           />
 
           <button
-            className="app-btn app-btn-primary app-btn-lg mt-1 w-full text-base"
+            className="app-btn app-btn-primary app-btn-lg mt-1 w-full"
             type="submit"
             disabled={!isFormValid || isSubmitting}
           >

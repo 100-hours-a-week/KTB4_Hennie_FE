@@ -12,7 +12,7 @@ import { getPostCategoryLabel, getPostThumbnail } from '../utils/postCategory'
 function PostStat({ label, count, children }) {
   return (
     <span
-      className="inline-flex items-center gap-1.5 text-xs font-medium text-app-text-muted"
+      className="inline-flex items-center gap-1"
       aria-label={`${label} ${count}`}
     >
       {children}
@@ -24,14 +24,11 @@ function PostStat({ label, count, children }) {
 function PostCard({ post }) {
   return (
     <li>
-      <Link
-        className="app-card app-card-interactive group block overflow-hidden p-4 sm:p-5"
-        to={`/posts/${post.id}`}
-      >
-        <div className="flex gap-4 sm:gap-5">
+      <Link className="app-list-row group" to={`/posts/${post.id}`}>
+        <div className="flex items-start gap-4">
           <div className="flex min-w-0 flex-1 flex-col">
-            <div className="mb-2.5 flex items-center gap-2">
-              <span className="size-7 shrink-0 overflow-hidden rounded-full bg-app-surface-raised ring-1 ring-app-border">
+            <div className="mb-1.5 flex items-center gap-2">
+              <span className="size-7 shrink-0 overflow-hidden rounded-full bg-app-surface-raised">
                 <img
                   className="size-full object-cover"
                   src={post.authorProfileUrl}
@@ -42,20 +39,20 @@ function PostCard({ post }) {
                 {post.authorNickname}
               </span>
               {getPostCategoryLabel(post.category) && (
-                <span className="app-chip ml-auto">
+                <span className={`app-chip app-chip-${post.category}`}>
                   {getPostCategoryLabel(post.category)}
                 </span>
               )}
             </div>
 
             <h2
-              className="mb-4 line-clamp-2 text-[17px] leading-[1.45] font-bold break-words transition-colors duration-150 group-hover:text-app-primary sm:text-lg"
+              className="mb-2 line-clamp-2 text-base leading-[1.45] font-semibold break-words text-app-text transition-colors duration-100 group-hover:text-app-primary sm:text-[17px]"
               title={post.title}
             >
               {truncateText(post.title, LIST_TITLE_MAX_LENGTH)}
             </h2>
 
-            <div className="mt-auto flex items-center gap-4 border-t border-app-border pt-3">
+            <div className="app-meta mt-auto gap-3">
               <PostStat label="좋아요" count={post.likeCount}>
                 <LikeIcon />
               </PostStat>
@@ -66,7 +63,7 @@ function PostCard({ post }) {
                 <ViewIcon />
               </PostStat>
               <time
-                className="ml-auto whitespace-nowrap text-xs text-app-text-subtle"
+                className="ml-auto whitespace-nowrap"
                 dateTime={post.createdAt}
               >
                 {formatDate(post.createdAt)}
@@ -75,7 +72,7 @@ function PostCard({ post }) {
           </div>
 
           <img
-            className="aspect-video w-24 shrink-0 self-center rounded-xl border border-app-border bg-app-surface-raised object-cover sm:w-40"
+            className="aspect-video w-24 shrink-0 self-center rounded-lg border border-app-border bg-app-surface-raised object-cover sm:w-40"
             src={getPostThumbnail(post.category)}
             alt=""
           />

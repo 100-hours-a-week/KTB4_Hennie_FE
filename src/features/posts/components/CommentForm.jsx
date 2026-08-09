@@ -24,7 +24,7 @@ function CommentForm({
 
   return (
     <form
-      className={`${className} rounded-2xl border border-app-border bg-app-bg-sunken p-3.5 transition-colors duration-150 focus-within:border-app-primary/45`}
+      className={`${className} rounded-md border border-app-border bg-app-bg p-3 transition-colors duration-100 focus-within:border-app-border-strong`}
       onSubmit={onSubmit}
     >
       {label && (

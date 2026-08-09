@@ -1,6 +1,6 @@
 import { useEffect, useEffectEvent, useId, useRef } from 'react'
 
-const BUTTON_BASE_CLASS = 'app-btn app-btn-md min-h-11 flex-1'
+const BUTTON_BASE_CLASS = 'app-btn app-btn-md min-w-20'
 
 function ConfirmModal({
   isOpen,
@@ -132,7 +132,7 @@ function ConfirmModal({
         {children && <div className="mb-6 text-left">{children}</div>}
 
         <div
-          className={`flex gap-2.5 ${description || children ? '' : 'mt-6'}`}
+          className={`flex justify-end gap-2 ${description || children ? '' : 'mt-6'}`}
         >
           <button
             className={`${BUTTON_BASE_CLASS} app-btn-outline`}

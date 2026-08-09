@@ -38,27 +38,25 @@ function ProfileSettingsSection() {
 
   return (
     <section
-      className="app-panel scroll-mt-20"
+      className="scroll-mt-24"
       id="profile"
       aria-labelledby="profile-settings-title"
     >
-      <div className="app-panel-header">
-        <h2 className="app-panel-title" id="profile-settings-title">
+      <div className="app-section-header">
+        <h2 className="app-section-title" id="profile-settings-title">
           회원정보
         </h2>
-        <p className="app-panel-description">
+        <p className="app-section-description">
           프로필 사진과 닉네임을 변경할 수 있습니다.
         </p>
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="grid gap-7 md:grid-cols-[168px_minmax(0,1fr)] md:items-start">
-          <div className="flex flex-col items-center gap-2.5">
-            <span className="app-field-label self-start md:self-center">
-              프로필 사진
-            </span>
+        <div className="grid gap-6 md:grid-cols-[140px_minmax(0,1fr)] md:items-start">
+          <div className="flex flex-col items-start gap-2">
+            <span className="app-field-label">프로필 사진</span>
             <label
-              className="group relative block size-[112px] cursor-pointer rounded-full bg-app-surface-raised ring-1 ring-app-border focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
+              className="group relative block size-24 cursor-pointer rounded-full bg-app-surface-raised focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
               htmlFor="my-profile-image"
               aria-label="프로필 사진 변경"
             >
@@ -68,7 +66,7 @@ function ProfileSettingsSection() {
                 alt={`${currentUser?.nickname || '사용자'} 프로필`}
               />
               <span
-                className="absolute right-0.5 bottom-0.5 flex size-8 items-center justify-center rounded-full border-2 border-app-surface bg-app-primary text-xl leading-none font-bold text-app-primary-ink transition-colors group-hover:bg-app-primary-hover"
+                className="absolute right-0 bottom-0 flex size-7 items-center justify-center rounded-full border-2 border-app-bg bg-app-primary text-base leading-none font-bold text-app-primary-ink transition-colors group-hover:bg-app-primary-hover"
                 aria-hidden="true"
               >
                 +
@@ -84,7 +82,7 @@ function ProfileSettingsSection() {
                 onChange={handleImageChange}
               />
             </label>
-            <p className="min-h-4 text-center text-xs leading-[1.5] text-app-error">
+            <p className="min-h-4 text-xs leading-[1.5] text-app-error">
               {imageError}
             </p>
           </div>

@@ -31,7 +31,8 @@ function PostDetailPage() {
   usePageTitle('게시글')
   const { postId } = useParams()
   const { currentUser } = useAuth()
-  const { post, isLoading, error, updateLikeState } = usePostDetail(postId)
+  const { post, isLoading, error, refreshPost, updateLikeState } =
+    usePostDetail(postId)
   const {
     comments,
     commentCount,
@@ -70,6 +71,7 @@ function PostDetailPage() {
   } = useDeleteComment({
     postId,
     removeComment,
+    refreshPost,
   })
   const {
     deletingReply,
@@ -192,30 +194,30 @@ function PostDetailPage() {
   const postDate = post.createdAt || post.modifiedAt
 
   return (
-    <section className="mx-auto max-w-[760px] px-4 py-8 sm:px-6 sm:py-10">
+    <section className="mx-auto max-w-[760px] px-4 py-6 sm:px-6 sm:py-8">
       <article>
-        <header className="mb-6 flex items-start justify-between gap-4 border-b border-app-border pb-6">
+        <header className="mb-6 flex items-start justify-between gap-4 border-b border-app-border pb-5">
           <div className="min-w-0">
-            <div className="mb-3 flex flex-col items-start gap-2.5">
+            <div className="mb-2.5 flex flex-col items-start gap-2">
               {getPostCategoryLabel(post.category) && (
-                <span className="app-chip">
+                <span className={`app-chip app-chip-${post.category}`}>
                   {getPostCategoryLabel(post.category)}
                 </span>
               )}
-              <h1 className="min-w-0 text-2xl leading-[1.35] font-bold break-words sm:text-3xl">
+              <h1 className="min-w-0 text-[22px] leading-[1.35] font-bold break-words sm:text-[26px]">
                 {post.title}
               </h1>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-app-text-muted">
-              <span className="size-8 shrink-0 overflow-hidden rounded-full bg-app-surface-raised ring-1 ring-app-border">
+            <div className="app-meta">
+              <span className="size-8 shrink-0 overflow-hidden rounded-full bg-app-surface-raised">
                 <img
                   className="size-full object-cover"
                   src={post.authorProfileUrl}
                   alt="작성자"
                 />
               </span>
-              <span className="font-medium text-app-text">
+              <span className="font-medium text-app-text-muted">
                 {post.authorNickname}
               </span>
               {postDate && (
@@ -256,15 +258,15 @@ function PostDetailPage() {
           </div>
         </header>
 
-        <p className="mb-4 min-h-24 whitespace-pre-wrap text-[15px] leading-[1.85] text-app-text">
+        <p className="mb-8 whitespace-pre-wrap text-[15px] leading-[1.8] text-app-text">
           {post.content}
         </p>
       </article>
 
-      <section className="mt-10 border-t border-app-border pt-6">
-        <div className="mb-6 flex items-center gap-2 text-sm text-app-text-muted">
+      <section className="mt-8 border-t border-app-border pt-5">
+        <div className="mb-5 flex items-center gap-1 text-sm text-app-text-muted">
           <button
-            className={`app-btn app-btn-sm rounded-full disabled:cursor-wait ${post.liked ? 'border border-app-primary/40 bg-app-primary/12 text-app-primary hover:bg-app-primary/20' : 'app-btn-outline'}`}
+            className={`app-btn app-btn-sm disabled:cursor-wait ${post.liked ? 'border border-app-primary/40 bg-app-primary/10 text-app-primary hover:bg-app-primary/18' : 'app-btn-outline'}`}
             type="button"
             aria-label={post.liked ? '좋아요 취소' : '좋아요'}
             aria-pressed={post.liked}
@@ -277,14 +279,14 @@ function PostDetailPage() {
             <span>{post.likeCount}</span>
           </button>
           <span
-            className="inline-flex items-center gap-1.5 rounded-full px-2 text-[13px] font-medium"
+            className="inline-flex items-center gap-1.5 px-2.5 text-[13px] text-app-text-subtle"
             aria-label={`댓글 ${commentCount}`}
           >
             <CommentIcon className="size-[18px]" />
             <span>{commentCount}</span>
           </span>
           <span
-            className="inline-flex items-center gap-1.5 rounded-full px-2 text-[13px] font-medium"
+            className="inline-flex items-center gap-1.5 px-2.5 text-[13px] text-app-text-subtle"
             aria-label={`조회수 ${post.viewCount}`}
           >
             <ViewIcon className="size-[18px]" />
@@ -344,7 +346,7 @@ function PostDetailPage() {
           <legend className="sr-only">신고 사유</legend>
           {REPORT_REASON_OPTIONS.map((option, index) => (
             <label
-              className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-transparent p-2.5 text-sm leading-6 text-app-text transition-colors hover:border-app-border hover:bg-app-surface-raised has-checked:border-app-primary/40 has-checked:bg-app-primary/10 has-disabled:cursor-not-allowed has-disabled:opacity-60"
+              className="flex cursor-pointer items-center gap-2.5 rounded-md border border-transparent px-2 py-2 text-sm leading-6 text-app-text transition-colors hover:bg-app-surface-raised has-checked:border-app-primary/40 has-checked:bg-app-primary/10 has-disabled:cursor-not-allowed has-disabled:opacity-60"
               key={option.value}
             >
               <input

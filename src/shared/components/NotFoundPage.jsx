@@ -11,20 +11,14 @@ function NotFoundPage({
 
   return (
     <section
-      className="mx-auto flex max-w-[560px] flex-col items-center px-6 py-24 text-center"
+      className="mx-auto flex max-w-[520px] flex-col items-center px-6 py-20 text-center"
       role="alert"
     >
-      <span
-        className="mb-6 flex size-16 items-center justify-center rounded-2xl border border-app-border bg-app-surface text-3xl"
-        aria-hidden="true"
-      >
-        🐾
-      </span>
-      <h1 className="mb-3 text-2xl font-bold sm:text-3xl">{title}</h1>
-      <p className="mb-8 text-sm leading-7 text-app-text-muted">
+      <h1 className="mb-2 text-xl font-bold">{title}</h1>
+      <p className="mb-6 text-sm leading-7 text-app-text-muted">
         {description}
       </p>
-      <Link className="app-btn app-btn-primary app-btn-md" to={to}>
+      <Link className="app-btn app-btn-outline app-btn-sm" to={to}>
         {linkLabel}
       </Link>
     </section>

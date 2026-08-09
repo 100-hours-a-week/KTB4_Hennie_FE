@@ -40,10 +40,8 @@ function NotificationItem({
   const content = (
     <>
       <span
-        className={`size-2 shrink-0 rounded-full ${
-          isUnread
-            ? 'bg-app-primary ring-4 ring-app-primary/20'
-            : 'bg-transparent'
+        className={`hidden size-1.5 shrink-0 rounded-full sm:block ${
+          isUnread ? 'bg-app-primary' : 'bg-transparent'
         }`}
         aria-hidden="true"
       />
@@ -63,8 +61,8 @@ function NotificationItem({
           )}
         </div>
         <p
-          className={`mt-1.5 text-sm leading-6 ${
-            isUnread ? 'text-app-text' : 'text-app-text-muted'
+          className={`mt-1 text-sm leading-[1.6] ${
+            isUnread ? 'font-medium text-app-text' : 'text-app-text-muted'
           }`}
         >
           {notification.message}
@@ -75,13 +73,13 @@ function NotificationItem({
 
   return (
     <li
-      className={`flex items-center gap-4 border-b border-app-border px-4 py-4 transition-colors last:border-b-0 hover:bg-app-surface-raised/50 sm:px-5 ${
-        isUnread ? 'bg-app-primary/[0.05]' : ''
+      className={`flex items-center gap-3 border-b border-app-border py-3.5 pr-3 pl-3 transition-colors hover:bg-app-surface sm:pl-4 ${
+        isUnread ? 'border-l-2 border-l-app-primary pl-[10px] sm:pl-[14px]' : ''
       }`}
     >
       {targetPath ? (
         <Link
-          className="flex min-w-0 flex-1 items-center gap-3.5 rounded-lg"
+          className="flex min-w-0 flex-1 items-center gap-3 rounded-sm"
           to={targetPath}
           onClick={handleNotificationClick}
         >
@@ -93,7 +91,7 @@ function NotificationItem({
 
       {isUnread && (
         <button
-          className="app-btn app-btn-outline app-btn-xs"
+          className="app-action shrink-0"
           type="button"
           disabled={isPending}
           onClick={() => onMarkAsRead(notification.id)}

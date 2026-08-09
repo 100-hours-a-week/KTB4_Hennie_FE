@@ -12,10 +12,10 @@ function NotificationList({
 }) {
   return (
     <>
-      <p className="mb-3 text-right text-xs text-app-text-subtle">
+      <p className="mb-2 text-right text-xs text-app-text-subtle">
         전체 {pagination.totalCount}개 · 안 읽음 {unreadCount}개
       </p>
-      <ul className="app-card overflow-hidden" aria-label="알림 목록">
+      <ul className="app-list" aria-label="알림 목록">
         {notifications.map((notification) => (
           <NotificationItem
             key={notification.id}
@@ -30,7 +30,7 @@ function NotificationList({
       {pagination.hasNext && (
         <div className="mt-6 text-center">
           <button
-            className="app-btn app-btn-outline app-btn-md"
+            className="app-btn app-btn-outline app-btn-sm"
             type="button"
             disabled={isLoadingNext}
             onClick={onLoadNextPage}

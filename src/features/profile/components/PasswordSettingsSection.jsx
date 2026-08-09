@@ -23,15 +23,15 @@ function PasswordSettingsSection() {
 
   return (
     <section
-      className="app-panel scroll-mt-20"
+      className="scroll-mt-24"
       id="password"
       aria-labelledby="password-settings-title"
     >
-      <div className="app-panel-header">
-        <h2 className="app-panel-title" id="password-settings-title">
+      <div className="app-section-header">
+        <h2 className="app-section-title" id="password-settings-title">
           비밀번호 변경
         </h2>
-        <p className="app-panel-description">
+        <p className="app-section-description">
           현재 비밀번호를 확인한 후 새 비밀번호로 변경합니다.
         </p>
       </div>

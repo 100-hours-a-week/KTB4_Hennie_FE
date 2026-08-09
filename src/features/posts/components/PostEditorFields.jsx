@@ -37,9 +37,9 @@ function PostEditorFields({
       </div>
 
       <div className="flex flex-col gap-2">
-        <div className="flex flex-col overflow-hidden rounded-2xl border border-app-border bg-app-surface shadow-card transition-colors duration-150 focus-within:border-app-primary/45">
+        <div className="flex flex-col overflow-hidden rounded-md border border-app-border bg-app-surface transition-colors duration-100 focus-within:border-app-border-strong">
           <input
-            className="border-b border-app-border bg-transparent p-5 text-[22px] font-bold text-app-text placeholder:font-normal placeholder:text-app-text-subtle focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 sm:text-[26px]"
+            className="border-b border-app-border bg-transparent p-4 text-lg font-bold text-app-text placeholder:font-normal placeholder:text-app-text-subtle focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 sm:text-xl"
             id="title"
             name="title"
             type="text"
@@ -50,7 +50,7 @@ function PostEditorFields({
             onChange={onTitleChange}
           />
           <textarea
-            className="min-h-[420px] resize-y bg-transparent p-5 text-[15px] leading-[1.85] text-app-text placeholder:text-app-text-subtle focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+            className="min-h-[420px] resize-y bg-transparent p-4 text-[15px] leading-[1.8] text-app-text placeholder:text-app-text-subtle focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
             id="content"
             name="content"
             placeholder="내용을 입력하세요."

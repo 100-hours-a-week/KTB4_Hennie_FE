@@ -8,7 +8,7 @@ function PostList({ posts }) {
   const isEmpty = Array.isArray(posts) && posts.length === 0
 
   return (
-    <ul className="flex flex-col gap-3" aria-label={`${POST_LIST_LABEL} 목록`}>
+    <ul className="app-list" aria-label={`${POST_LIST_LABEL} 목록`}>
       {isEmpty && <EmptyListMessage label={POST_LIST_LABEL} />}
 
       {postItems.map((post) => (
