@@ -13,6 +13,17 @@ export function useTechArticleList(enterprise) {
   const loadPage = useCallback(
     async (page, { append }) => {
       requestControllerRef.current?.abort()
+
+      if (!enterprise) {
+        requestControllerRef.current = null
+        setArticles([])
+        setCurrentPage(0)
+        setIsLoading(false)
+        setHasNextPage(false)
+        setError('')
+        return
+      }
+
       const controller = new AbortController()
       requestControllerRef.current = controller
 

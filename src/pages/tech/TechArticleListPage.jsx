@@ -1,24 +1,32 @@
 import { useEffect, useRef } from 'react'
-import { useParams } from 'react-router'
+import { Navigate, useParams } from 'react-router'
 import TechArticleList from '../../features/tech/components/TechArticleList'
 import TechEnterpriseHeader from '../../features/tech/components/TechEnterpriseHeader'
 import { useEnterpriseSubscription } from '../../features/tech/hook/useEnterpriseSubscription'
 import { useTechArticleList } from '../../features/tech/hook/useTechArticleList'
-import { getTechEnterprise } from '../../features/tech/utils/techEnterprises'
 import NotFoundPage from '../../shared/components/NotFoundPage'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
 import { getListStatusMessage } from '../../shared/utils/listStatusMessage'
 
 function TechArticleListPage() {
-  const { enterprise: enterpriseCode } = useParams()
-  const enterprise = getTechEnterprise(enterpriseCode)
+  const { enterpriseSlug } = useParams()
+  const {
+    getEnterpriseByCode,
+    getEnterpriseBySlug,
+    isSubscribed,
+    isSubscriptionPending,
+    toggleSubscription,
+  } = useEnterpriseSubscription()
+  const enterprise =
+    getEnterpriseBySlug(enterpriseSlug) ?? getEnterpriseByCode(enterpriseSlug)
+  const shouldRedirectToCanonicalSlug =
+    enterprise != null && enterpriseSlug !== enterprise.slug
 
   usePageTitle(enterprise ? `${enterprise.name} 기술 원문` : '기술 원문')
 
   const sentinelRef = useRef(null)
   const { articles, currentPage, error, hasNextPage, isLoading, loadNextPage } =
-    useTechArticleList(enterprise?.code)
-  const { isSubscribed, toggleSubscription } = useEnterpriseSubscription()
+    useTechArticleList(shouldRedirectToCanonicalSlug ? null : enterprise?.code)
 
   useEffect(() => {
     const sentinel = sentinelRef.current
@@ -48,6 +56,10 @@ function TechArticleListPage() {
     }
   }, [currentPage, error, hasNextPage, isLoading, loadNextPage])
 
+  if (shouldRedirectToCanonicalSlug) {
+    return <Navigate to={`/tech-enterprises/${enterprise.slug}`} replace />
+  }
+
   if (!enterprise) {
     return (
       <NotFoundPage
@@ -72,6 +84,11 @@ function TechArticleListPage() {
       <TechEnterpriseHeader
         enterprise={enterprise}
         isSubscribed={isSubscribed(enterprise.code)}
+        isSubscriptionPending={isSubscriptionPending(enterprise.code)}
+        subscriptionDisabled={
+          enterprise.id == null ||
+          (!isSubscribed(enterprise.code) && enterprise.isActive !== true)
+        }
         onToggleSubscription={toggleSubscription}
       />
 

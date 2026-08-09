@@ -14,30 +14,35 @@ export const COMMENT_MAX_LENGTH = 3000
 export const TECH_ENTERPRISES = [
   {
     code: 'KAKAO',
+    slug: 'KAKAO',
     name: '카카오',
     logoUrl: '/assets/enterprise/enterprise_kakao.png',
     href: 'https://tech.kakao.com',
   },
   {
     code: 'NAVER_D2',
+    slug: 'NAVERD2',
     name: '네이버 D2',
     logoUrl: '/assets/enterprise/enterprise_naver_d2.png',
     href: 'https://d2.naver.com',
   },
   {
     code: 'TOSS',
+    slug: 'TOSS',
     name: '토스',
     logoUrl: '/assets/enterprise/enterprise_toss.png',
     href: 'https://toss.tech',
   },
   {
     code: 'WOOWA',
+    slug: 'WOOWA',
     name: '우아한형제들',
     logoUrl: '/assets/enterprise/enterprise_woowa.png',
     href: 'https://techblog.woowahan.com',
   },
   {
     code: 'DAANGN',
+    slug: 'DAANGN',
     name: '당근',
     logoUrl: '/assets/enterprise/enterprise_daangn.png',
     href: 'https://medium.com/daangn',
@@ -67,4 +72,11 @@ export const PWD_EMPTY_ERRORS = {
   currentPassword: '',
   newPassword: '',
   passwordConfirm: '',
+}
+export const NOTIFICATION_PAGE_SIZE = 20
+export const NOTIFICATION_TYPE_LABEL = {
+  POST_COMMENT: '게시글 댓글',
+  COMMENT_REPLY: '댓글 답글',
+  REPLY_REPLY: '답글',
+  SUBSCRIBED_ENTERPRISE_ARTICLE: '기업 기술 원문',
 }

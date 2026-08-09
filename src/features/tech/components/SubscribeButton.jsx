@@ -17,6 +17,7 @@ const SIZE_CLASS = {
 function SubscribeButton({
   enterpriseName,
   isSubscribed = false,
+  isPending = false,
   disabled = false,
   compact = false,
   className = '',
@@ -29,9 +30,9 @@ function SubscribeButton({
     <button
       className={`${BASE_CLASS} ${size} ${state} ${className}`}
       type="button"
-      aria-label={`${enterpriseName} 구독`}
+      aria-label={`${enterpriseName} ${isSubscribed ? '구독 취소' : '구독'}`}
       aria-pressed={isSubscribed}
-      disabled={disabled}
+      disabled={disabled || isPending}
       onClick={onToggle}
     >
       {isSubscribed ? (
@@ -39,7 +40,9 @@ function SubscribeButton({
       ) : (
         <BellIcon className="size-4" />
       )}
-      {!compact && <span>{isSubscribed ? '구독중' : '구독'}</span>}
+      {!compact && (
+        <span>{isPending ? '처리 중' : isSubscribed ? '구독중' : '구독'}</span>
+      )}
     </button>
   )
 }

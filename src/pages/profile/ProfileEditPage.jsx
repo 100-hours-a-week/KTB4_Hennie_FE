@@ -56,7 +56,7 @@ function ProfileEditPage() {
   return (
     <section className="flex min-h-[calc(100vh-5rem)] justify-center px-6 py-8">
       <div className="flex w-full max-w-[400px] flex-col gap-6">
-        <h1 className="text-center text-2xl font-bold">회원정보수정</h1>
+        <h1 className="text-center text-2xl font-bold">회원정보 수정</h1>
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2">

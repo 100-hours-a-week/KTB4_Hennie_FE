@@ -5,6 +5,8 @@ import TechEnterpriseLogo from './TechEnterpriseLogo'
 function TechEnterpriseHeader({
   enterprise,
   isSubscribed = false,
+  isSubscriptionPending = false,
+  subscriptionDisabled = false,
   onToggleSubscription,
 }) {
   return (
@@ -28,6 +30,8 @@ function TechEnterpriseHeader({
           className="w-[88px]"
           enterpriseName={enterprise.name}
           isSubscribed={isSubscribed}
+          isPending={isSubscriptionPending}
+          disabled={subscriptionDisabled}
           onToggle={() => onToggleSubscription?.(enterprise.code)}
         />
 

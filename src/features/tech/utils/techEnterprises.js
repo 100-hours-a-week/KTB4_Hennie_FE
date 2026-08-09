@@ -10,7 +10,9 @@ export const TECH_ENTERPRISE_SECTIONS = [
 ]
 
 export const getTechEnterprise = (code) =>
-  TECH_ENTERPRISES.find((enterprise) => enterprise.code === code) ?? null
+  TECH_ENTERPRISES.find(
+    (enterprise) => enterprise.code === code || enterprise.slug === code,
+  ) ?? null
 
 export const getTechEnterpriseName = (code) =>
   getTechEnterprise(code)?.name ?? ''

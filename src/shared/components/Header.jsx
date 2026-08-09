@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
+import { useNotification } from '../../features/notification/hook/useNotification'
 import { BellIcon, ChevronDownIcon, PawIcon } from './IconsList'
 import { APP_NAME, DEFAULT_PROFILE_PATH, LOGO_PATH } from '../utils/constants'
 
@@ -10,6 +11,7 @@ const MENU_ITEM_CLASS =
 
 function Header({ currentUser = null, onLogout }) {
   const { pathname } = useLocation()
+  const { unreadCount } = useNotification()
   const profileMenuRef = useRef(null)
   const [openPathname, setOpenPathname] = useState(null)
 
@@ -124,11 +126,23 @@ function Header({ currentUser = null, onLogout }) {
                 : 'text-app-text-muted hover:text-app-text'
             }`}
             to="/notifications"
-            aria-label="알림 센터"
+            aria-label={
+              unreadCount > 0
+                ? `알림 센터, 읽지 않은 알림 ${unreadCount}개`
+                : '알림 센터'
+            }
             aria-current={pathname === '/notifications' ? 'page' : undefined}
             onClick={closeMenu}
           >
             <BellIcon className="size-5" />
+            {unreadCount > 0 && (
+              <span
+                className="absolute top-1 right-0 flex min-w-4 items-center justify-center rounded-full bg-app-error px-1 text-[10px] leading-4 font-bold text-white"
+                aria-hidden="true"
+              >
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
+            )}
           </Link>
 
           <div
