@@ -29,8 +29,7 @@ function TechEnterprisePage() {
           부서가 남긴 기술{' '}
           <strong className="font-bold text-app-primary">발자국</strong>을 따라
           <br />
-          <strong className="font-bold text-app-text">원문</strong>을
-          읽어보세요
+          <strong className="font-bold text-app-text">원문</strong>을 읽어보세요
         </p>
       </div>
 
