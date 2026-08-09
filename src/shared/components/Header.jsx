@@ -89,36 +89,40 @@ function Header({ currentUser = null, onLogout }) {
         </Link>
       )}
 
-      <nav
-        className="flex min-w-0 items-center min-[360px]:ml-1 sm:ml-4"
-        aria-label="주요 메뉴"
-      >
-        <Link
-          className={`${NAV_LINK_CLASS} ${
-            pathname === '/posts'
-              ? NAV_LINK_ACTIVE_CLASS
-              : NAV_LINK_INACTIVE_CLASS
-          }`}
-          to="/posts"
-          onClick={closeMenu}
+      {showProfile && (
+        <nav
+          className="flex min-w-0 items-center min-[360px]:ml-1 sm:ml-4"
+          aria-label="주요 메뉴"
         >
-          개발 토론
-        </Link>
-      </nav>
+          <Link
+            className={`${NAV_LINK_CLASS} ${
+              pathname === '/posts'
+                ? NAV_LINK_ACTIVE_CLASS
+                : NAV_LINK_INACTIVE_CLASS
+            }`}
+            to="/posts"
+            onClick={closeMenu}
+          >
+            개발 토론
+          </Link>
+        </nav>
+      )}
 
-      <nav className="flex min-w-0 items-center" aria-label="주요 메뉴">
-        <Link
-          className={`${NAV_LINK_CLASS} ${
-            pathname === '/tech-enterprises'
-              ? NAV_LINK_ACTIVE_CLASS
-              : NAV_LINK_INACTIVE_CLASS
-          }`}
-          to="/tech-enterprises"
-          onClick={closeMenu}
-        >
-          기술 원문
-        </Link>
-      </nav>
+      {showProfile && (
+        <nav className="flex min-w-0 items-center" aria-label="주요 메뉴">
+          <Link
+            className={`${NAV_LINK_CLASS} ${
+              pathname === '/tech-enterprises'
+                ? NAV_LINK_ACTIVE_CLASS
+                : NAV_LINK_INACTIVE_CLASS
+            }`}
+            to="/tech-enterprises"
+            onClick={closeMenu}
+          >
+            기술 원문
+          </Link>
+        </nav>
+      )}
 
       {showProfile && currentUser && (
         <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-2">
