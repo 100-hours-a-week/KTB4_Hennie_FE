@@ -1,32 +1,84 @@
 @import 'tailwindcss';
 
+/*
+ * 개발바닥 디자인 토큰
+ * 방향: 따뜻한 다크 캔버스 + 앰버(발바닥) 포인트 컬러.
+ * 귀엽지만 정보 밀도가 높은 기술 토론 서비스에 맞게 대비와 여백을 정리했습니다.
+ */
 @theme {
-  --color-app-bg: #16171a;
-  --color-app-surface: #1f2124;
-  --color-app-surface-raised: #26282c;
-  --color-app-primary: #b4744a;
-  --color-app-primary-hover: #c5895d;
-  --color-app-text: #e9eaec;
-  --color-app-text-muted: #9ba0a6;
-  --color-app-border: #2c2f34;
-  --color-app-error: #e5575b;
-  --shadow-dropdown: 0 6px 20px rgb(0 0 0 / 50%);
+  /* 배경 · 표면 (아래에서 위로 갈수록 밝아지는 단일 계단) */
+  --color-app-bg: #121216;
+  --color-app-bg-sunken: #0e0e11;
+  --color-app-surface: #1a1a20;
+  --color-app-surface-raised: #24242c;
+  --color-app-surface-hover: #2b2b35;
+
+  /* 경계선 */
+  --color-app-border: #2a2a33;
+  --color-app-border-strong: #3b3b47;
+
+  /* 텍스트 (모두 표면 대비 4.5:1 이상) */
+  --color-app-text: #f3f1ef;
+  --color-app-text-muted: #a7a5b0;
+  --color-app-text-subtle: #7b7986;
+
+  /* 브랜드 포인트 */
+  --color-app-primary: #f5a45c;
+  --color-app-primary-hover: #ffb87a;
+  --color-app-primary-strong: #e08c3f;
+  --color-app-primary-ink: #2b1806;
+
+  /* 상태 */
+  --color-app-error: #ff8080;
+  --color-app-error-ink: #2b0c0c;
+  --color-app-success: #6fdca4;
+
+  /* 그림자 */
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 35%);
+  --shadow-card-hover: 0 12px 28px -14px rgb(0 0 0 / 80%);
+  --shadow-dropdown: 0 16px 40px -12px rgb(0 0 0 / 75%);
+  --shadow-modal: 0 32px 64px -24px rgb(0 0 0 / 85%);
+  --shadow-sticky: 0 -1px 24px -8px rgb(0 0 0 / 70%);
+
+  /* 타이포 */
+  --font-sans:
+    Pretendard, Pretendard Variable, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
 }
 
 @layer base {
+  html {
+    scrollbar-color: var(--color-app-border-strong) transparent;
+  }
+
   body {
     min-width: 320px;
     min-height: 100vh;
     background-color: var(--color-app-bg);
     color: var(--color-app-text);
-    font-family:
-      Pretendard,
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      Roboto,
-      sans-serif;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: -0.011em;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.025em;
+  }
+
+  ::selection {
+    background-color: color-mix(
+      in srgb,
+      var(--color-app-primary) 32%,
+      transparent
+    );
+    color: var(--color-app-text);
   }
 
   button,
@@ -43,5 +95,194 @@
   button:disabled,
   select:disabled {
     cursor: not-allowed;
+  }
+
+  /* 프로젝트 전역 기본 포커스 링 (개별 유틸리티가 덮어쓸 수 있도록 0 특이도) */
+  :where(
+    a,
+    button,
+    input,
+    select,
+    textarea,
+    summary,
+    [tabindex]
+  ):focus-visible {
+    outline: 2px solid var(--color-app-primary);
+    outline-offset: 2px;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* ---------- 버튼 ---------- */
+  .app-btn {
+    @apply inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg font-semibold whitespace-nowrap transition-[background-color,border-color,color,box-shadow] duration-150 disabled:cursor-not-allowed;
+  }
+
+  .app-btn-primary {
+    @apply border border-transparent bg-app-primary text-app-primary-ink hover:bg-app-primary-hover active:bg-app-primary-strong disabled:border-app-border disabled:bg-app-surface-raised disabled:text-app-text-subtle;
+  }
+
+  .app-btn-outline {
+    @apply border border-app-border-strong bg-app-surface text-app-text-muted hover:border-app-primary/45 hover:bg-app-surface-raised hover:text-app-text disabled:opacity-50 disabled:hover:border-app-border-strong disabled:hover:bg-app-surface disabled:hover:text-app-text-muted;
+  }
+
+  .app-btn-ghost {
+    @apply border border-transparent text-app-text-muted hover:bg-app-surface-raised hover:text-app-text disabled:opacity-50;
+  }
+
+  .app-btn-danger {
+    @apply border border-app-error/30 bg-app-error/12 text-app-error hover:border-app-error/50 hover:bg-app-error/20 disabled:opacity-50;
+  }
+
+  .app-btn-lg {
+    @apply h-13 px-6 text-base;
+  }
+
+  .app-btn-md {
+    @apply h-11 px-5 text-sm;
+  }
+
+  .app-btn-sm {
+    @apply h-9 px-3.5 text-[13px];
+  }
+
+  .app-btn-xs {
+    @apply h-8 px-3 text-xs;
+  }
+
+  /* ---------- 표면 ---------- */
+  .app-card {
+    @apply rounded-2xl border border-app-border bg-app-surface shadow-card;
+  }
+
+  .app-card-interactive {
+    @apply transition-[background-color,border-color,box-shadow,transform] duration-150 hover:border-app-border-strong hover:bg-app-surface-raised hover:shadow-card-hover md:hover:-translate-y-px;
+  }
+
+  .app-panel {
+    @apply rounded-2xl border border-app-border bg-app-surface p-5 sm:p-7;
+  }
+
+  .app-panel-header {
+    @apply mb-6 border-b border-app-border pb-4;
+  }
+
+  .app-panel-title {
+    @apply text-lg font-bold text-app-text;
+  }
+
+  .app-panel-description {
+    @apply mt-1 text-sm text-app-text-muted;
+  }
+
+  /* ---------- 라벨 · 뱃지 ---------- */
+  .app-chip {
+    @apply inline-flex shrink-0 items-center justify-center rounded-full border border-app-primary/25 bg-app-primary/12 px-2.5 py-0.5 text-[11px] font-bold tracking-wide text-app-primary;
+  }
+
+  .app-chip-neutral {
+    @apply inline-flex shrink-0 items-center justify-center rounded-full border border-app-border bg-app-surface-raised px-2.5 py-0.5 text-[11px] font-semibold text-app-text-muted;
+  }
+
+  /* ---------- 폼 ---------- */
+  .app-input {
+    @apply h-12 w-full rounded-lg border border-app-border-strong bg-app-bg-sunken px-3.5 text-sm text-app-text transition-[border-color,background-color] duration-150 placeholder:text-app-text-subtle focus:border-app-primary focus:bg-app-surface focus:outline-none disabled:cursor-not-allowed disabled:bg-app-surface-raised disabled:text-app-text-subtle read-only:cursor-not-allowed read-only:border-app-border read-only:bg-app-surface-raised read-only:text-app-text-muted;
+  }
+
+  .app-select {
+    @apply h-12 w-full appearance-none rounded-lg border border-app-border-strong bg-app-bg-sunken bg-no-repeat pr-10 pl-3.5 text-sm text-app-text transition-[border-color,background-color] duration-150 focus:border-app-primary focus:outline-none disabled:cursor-not-allowed disabled:bg-app-surface-raised disabled:text-app-text-subtle;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a7a5b0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 0.75rem center;
+    background-size: 1.125rem;
+  }
+
+  .app-input-invalid {
+    @apply border-app-error focus:border-app-error;
+  }
+
+  .app-field-label {
+    @apply text-[13px] font-semibold text-app-text-muted;
+  }
+
+  /* ---------- 상태 표시 ---------- */
+  .app-alert-error {
+    @apply flex flex-wrap items-center justify-between gap-3 rounded-xl border border-app-error/35 bg-app-error/10 px-4 py-3;
+  }
+
+  .app-empty {
+    @apply rounded-2xl border border-dashed border-app-border bg-app-surface/40 px-6 py-14 text-center text-sm text-app-text-muted;
+  }
+
+  /* 로딩 문구 앞의 회전하는 발바닥 인디케이터 */
+  .app-loading {
+    @apply inline-flex items-center justify-center gap-2.5 text-sm text-app-text-muted;
+  }
+
+  .app-loading::before {
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    border: 2px solid
+      color-mix(in srgb, var(--color-app-primary) 25%, transparent);
+    border-top-color: var(--color-app-primary);
+    animation: app-spin 0.7s linear infinite;
+  }
+
+  /* 무한 스크롤 감지 영역 겸 상태 문구 (관찰 대상이라 항상 높이를 유지) */
+  .app-list-status {
+    @apply flex min-h-12 items-center justify-center px-4 py-6 text-center text-sm text-app-text-muted;
+  }
+
+  /* ---------- 히어로 ---------- */
+  .app-hero {
+    @apply relative overflow-hidden rounded-2xl border border-app-border px-6 py-9 text-center sm:px-10 sm:py-11;
+    background-image:
+      radial-gradient(
+        120% 120% at 50% -30%,
+        color-mix(in srgb, var(--color-app-primary) 12%, transparent) 0%,
+        transparent 62%
+      ),
+      linear-gradient(
+        180deg,
+        var(--color-app-surface) 0%,
+        var(--color-app-bg) 100%
+      );
+  }
+
+  .app-hero::after {
+    content: '';
+    position: absolute;
+    inset-block-end: -0.75rem;
+    inset-inline-end: -0.5rem;
+    width: 7.5rem;
+    height: 7.5rem;
+    opacity: 0.06;
+    transform: rotate(-18deg);
+    background-color: var(--color-app-primary);
+    mask-image: url('/assets/paw.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    pointer-events: none;
+  }
+}
+
+@keyframes app-spin {
+  to {
+    transform: rotate(360deg);
   }
 }

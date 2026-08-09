@@ -19,12 +19,12 @@ function ReplyThread({
   return (
     <section
       id={`reply-thread-${comment.id}`}
-      className="ml-[43px] mt-1 overflow-hidden rounded-lg border border-[#3a3e44] bg-app-surface"
+      className="mt-1.5 ml-11 overflow-hidden rounded-2xl border border-app-border bg-app-surface"
       aria-label={`${comment.authorNickname}님의 댓글에 달린 답글`}
     >
-      <header className="flex items-center gap-2 border-b border-app-border bg-app-surface-raised px-4 py-2 text-xs text-app-text-muted">
+      <header className="flex items-center gap-2 border-b border-app-border bg-app-surface-raised px-4 py-2.5 text-xs text-app-text-muted">
         <span>
-          <strong className="font-medium text-app-text">
+          <strong className="font-semibold text-app-text">
             {comment.authorNickname}
           </strong>
           님의 댓글에 달린 답글
@@ -41,7 +41,7 @@ function ReplyThread({
       />
 
       {editor && (
-        <div className="border-t border-app-border bg-app-surface-raised/30 p-3">
+        <div className="border-t border-app-border bg-app-surface-raised/40 p-3">
           <CommentForm
             inputRef={inputRef}
             inputId={`reply-${comment.id}`}

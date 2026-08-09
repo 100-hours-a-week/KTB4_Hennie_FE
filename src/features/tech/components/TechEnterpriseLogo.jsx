@@ -1,7 +1,7 @@
 function TechEnterpriseLogo({ enterprise, className = 'size-12 p-1.5' }) {
   return (
     <span
-      className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ${className}`}
+      className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-1 ring-app-border ${className}`}
     >
       <img
         className="size-full object-contain"

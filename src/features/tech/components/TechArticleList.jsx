@@ -9,7 +9,7 @@ function TechArticleList({ articles }) {
 
   return (
     <ul
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-3"
       aria-label={`${TECH_ARTICLE_LIST_LABEL} 목록`}
     >
       {isEmpty && <EmptyListMessage label={TECH_ARTICLE_LIST_LABEL} />}

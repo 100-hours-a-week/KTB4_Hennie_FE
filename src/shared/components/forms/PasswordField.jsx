@@ -17,7 +17,7 @@ function PasswordField(fieldProps) {
       type={isPasswordVisible ? 'text' : 'password'}
       endAdornment={
         <button
-          className="rounded-sm p-1.5 text-app-primary hover:bg-app-primary/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+          className="flex size-8 items-center justify-center rounded-lg text-app-text-muted transition-colors hover:bg-app-surface-hover hover:text-app-primary"
           type="button"
           aria-label={`비밀번호 ${toggleLabel}`}
           aria-pressed={isPasswordVisible}

@@ -17,11 +17,11 @@ function LoginPage() {
   } = useLogin()
 
   return (
-    <section className="flex min-h-[calc(100vh-5rem)] items-start justify-center px-6 py-8">
-      <div className="mt-8 flex w-full max-w-[400px] flex-col gap-6 rounded-lg border border-app-border bg-app-surface p-8 shadow-lg">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl leading-tight font-bold">로그인</h1>
-          <p className="text-base text-app-text-muted">
+    <section className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12 sm:px-6">
+      <div className="flex w-full max-w-[420px] flex-col gap-6 rounded-2xl border border-app-border bg-app-surface p-7 shadow-modal sm:p-9">
+        <div className="flex flex-col gap-1.5">
+          <h1 className="text-[28px] leading-tight font-bold">로그인</h1>
+          <p className="text-sm text-app-text-muted">
             개발이 남긴 발자국을 따라가다
           </p>
         </div>
@@ -51,23 +51,23 @@ function LoginPage() {
           />
 
           <button
-            className="mt-2 h-[52px] w-full rounded-full bg-app-primary text-lg font-bold text-white transition-colors hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+            className="app-btn app-btn-primary app-btn-lg mt-1 w-full text-base"
             type="submit"
           >
             로그인
           </button>
         </form>
 
-        <div className="flex items-center gap-3 text-sm text-app-text-muted">
+        <div className="flex items-center gap-3 text-xs text-app-text-subtle">
           <span className="h-px flex-1 bg-app-border" aria-hidden="true" />
           <span>또는</span>
           <span className="h-px flex-1 bg-app-border" aria-hidden="true" />
         </div>
 
-        <p className="text-center text-base text-app-text-muted">
+        <p className="text-center text-sm text-app-text-muted">
           아직 개발바닥 회원이 아니신가요?{' '}
           <Link
-            className="font-bold text-app-primary hover:underline focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+            className="rounded-sm font-bold text-app-primary hover:underline"
             to="/users/signup"
           >
             회원가입

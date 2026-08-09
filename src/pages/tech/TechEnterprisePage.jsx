@@ -22,24 +22,23 @@ function TechEnterprisePage() {
   }
 
   return (
-    <div className="mx-auto max-w-[1200px] px-6 pt-8 pb-24">
+    <div className="mx-auto max-w-[960px] px-4 pt-6 pb-24 sm:px-6 sm:pt-10">
       <div className="mb-10">
-        <p className="mb-6 text-center text-base leading-[1.6]">
-          기업 <strong className="font-bold">개발</strong> 부서가 남긴 기술{' '}
-          <strong className="font-bold">발자국</strong>을 따라
+        <p className="app-hero text-base leading-[1.75] font-medium text-app-text-muted sm:text-lg">
+          기업 <strong className="font-bold text-app-primary">개발</strong>{' '}
+          부서가 남긴 기술{' '}
+          <strong className="font-bold text-app-primary">발자국</strong>을 따라
           <br />
-          <strong className="font-bold">원문</strong>을 읽어보세요...🐾
+          <strong className="font-bold text-app-text">원문</strong>을
+          읽어보세요
         </p>
       </div>
 
       {enterpriseError && (
-        <div
-          className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-app-error/40 bg-app-error/10 px-4 py-3"
-          role="alert"
-        >
+        <div className="app-alert-error mb-6" role="alert">
           <p className="text-sm text-app-error">{enterpriseError}</p>
           <button
-            className="shrink-0 text-xs font-medium text-app-text underline hover:text-white"
+            className="app-btn app-btn-outline app-btn-xs"
             type="button"
             onClick={refreshEnterprises}
           >
@@ -56,11 +55,7 @@ function TechEnterprisePage() {
       />
 
       {isLoadingEnterprises && (
-        <p
-          className="mt-5 text-center text-xs text-app-text-muted"
-          role="status"
-          aria-live="polite"
-        >
+        <p className="app-list-status mt-5" role="status" aria-live="polite">
           기업 정보를 불러오는 중입니다.
         </p>
       )}

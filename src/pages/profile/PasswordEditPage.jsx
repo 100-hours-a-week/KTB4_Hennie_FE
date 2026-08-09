@@ -24,8 +24,8 @@ function PasswordEditPage() {
   } = usePasswordEdit({ getPasswordErrorMessage })
 
   return (
-    <section className="flex min-h-[calc(100vh-5rem)] justify-center px-6 py-8">
-      <div className="flex w-full max-w-[400px] flex-col gap-6">
+    <section className="flex min-h-[calc(100vh-4rem)] justify-center px-4 py-10 sm:px-6">
+      <div className="flex w-full max-w-[420px] flex-col gap-6 rounded-2xl border border-app-border bg-app-surface p-7 shadow-card sm:p-9">
         <h1 className="text-center text-2xl font-bold">비밀번호 수정</h1>
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -66,7 +66,7 @@ function PasswordEditPage() {
           />
 
           <button
-            className="mt-2 h-11 w-full rounded-md bg-app-primary px-4 text-base font-medium text-white transition-colors hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+            className="app-btn app-btn-primary app-btn-md mt-2 w-full"
             type="submit"
           >
             수정하기

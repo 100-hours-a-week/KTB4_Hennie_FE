@@ -23,8 +23,8 @@ function NotificationPage() {
   const hasNotifications = notifications.length > 0
 
   return (
-    <section className="mx-auto w-full max-w-[720px] px-6 py-8 pb-24">
-      <header className="mb-6 flex items-end justify-between gap-4 border-b border-app-border pb-5">
+    <section className="mx-auto w-full max-w-[760px] px-4 py-8 pb-24 sm:px-6 sm:py-10">
+      <header className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-app-border pb-5">
         <div>
           <h1 className="text-2xl font-bold sm:text-3xl">알림 센터</h1>
           <p className="mt-2 text-sm text-app-text-muted">
@@ -33,7 +33,7 @@ function NotificationPage() {
         </div>
 
         <button
-          className="shrink-0 rounded-md border border-app-border px-3 py-2 text-xs font-medium text-app-text-muted transition-colors hover:border-app-primary/50 hover:text-app-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary disabled:opacity-50"
+          className="app-btn app-btn-outline app-btn-sm"
           type="button"
           disabled={unreadCount === 0 || isMarkingAllRead}
           onClick={markAllAsRead}
@@ -43,13 +43,10 @@ function NotificationPage() {
       </header>
 
       {error && (
-        <div
-          className="mb-4 flex items-center justify-between gap-4 rounded-lg border border-app-error/40 bg-app-error/10 px-4 py-3"
-          role="alert"
-        >
+        <div className="app-alert-error mb-4" role="alert">
           <p className="text-sm text-app-error">{error}</p>
           <button
-            className="shrink-0 text-xs font-medium text-app-text underline hover:text-white"
+            className="app-btn app-btn-outline app-btn-xs"
             type="button"
             onClick={refresh}
           >
@@ -70,8 +67,10 @@ function NotificationPage() {
           onMarkAsRead={markAsRead}
         />
       ) : (
-        <div className="rounded-xl px-6 py-14 text-center">
-          <h2 className="text-base font-bold">새로운 알림이 없습니다.</h2>
+        <div className="app-empty">
+          <h2 className="text-base font-bold text-app-text">
+            새로운 알림이 없습니다.
+          </h2>
         </div>
       )}
     </section>

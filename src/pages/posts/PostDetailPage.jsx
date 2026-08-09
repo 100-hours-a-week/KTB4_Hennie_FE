@@ -192,34 +192,38 @@ function PostDetailPage() {
   const postDate = post.createdAt || post.modifiedAt
 
   return (
-    <section className="mx-auto max-w-[720px] px-6 py-8">
+    <section className="mx-auto max-w-[760px] px-4 py-8 sm:px-6 sm:py-10">
       <article>
-        <header className="mb-4 flex items-start justify-between gap-4">
+        <header className="mb-6 flex items-start justify-between gap-4 border-b border-app-border pb-6">
           <div className="min-w-0">
-            <div className="mb-2 flex items-center gap-2">
+            <div className="mb-3 flex flex-col items-start gap-2.5">
               {getPostCategoryLabel(post.category) && (
-                <span className="inline-flex h-8 shrink-0 items-center justify-center rounded-md bg-app-surface-raised px-3 text-xs font-medium text-app-primary">
+                <span className="app-chip">
                   {getPostCategoryLabel(post.category)}
                 </span>
               )}
-              <h1 className="min-w-0 text-2xl font-bold break-words">
+              <h1 className="min-w-0 text-2xl leading-[1.35] font-bold break-words sm:text-3xl">
                 {post.title}
               </h1>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 text-xs text-app-text-muted">
-              <span className="size-[35px] shrink-0 overflow-hidden rounded-full bg-app-surface-raised">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-app-text-muted">
+              <span className="size-8 shrink-0 overflow-hidden rounded-full bg-app-surface-raised ring-1 ring-app-border">
                 <img
                   className="size-full object-cover"
                   src={post.authorProfileUrl}
                   alt="작성자"
                 />
               </span>
-              <span>{post.authorNickname}</span>
+              <span className="font-medium text-app-text">
+                {post.authorNickname}
+              </span>
               {postDate && (
                 <time dateTime={postDate}>{formatDate(postDate)}</time>
               )}
-              {post.edited && <span>(수정됨)</span>}
+              {post.edited && (
+                <span className="text-app-text-subtle">(수정됨)</span>
+              )}
             </div>
           </div>
 
@@ -227,13 +231,13 @@ function PostDetailPage() {
             {canManagePost ? (
               <>
                 <Link
-                  className="inline-flex h-8 items-center justify-center rounded-md border border-[#3a3e44] bg-app-surface px-3 text-xs font-medium text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text"
+                  className="app-btn app-btn-outline app-btn-xs"
                   to={`/posts/${postId}/edit`}
                 >
                   수정
                 </Link>
                 <button
-                  className="inline-flex h-8 items-center justify-center rounded-md border border-[#3a3e44] bg-app-surface px-3 text-xs font-medium text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text"
+                  className="app-btn app-btn-outline app-btn-xs"
                   type="button"
                   onClick={openDeleteModal}
                 >
@@ -242,7 +246,7 @@ function PostDetailPage() {
               </>
             ) : (
               <button
-                className="inline-flex h-8 items-center justify-center rounded-md border border-[#3a3e44] bg-app-surface px-3 text-xs font-medium text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text"
+                className="app-btn app-btn-outline app-btn-xs"
                 type="button"
                 onClick={openReportModal}
               >
@@ -252,15 +256,15 @@ function PostDetailPage() {
           </div>
         </header>
 
-        <p className="mb-4 min-h-40 whitespace-pre-wrap text-sm leading-[1.8]">
+        <p className="mb-4 min-h-24 whitespace-pre-wrap text-[15px] leading-[1.85] text-app-text">
           {post.content}
         </p>
       </article>
 
-      <section className="mt-8 border-t border-app-border pt-6">
-        <div className="mb-4 flex items-center gap-4 text-sm text-app-text-muted">
+      <section className="mt-10 border-t border-app-border pt-6">
+        <div className="mb-6 flex items-center gap-2 text-sm text-app-text-muted">
           <button
-            className={`inline-flex items-center gap-1 transition-colors disabled:cursor-wait disabled:opacity-70 ${post.liked ? 'text-app-primary hover:text-app-primary-hover' : 'hover:text-app-text'}`}
+            className={`app-btn app-btn-sm rounded-full disabled:cursor-wait ${post.liked ? 'border border-app-primary/40 bg-app-primary/12 text-app-primary hover:bg-app-primary/20' : 'app-btn-outline'}`}
             type="button"
             aria-label={post.liked ? '좋아요 취소' : '좋아요'}
             aria-pressed={post.liked}
@@ -273,14 +277,14 @@ function PostDetailPage() {
             <span>{post.likeCount}</span>
           </button>
           <span
-            className="inline-flex items-center gap-1"
+            className="inline-flex items-center gap-1.5 rounded-full px-2 text-[13px] font-medium"
             aria-label={`댓글 ${commentCount}`}
           >
             <CommentIcon className="size-[18px]" />
             <span>{commentCount}</span>
           </span>
           <span
-            className="inline-flex items-center gap-1"
+            className="inline-flex items-center gap-1.5 rounded-full px-2 text-[13px] font-medium"
             aria-label={`조회수 ${post.viewCount}`}
           >
             <ViewIcon className="size-[18px]" />
@@ -292,7 +296,7 @@ function PostDetailPage() {
           className="mb-6"
           inputRef={commentInputRef}
           value={content}
-          placeholder="이 기술에 대한 생각을 개발자국으로 남겨보세요 🐾"
+          placeholder="이 기술에 대한 생각을 개발자국으로 남겨보세요"
           isPending={isCommentSubmitting}
           submitLabel={isEditingComment ? '수정 등록' : '댓글 등록'}
           pendingLabel={isEditingComment ? '수정 중...' : '등록 중...'}
@@ -340,7 +344,7 @@ function PostDetailPage() {
           <legend className="sr-only">신고 사유</legend>
           {REPORT_REASON_OPTIONS.map((option, index) => (
             <label
-              className="flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm leading-6 text-app-text hover:bg-app-surface-raised has-disabled:cursor-not-allowed has-disabled:opacity-60"
+              className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-transparent p-2.5 text-sm leading-6 text-app-text transition-colors hover:border-app-border hover:bg-app-surface-raised has-checked:border-app-primary/40 has-checked:bg-app-primary/10 has-disabled:cursor-not-allowed has-disabled:opacity-60"
               key={option.value}
             >
               <input

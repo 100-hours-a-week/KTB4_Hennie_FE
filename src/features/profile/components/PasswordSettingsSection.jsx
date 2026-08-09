@@ -23,22 +23,22 @@ function PasswordSettingsSection() {
 
   return (
     <section
-      className="scroll-mt-28 rounded-xl border border-app-border bg-app-surface p-5 sm:p-6"
+      className="app-panel scroll-mt-20"
       id="password"
       aria-labelledby="password-settings-title"
     >
-      <div className="mb-6 border-b border-app-border pb-4">
-        <h2 className="text-lg font-bold" id="password-settings-title">
+      <div className="app-panel-header">
+        <h2 className="app-panel-title" id="password-settings-title">
           비밀번호 변경
         </h2>
-        <p className="mt-1 text-sm text-app-text-muted">
+        <p className="app-panel-description">
           현재 비밀번호를 확인한 후 새 비밀번호로 변경합니다.
         </p>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div>
-          <div className="flex flex-col gap-3">
+          <div className="flex max-w-md flex-col gap-3">
             <PasswordField
               id="my-current-password"
               label="현재 비밀번호"
@@ -82,7 +82,7 @@ function PasswordSettingsSection() {
           <div className="hidden md:block" aria-hidden="true" />
           <div className="flex justify-end">
             <button
-              className="h-11 rounded-md bg-app-primary px-6 text-sm font-medium text-white transition-colors hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary disabled:opacity-60"
+              className="app-btn app-btn-primary app-btn-md px-6"
               type="submit"
               disabled={isSaving}
             >

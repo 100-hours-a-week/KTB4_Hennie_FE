@@ -7,7 +7,15 @@ import { APP_NAME, DEFAULT_PROFILE_PATH, LOGO_PATH } from '../utils/constants'
 const NO_PROFILE_PATHS = new Set(['/users/login', '/users/signup'])
 
 const MENU_ITEM_CLASS =
-  'block w-full border-t border-app-border px-4 py-3 text-left text-sm text-app-text first:border-t-0 hover:bg-app-bg focus-visible:bg-app-bg focus-visible:outline-none'
+  'block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-app-text-muted transition-colors hover:bg-app-surface-hover hover:text-app-text focus-visible:bg-app-surface-hover focus-visible:text-app-text focus-visible:outline-none'
+
+const NAV_LINK_CLASS =
+  'block truncate rounded-full px-1.5 py-1.5 text-xs font-semibold transition-colors duration-150 sm:px-3.5 sm:py-2 sm:text-sm'
+
+const NAV_LINK_ACTIVE_CLASS = 'bg-app-primary/12 text-app-primary'
+
+const NAV_LINK_INACTIVE_CLASS =
+  'text-app-text-muted hover:bg-app-surface-raised hover:text-app-text'
 
 function Header({ currentUser = null, onLogout }) {
   const { pathname } = useLocation()
@@ -60,19 +68,19 @@ function Header({ currentUser = null, onLogout }) {
 
   const logoImage = (
     <img
-      className="h-20 w-auto object-contain"
+      className="h-7 w-auto object-contain min-[360px]:h-9 sm:h-11"
       src={LOGO_PATH}
       alt={APP_NAME}
     />
   )
 
   return (
-    <header className="sticky top-0 z-[100] flex h-20 items-center border-b border-app-border bg-app-bg/50 px-4 backdrop-blur-md sm:px-6">
+    <header className="sticky top-0 z-[100] flex h-16 items-center gap-0.5 border-b border-app-border bg-app-bg/85 px-2.5 backdrop-blur-xl sm:gap-2 sm:px-6">
       {pathname === '/users/signup' ? (
-        <span className="inline-flex items-center">{logoImage}</span>
+        <span className="inline-flex shrink-0 items-center">{logoImage}</span>
       ) : (
         <Link
-          className="inline-flex items-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+          className="inline-flex shrink-0 items-center rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-app-primary"
           to="/posts"
           aria-label={`${APP_NAME} 홈`}
           onClick={closeMenu}
@@ -81,10 +89,15 @@ function Header({ currentUser = null, onLogout }) {
         </Link>
       )}
 
-      <nav className="ml-6 flex items-center" aria-label="주요 메뉴">
+      <nav
+        className="ml-1 flex min-w-0 items-center sm:ml-4"
+        aria-label="주요 메뉴"
+      >
         <Link
-          className={`rounded-sm px-2 py-1 text-sm font-semibold transition-colors duration-150 hover:text-app-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary ${
-            pathname === '/posts' ? 'text-app-primary' : 'text-app-text'
+          className={`${NAV_LINK_CLASS} ${
+            pathname === '/posts'
+              ? NAV_LINK_ACTIVE_CLASS
+              : NAV_LINK_INACTIVE_CLASS
           }`}
           to="/posts"
           onClick={closeMenu}
@@ -93,12 +106,12 @@ function Header({ currentUser = null, onLogout }) {
         </Link>
       </nav>
 
-      <nav className="ml-6 flex items-center" aria-label="주요 메뉴">
+      <nav className="flex min-w-0 items-center" aria-label="주요 메뉴">
         <Link
-          className={`rounded-sm px-2 py-1 text-sm font-semibold transition-colors duration-150 hover:text-app-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary ${
+          className={`${NAV_LINK_CLASS} ${
             pathname === '/tech-enterprises'
-              ? 'text-app-primary'
-              : 'text-app-text'
+              ? NAV_LINK_ACTIVE_CLASS
+              : NAV_LINK_INACTIVE_CLASS
           }`}
           to="/tech-enterprises"
           onClick={closeMenu}
@@ -108,9 +121,9 @@ function Header({ currentUser = null, onLogout }) {
       </nav>
 
       {showProfile && currentUser && (
-        <div className="absolute right-4 flex items-center gap-2 sm:right-6">
+        <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-2">
           <Link
-            className="inline-flex size-10 items-center justify-center gap-1 rounded-full border border-app-text-muted px-0 text-sm font-semibold text-app-text-muted transition-colors hover:border-app-text hover:text-app-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary sm:h-9 sm:w-auto sm:px-4"
+            className="app-btn app-btn-primary size-8 rounded-full px-0 sm:size-auto sm:h-9 sm:rounded-lg sm:px-4"
             to="/posts/write"
             aria-label="의견 작성"
             onClick={closeMenu}
@@ -120,10 +133,10 @@ function Header({ currentUser = null, onLogout }) {
           </Link>
 
           <Link
-            className={`relative flex size-11 items-center justify-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary ${
+            className={`relative flex size-8 shrink-0 items-center justify-center rounded-full transition-colors duration-150 sm:size-9 ${
               pathname === '/notifications'
-                ? 'text-app-primary'
-                : 'text-app-text-muted hover:text-app-text'
+                ? 'bg-app-primary/12 text-app-primary'
+                : 'text-app-text-muted hover:bg-app-surface-raised hover:text-app-text'
             }`}
             to="/notifications"
             aria-label={
@@ -137,7 +150,7 @@ function Header({ currentUser = null, onLogout }) {
             <BellIcon className="size-5" />
             {unreadCount > 0 && (
               <span
-                className="absolute top-1 right-0 flex min-w-4 items-center justify-center rounded-full bg-app-error px-1 text-[10px] leading-4 font-bold text-white"
+                className="absolute top-0.5 right-0 flex min-w-4 items-center justify-center rounded-full border border-app-bg bg-app-error px-1 text-[10px] leading-4 font-bold text-app-error-ink"
                 aria-hidden="true"
               >
                 {unreadCount > 99 ? '99+' : unreadCount}
@@ -145,17 +158,14 @@ function Header({ currentUser = null, onLogout }) {
             )}
           </Link>
 
-          <div
-            className="relative flex items-center gap-1"
-            ref={profileMenuRef}
-          >
+          <div className="relative flex items-center" ref={profileMenuRef}>
             <img
-              className="size-10 rounded-full object-cover"
+              className="size-7 rounded-full object-cover ring-1 ring-app-border sm:size-9"
               src={profileImage}
               alt={profileAlt}
             />
             <button
-              className="flex size-8 items-center justify-center rounded-full text-app-text-muted transition-colors hover:text-app-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+              className="flex size-6 items-center justify-center rounded-full text-app-text-muted transition-colors hover:bg-app-surface-raised hover:text-app-text sm:size-7"
               type="button"
               aria-label="사용자 메뉴"
               aria-haspopup="true"
@@ -171,7 +181,7 @@ function Header({ currentUser = null, onLogout }) {
             </button>
 
             <nav
-              className={`absolute top-[calc(100%+0.5rem)] right-0 min-w-40 overflow-hidden rounded-lg border border-app-border bg-app-surface shadow-dropdown ${
+              className={`absolute top-[calc(100%+0.75rem)] right-0 min-w-44 rounded-xl border border-app-border bg-app-surface-raised p-1.5 shadow-dropdown ${
                 isMenuOpen ? 'block' : 'hidden'
               }`}
               id="profileMenu"
@@ -197,9 +207,9 @@ function Header({ currentUser = null, onLogout }) {
       )}
 
       {showProfile && !currentUser && (
-        <div className="absolute right-4 sm:right-6">
+        <div className="ml-auto shrink-0">
           <Link
-            className="rounded-sm px-2 py-1 font-semibold text-app-text hover:text-app-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+            className="app-btn app-btn-outline app-btn-sm rounded-full"
             to="/users/login"
           >
             로그인

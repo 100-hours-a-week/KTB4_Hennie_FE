@@ -22,9 +22,7 @@ function CommentList({
   if (comments.length === 0) {
     return (
       <ul className="flex flex-col">
-        <li className="py-6 text-center text-sm text-app-text-muted">
-          아직 댓글이 없습니다.
-        </li>
+        <li className="app-empty">아직 댓글이 없습니다.</li>
       </ul>
     )
   }

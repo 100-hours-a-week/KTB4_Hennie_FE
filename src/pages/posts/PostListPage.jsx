@@ -132,21 +132,19 @@ function PostListPage() {
   })
 
   return (
-    <section className="mx-auto max-w-[720px] px-6 pt-8 pb-24">
-      <p className="mb-6 text-center text-base leading-[1.6]">
-        기업 <strong className="font-bold">개발</strong> 부서가 남긴 기술{' '}
-        <strong className="font-bold">발자국</strong>을 따라
+    <section className="mx-auto max-w-[760px] px-4 pt-6 pb-24 sm:px-6 sm:pt-10">
+      <p className="app-hero mb-8 text-base leading-[1.75] font-medium text-app-text-muted sm:text-lg">
+        기업 <strong className="font-bold text-app-primary">개발</strong> 부서가
+        남긴 기술 <strong className="font-bold text-app-primary">발자국</strong>
+        을 따라
         <br />
-        <strong className="font-bold">개발자국(의견)</strong>을 남겨보세요...🐾
+        <strong className="font-bold text-app-text">개발자국(의견)</strong>을
+        남겨보세요
       </p>
 
       <PostList posts={posts} />
 
-      <div
-        className="min-h-10 py-5 text-center text-xs text-app-text-muted"
-        ref={sentinelRef}
-        aria-live="polite"
-      >
+      <div className="app-list-status" ref={sentinelRef} aria-live="polite">
         {statusMessage}
       </div>
     </section>

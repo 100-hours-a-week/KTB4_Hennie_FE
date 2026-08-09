@@ -27,20 +27,20 @@ function SignupPage() {
   } = useSignup({ navigate })
 
   return (
-    <section className="flex min-h-[calc(100vh-5rem)] items-start justify-center px-6 py-8">
-      <div className="mt-8 flex w-full max-w-[400px] flex-col gap-6 rounded-lg border border-app-border bg-app-surface p-8 shadow-lg">
+    <section className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12 sm:px-6">
+      <div className="flex w-full max-w-[420px] flex-col gap-6 rounded-2xl border border-app-border bg-app-surface p-7 shadow-modal sm:p-9">
         <div className="flex flex-col gap-2">
-          <h1 className="text-3xl leading-tight font-bold">회원가입</h1>
-          <p className="text-base text-app-text-muted">
+          <h1 className="text-[28px] leading-tight font-bold">회원가입</h1>
+          <p className="text-sm text-app-text-muted">
             개발바닥에서 나만의 개발자국을 남겨보세요
           </p>
         </div>
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2">
-            <span className="text-base font-medium">프로필 사진</span>
+            <span className="app-field-label">프로필 사진</span>
             <label
-              className="mx-auto flex size-[120px] items-center justify-center overflow-hidden rounded-full bg-app-surface-raised text-4xl text-app-text-muted transition-colors hover:bg-app-border focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
+              className="mx-auto flex size-[112px] cursor-pointer items-center justify-center overflow-hidden rounded-full border border-dashed border-app-border-strong bg-app-bg-sunken text-3xl text-app-text-subtle transition-colors hover:border-app-primary/60 hover:text-app-primary focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-app-primary"
               htmlFor="profile-image"
             >
               {previewUrl ? (
@@ -62,7 +62,7 @@ function SignupPage() {
                 onChange={handleImageChange}
               />
             </label>
-            <p className="min-h-4 text-center text-xs leading-[1.4] text-app-error">
+            <p className="min-h-4 text-center text-xs leading-[1.5] text-app-error">
               {imageError}
             </p>
           </div>
@@ -122,7 +122,7 @@ function SignupPage() {
           />
 
           <button
-            className="mt-2 h-[52px] w-full rounded-full bg-app-primary text-lg font-bold text-white transition-colors hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary disabled:cursor-not-allowed disabled:bg-app-surface-raised disabled:text-app-text-muted"
+            className="app-btn app-btn-primary app-btn-lg mt-1 w-full text-base"
             type="submit"
             disabled={!isFormValid || isSubmitting}
           >
@@ -130,16 +130,16 @@ function SignupPage() {
           </button>
         </form>
 
-        <div className="flex items-center gap-3 text-sm text-app-text-muted">
+        <div className="flex items-center gap-3 text-xs text-app-text-subtle">
           <span className="h-px flex-1 bg-app-border" aria-hidden="true" />
           <span>또는</span>
           <span className="h-px flex-1 bg-app-border" aria-hidden="true" />
         </div>
 
-        <p className="text-center text-base text-app-text-muted">
+        <p className="text-center text-sm text-app-text-muted">
           이미 개발바닥 회원이세요?{' '}
           <Link
-            className="font-bold text-app-primary hover:underline focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-primary"
+            className="rounded-sm font-bold text-app-primary hover:underline"
             to="/users/login"
           >
             로그인

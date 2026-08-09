@@ -25,7 +25,7 @@ function AppLayout() {
   return (
     <>
       <Header currentUser={currentUser} onLogout={handleLogout} />{' '}
-      <main className="min-h-[calc(100vh-5rem)]">
+      <main className="min-h-[calc(100vh-4rem)]">
         <Outlet />
       </main>
     </>
