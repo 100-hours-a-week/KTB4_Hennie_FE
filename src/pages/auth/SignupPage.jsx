@@ -16,7 +16,6 @@ function SignupPage() {
     errors,
     previewUrl,
     imageError,
-    isFormValid,
     isSubmitting,
     handleEmailChange,
     handlePasswordChange,
@@ -36,7 +35,11 @@ function SignupPage() {
           </p>
         </div>
 
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-col gap-4"
+          noValidate
+          onSubmit={handleSubmit}
+        >
           <div className="flex flex-col gap-2">
             <span className="app-field-label">프로필 사진</span>
             <label
@@ -57,13 +60,21 @@ function SignupPage() {
                 id="profile-image"
                 name="profileImage"
                 type="file"
-                accept="image/jpeg,image/png,image/webp,image/gif"
+                accept="image/jpeg,image/png"
+                aria-describedby="profile-image-message"
+                aria-invalid={Boolean(imageError)}
                 disabled={isSubmitting}
                 onChange={handleImageChange}
               />
             </label>
-            <p className="min-h-4 text-center text-xs leading-[1.5] text-app-error">
-              {imageError}
+            <p
+              className={`min-h-4 text-center text-xs leading-[1.5] ${
+                imageError ? 'text-app-error' : 'text-app-text-muted'
+              }`}
+              id="profile-image-message"
+              aria-live={imageError ? 'polite' : undefined}
+            >
+              {imageError || '선택 사항 · JPEG, PNG · 최대 10MB'}
             </p>
           </div>
 
@@ -77,6 +88,7 @@ function SignupPage() {
             reserveMessageSpace
             disabled={isSubmitting}
             error={errors.email}
+            helperText="example@domain.com 형식으로 입력해주세요."
             value={email}
             onChange={handleEmailChange}
           />
@@ -90,6 +102,7 @@ function SignupPage() {
             reserveMessageSpace
             disabled={isSubmitting}
             error={errors.password}
+            helperText="8~20자, 대·소문자·숫자·특수문자를 포함해주세요."
             value={password}
             onChange={handlePasswordChange}
           />
@@ -103,6 +116,7 @@ function SignupPage() {
             reserveMessageSpace
             disabled={isSubmitting}
             error={errors.passwordConfirm}
+            helperText="입력한 비밀번호를 한 번 더 입력해주세요."
             value={passwordConfirm}
             onChange={handlePasswordConfirmChange}
           />
@@ -117,6 +131,7 @@ function SignupPage() {
             reserveMessageSpace
             disabled={isSubmitting}
             error={errors.nickname}
+            helperText="10자 이하, 공백 없이 입력해주세요."
             value={nickname}
             onChange={handleNicknameChange}
           />
@@ -124,7 +139,7 @@ function SignupPage() {
           <button
             className="app-btn app-btn-primary app-btn-lg mt-1 w-full"
             type="submit"
-            disabled={!isFormValid || isSubmitting}
+            disabled={isSubmitting}
           >
             {isSubmitting ? '가입 중...' : '회원가입'}
           </button>

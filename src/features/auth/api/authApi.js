@@ -37,7 +37,11 @@ export const login = async ({ email, password }) => {
     },
   )
 
-  storeAccessTokenFromResponse(response)
+  const tokenStored = storeAccessTokenFromResponse(response)
+
+  if (!tokenStored) {
+    throw new Error('로그인 응답에 액세스 토큰이 없습니다.')
+  }
   return normalizeUser(response?.data?.user)
 }
 

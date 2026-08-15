@@ -56,12 +56,7 @@ export const TECH_ENTERPRISES = [
   },
 ]
 export const IMAGE_MAX_SIZE_BYTES = 10 * 1024 * 1024
-export const ALLOWED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/gif',
-]
+export const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png']
 export const SIGNUP_EMPTY_ERRORS = {
   email: '',
   password: '',

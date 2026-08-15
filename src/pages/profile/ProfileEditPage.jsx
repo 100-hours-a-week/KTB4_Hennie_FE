@@ -83,7 +83,7 @@ function ProfileEditPage() {
                 id="profile-image"
                 name="profileImage"
                 type="file"
-                accept="image/jpeg,image/png,image/webp,image/gif"
+                accept="image/jpeg,image/png"
                 disabled={isBusy}
                 onChange={handleImageChange}
               />
