@@ -88,6 +88,7 @@ function SignupPage() {
             reserveMessageSpace
             disabled={isSubmitting}
             error={errors.email}
+            helperText="example@domain.com 형식으로 입력해주세요."
             value={email}
             onChange={handleEmailChange}
           />
@@ -101,6 +102,7 @@ function SignupPage() {
             reserveMessageSpace
             disabled={isSubmitting}
             error={errors.password}
+            helperText="8~20자, 대·소문자·숫자·특수문자를 포함해주세요."
             value={password}
             onChange={handlePasswordChange}
           />
@@ -114,6 +116,7 @@ function SignupPage() {
             reserveMessageSpace
             disabled={isSubmitting}
             error={errors.passwordConfirm}
+            helperText="입력한 비밀번호를 한 번 더 입력해주세요."
             value={passwordConfirm}
             onChange={handlePasswordConfirmChange}
           />
@@ -128,6 +131,7 @@ function SignupPage() {
             reserveMessageSpace
             disabled={isSubmitting}
             error={errors.nickname}
+            helperText="10자 이하, 공백 없이 입력해주세요."
             value={nickname}
             onChange={handleNicknameChange}
           />
