@@ -16,7 +16,6 @@ function SignupPage() {
     errors,
     previewUrl,
     imageError,
-    isFormValid,
     isSubmitting,
     handleEmailChange,
     handlePasswordChange,
@@ -36,7 +35,11 @@ function SignupPage() {
           </p>
         </div>
 
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-col gap-4"
+          noValidate
+          onSubmit={handleSubmit}
+        >
           <div className="flex flex-col gap-2">
             <span className="app-field-label">프로필 사진</span>
             <label
@@ -132,7 +135,7 @@ function SignupPage() {
           <button
             className="app-btn app-btn-primary app-btn-lg mt-1 w-full"
             type="submit"
-            disabled={!isFormValid || isSubmitting}
+            disabled={isSubmitting}
           >
             {isSubmitting ? '가입 중...' : '회원가입'}
           </button>

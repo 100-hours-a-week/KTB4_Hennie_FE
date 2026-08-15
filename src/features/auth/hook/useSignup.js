@@ -1,19 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import { signup } from '../api/authApi'
 import getSignupErrorMessage from '../utils/signupErrorMessage'
+import getSignupValidationErrors from '../utils/signupValidationErrors'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import { validateImageFile } from '../../../shared/utils/validateImageFile'
-import {
-  EMAIL_PATTERN,
-  PASSWORD_PATTERN,
-  NICKNAME_MAX_LENGTH,
-  SIGNUP_EMPTY_ERRORS,
-} from '../../../shared/utils/constants'
+import { SIGNUP_EMPTY_ERRORS } from '../../../shared/utils/constants'
 
-const isNicknameValid = (nickname) =>
-  Boolean(nickname) &&
-  nickname.length <= NICKNAME_MAX_LENGTH &&
-  !/\s/.test(nickname)
+const hasSignupValidationErrors = (validationErrors) =>
+  Object.values(validationErrors).some(Boolean)
 
 const getServerFieldErrors = (error) => {
   const serverErrors = error?.body?.data?.errors
@@ -49,18 +43,6 @@ export const useSignup = ({ navigate }) => {
     () => (profileImage ? URL.createObjectURL(profileImage) : ''),
     [profileImage],
   )
-  const passwordConfirmError =
-    errors.passwordConfirm ||
-    (password && passwordConfirm && password !== passwordConfirm
-      ? '비밀번호가 일치하지 않습니다.'
-      : '')
-      
-  const isFormValid =
-    EMAIL_PATTERN.test(trimmedEmail) &&
-    PASSWORD_PATTERN.test(password) &&
-    password === passwordConfirm &&
-    isNicknameValid(trimmedNickname) &&
-    !imageError
 
   useEffect(() => {
     return () => {
@@ -91,10 +73,7 @@ export const useSignup = ({ navigate }) => {
     setPasswordConfirm,
   )
 
-  const handleNicknameChange = createFieldChangeHandler(
-    'nickname',
-    setNickname,
-  )
+  const handleNicknameChange = createFieldChangeHandler('nickname', setNickname)
 
   const handleImageChange = (event) => {
     const file = event.target.files?.[0] || null
@@ -137,11 +116,18 @@ export const useSignup = ({ navigate }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    if (!isFormValid) {
+    const validationErrors = getSignupValidationErrors({
+      email: trimmedEmail,
+      password,
+      passwordConfirm,
+      nickname: trimmedNickname,
+    })
+
+    setErrors(validationErrors)
+
+    if (hasSignupValidationErrors(validationErrors) || imageError) {
       return
     }
-
-    setErrors(SIGNUP_EMPTY_ERRORS)
 
     return run(async () => {
       try {
@@ -165,10 +151,9 @@ export const useSignup = ({ navigate }) => {
     password,
     passwordConfirm,
     nickname,
-    errors: { ...errors, passwordConfirm: passwordConfirmError },
+    errors,
     previewUrl,
     imageError,
-    isFormValid,
     isSubmitting,
     handleEmailChange,
     handlePasswordChange,
