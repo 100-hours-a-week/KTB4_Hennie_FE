@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { signup } from '../api/authApi'
+import getSignupErrorMessage from '../utils/signupErrorMessage'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import { validateImageFile } from '../../../shared/utils/validateImageFile'
 import {
@@ -42,10 +43,24 @@ export const useSignup = ({ navigate }) => {
   const [imageError, setImageError] = useState('')
   const { isRunning: isSubmitting, run } = useAsyncLock()
 
+  const trimmedEmail = email.trim()
+  const trimmedNickname = nickname.trim()
   const previewUrl = useMemo(
     () => (profileImage ? URL.createObjectURL(profileImage) : ''),
     [profileImage],
   )
+  const passwordConfirmError =
+    errors.passwordConfirm ||
+    (password && passwordConfirm && password !== passwordConfirm
+      ? '비밀번호가 일치하지 않습니다.'
+      : '')
+      
+  const isFormValid =
+    EMAIL_PATTERN.test(trimmedEmail) &&
+    PASSWORD_PATTERN.test(password) &&
+    password === passwordConfirm &&
+    isNicknameValid(trimmedNickname) &&
+    !imageError
 
   useEffect(() => {
     return () => {
@@ -55,19 +70,31 @@ export const useSignup = ({ navigate }) => {
     }
   }, [previewUrl])
 
-  const trimmedEmail = email.trim()
-  const trimmedNickname = nickname.trim()
-  const isFormValid =
-    EMAIL_PATTERN.test(trimmedEmail) &&
-    PASSWORD_PATTERN.test(password) &&
-    password === passwordConfirm &&
-    isNicknameValid(trimmedNickname) &&
-    !imageError
-
-  const changeField = (field, setter) => (event) => {
+  const createFieldChangeHandler = (field, setter) => (event) => {
     setter(event.target.value)
     setErrors((currentErrors) => ({ ...currentErrors, [field]: '' }))
   }
+
+  const handleEmailChange = createFieldChangeHandler('email', setEmail)
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value)
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      password: '',
+      passwordConfirm: '',
+    }))
+  }
+
+  const handlePasswordConfirmChange = createFieldChangeHandler(
+    'passwordConfirm',
+    setPasswordConfirm,
+  )
+
+  const handleNicknameChange = createFieldChangeHandler(
+    'nickname',
+    setNickname,
+  )
 
   const handleImageChange = (event) => {
     const file = event.target.files?.[0] || null
@@ -84,13 +111,27 @@ export const useSignup = ({ navigate }) => {
     setProfileImage(file)
   }
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value)
-    setErrors((currentErrors) => ({
-      ...currentErrors,
-      password: '',
-      passwordConfirm: '',
-    }))
+  const handleSignupFailure = (error) => {
+    console.error('회원가입 실패', error)
+
+    const serverFieldErrors = getServerFieldErrors(error)
+
+    if (serverFieldErrors) {
+      setErrors({ ...SIGNUP_EMPTY_ERRORS, ...serverFieldErrors })
+      return
+    }
+
+    const signupError = getSignupErrorMessage(error)
+
+    if (signupError.field) {
+      setErrors({
+        ...SIGNUP_EMPTY_ERRORS,
+        [signupError.field]: signupError.message,
+      })
+      return
+    }
+
+    alert(signupError.message)
   }
 
   const handleSubmit = (event) => {
@@ -114,37 +155,10 @@ export const useSignup = ({ navigate }) => {
         alert('회원가입에 성공했습니다.')
         navigate('/users/login')
       } catch (error) {
-        console.error('회원가입 실패', error)
-
-        const serverFieldErrors = getServerFieldErrors(error)
-
-        if (serverFieldErrors) {
-          setErrors({ ...SIGNUP_EMPTY_ERRORS, ...serverFieldErrors })
-          return
-        }
-
-        if (error?.code === 'EMAIL_ALREADY_EXISTS') {
-          setErrors({
-            ...SIGNUP_EMPTY_ERRORS,
-            email: '이미 사용중인 이메일입니다.',
-          })
-        } else if (error?.code === 'NICKNAME_ALREADY_EXISTS') {
-          setErrors({
-            ...SIGNUP_EMPTY_ERRORS,
-            nickname: '이미 사용중인 닉네임입니다.',
-          })
-        } else {
-          alert('회원가입에 실패했습니다.')
-        }
+        handleSignupFailure(error)
       }
     })
   }
-
-  const passwordConfirmError =
-    errors.passwordConfirm ||
-    (password && passwordConfirm && password !== passwordConfirm
-      ? '비밀번호가 일치하지 않습니다.'
-      : '')
 
   return {
     email,
@@ -156,13 +170,10 @@ export const useSignup = ({ navigate }) => {
     imageError,
     isFormValid,
     isSubmitting,
-    handleEmailChange: changeField('email', setEmail),
+    handleEmailChange,
     handlePasswordChange,
-    handlePasswordConfirmChange: changeField(
-      'passwordConfirm',
-      setPasswordConfirm,
-    ),
-    handleNicknameChange: changeField('nickname', setNickname),
+    handlePasswordConfirmChange,
+    handleNicknameChange,
     handleImageChange,
     handleSubmit,
   }
