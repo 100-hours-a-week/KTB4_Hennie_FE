@@ -57,13 +57,21 @@ function SignupPage() {
                 id="profile-image"
                 name="profileImage"
                 type="file"
-                accept="image/jpeg,image/png,image/webp,image/gif"
+                accept="image/jpeg,image/png"
+                aria-describedby="profile-image-message"
+                aria-invalid={Boolean(imageError)}
                 disabled={isSubmitting}
                 onChange={handleImageChange}
               />
             </label>
-            <p className="min-h-4 text-center text-xs leading-[1.5] text-app-error">
-              {imageError}
+            <p
+              className={`min-h-4 text-center text-xs leading-[1.5] ${
+                imageError ? 'text-app-error' : 'text-app-text-muted'
+              }`}
+              id="profile-image-message"
+              aria-live={imageError ? 'polite' : undefined}
+            >
+              {imageError || '선택 사항 · JPEG, PNG · 최대 10MB'}
             </p>
           </div>
 

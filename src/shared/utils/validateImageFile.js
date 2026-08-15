@@ -6,7 +6,7 @@ export const validateImageFile = (file) => {
   }
 
   if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-    return 'JPEG, PNG, WebP, GIF 형식의 이미지만 업로드할 수 있습니다.'
+    return 'JPEG, PNG 형식의 이미지만 업로드할 수 있습니다.'
   }
 
   if (file.size > IMAGE_MAX_SIZE_BYTES) {
