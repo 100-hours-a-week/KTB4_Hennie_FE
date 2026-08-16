@@ -7,6 +7,11 @@ import {
   unsubscribeEnterprise,
 } from '../api/enterpriseSubscriptionApi'
 import { getEnterpriseSubscriptionErrorMessage } from '../utils/enterpriseSubscriptionErrorMessage'
+import {
+  ABORT_ERROR_NAME,
+  LOGIN_REQUIRED_MESSAGE,
+} from '../../../shared/utils/constants'
+import { API_ERROR_CODE } from '../../../shared/utils/apiErrorCode'
 
 const createSubscriptionMap = (subscriptions) =>
   new Map(
@@ -66,7 +71,7 @@ export const useEnterpriseSubscriptions = ({
       return true
     } catch (error) {
       if (
-        error.name !== 'AbortError' &&
+        error.name !== ABORT_ERROR_NAME &&
         activeSessionKeyRef.current === requestSessionKey
       ) {
         console.error('기업 구독 목록 조회 실패', error)
@@ -121,7 +126,7 @@ export const useEnterpriseSubscriptions = ({
   const toggleSubscription = useCallback(
     async (code) => {
       if (sessionKey == null) {
-        alert('로그인이 필요합니다.')
+        alert(LOGIN_REQUIRED_MESSAGE)
         navigate('/users/login')
         return false
       }
@@ -177,7 +182,10 @@ export const useEnterpriseSubscriptions = ({
           error,
         )
 
-        if (error?.status === 404 || error?.code === 'ENTERPRISE_INACTIVE') {
+        if (
+          error?.status === 404 ||
+          error?.code === API_ERROR_CODE.ENTERPRISE_INACTIVE
+        ) {
           await Promise.all([refreshEnterprises(), refreshSubscriptions()])
         }
 

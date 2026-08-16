@@ -3,10 +3,12 @@ import { useAuth } from '../../auth/hook/useAuth'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import { validateImageFile } from '../../../shared/utils/validateImageFile'
 import { updateMyInfo } from '../api/profileApi'
+import { API_ERROR_CODE } from '../../../shared/utils/apiErrorCode'
 
 // 닉네임 중복/검증 에러 판별 (useProfileEdit 전용)
 const isNicknameError = (error) =>
-  error?.status === 409 || error?.code === 'NICKNAME_ALREADY_EXISTS'
+  error?.status === 409 ||
+  error?.code === API_ERROR_CODE.NICKNAME_ALREADY_EXISTS
 
 // getProfileErrorMessage는 탈퇴 흐름과 공유하므로 페이지에서 주입받는다.
 export const useProfileEdit = ({ getProfileErrorMessage }) => {
@@ -83,7 +85,7 @@ export const useProfileEdit = ({ getProfileErrorMessage }) => {
 
         if (isNicknameError(error)) {
           alert(
-            error?.code === 'NICKNAME_ALREADY_EXISTS'
+            error?.code === API_ERROR_CODE.NICKNAME_ALREADY_EXISTS
               ? '이미 사용 중인 닉네임입니다.'
               : '닉네임을 다시 확인해주세요.',
           )
