@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           # package.json의 engines.node와 동일하게 고정
-          node-version: '20.19.0'
+          node-version: '24.19.0'
           cache: npm
 
       - name: 의존성 설치

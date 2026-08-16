@@ -1,5 +1,5 @@
 # 컴파일 
-FROM node:20.19.0-alpine AS build-stage
+FROM node:24.19.0-alpine AS build-stage
 
 WORKDIR /app
 
