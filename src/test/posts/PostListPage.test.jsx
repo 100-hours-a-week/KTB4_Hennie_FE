@@ -45,13 +45,50 @@ const lastPagePagination = {
   hasNext: false,
 }
 
+// 무한 스크롤은 페이지마다 응답이 필요해서 만들어 쓴다
+const createPost = (id) => ({
+  ...firstPost,
+  id,
+  title: `게시글 ${id}`,
+})
+
+const createPagination = (page, hasNext) => ({
+  page,
+  size: DEFAULT_PAGE_SIZE,
+  totalCount: 3,
+  totalPages: 3,
+  hasNext,
+})
+
+const mockPageResponse = (page, hasNext) => {
+  getPostListMock.mockResolvedValueOnce({
+    posts: [createPost(page)],
+    pagination: createPagination(page, hasNext),
+  })
+}
+
+let observers = []
+
 beforeEach(() => {
+  observers = []
+
   // jsdom에는 IntersectionObserver가 없어서 무한 스크롤 감지를 대체한다
   vi.stubGlobal(
     'IntersectionObserver',
     class {
-      observe() {}
-      disconnect() {}
+      constructor(onIntersect) {
+        this.onIntersect = onIntersect
+        this.isObserving = false
+        observers.push(this)
+      }
+
+      observe() {
+        this.isObserving = true
+      }
+
+      disconnect() {
+        this.isObserving = false
+      }
     },
   )
 })
@@ -59,6 +96,30 @@ beforeEach(() => {
 afterEach(() => {
   vi.unstubAllGlobals()
 })
+
+// 조회가 끝나고 DOM 접근용 ref 관찰이 시작될 때까지 기다린다
+const waitForSentinelObserver = async () => {
+  let observer
+
+  await waitFor(() => {
+    observer = observers.findLast((candidate) => candidate.isObserving)
+    expect(observer).toBeDefined()
+  })
+
+  return observer
+}
+
+// DOM 접근용 ref이 화면에 들어온 상황을 흉내낸다
+const scrollToSentinel = async () => {
+  const observer = await waitForSentinelObserver()
+
+  await act(async () => {
+    observer.onIntersect([{ isIntersecting: true }])
+  })
+}
+
+const isObservingSentinel = () =>
+  observers.some((observer) => observer.isObserving)
 
 describe('게시글 목록 페이지 조회 성공', () => {
   it('첫 진입 시 1페이지를 기본 페이지 크기로 요청한다', async () => {
@@ -171,5 +232,121 @@ describe('게시글 목록 페이지 조회 성공', () => {
     expect(
       screen.queryByText('게시글을 불러오는 중입니다...'),
     ).not.toBeInTheDocument()
+  })
+})
+
+describe('게시글 목록 페이지 무한 스크롤', () => {
+  it('DOM 접근용 ref이 보이면 다음 페이지를 이어서 요청한다', async () => {
+    // Arrange
+    mockPageResponse(1, true)
+    mockPageResponse(2, false)
+
+    renderWithRouter(<PostListPage />, {
+      initialEntries: ['/posts'],
+    })
+
+    await screen.findByText('게시글 1')
+
+    // Act
+    await scrollToSentinel()
+
+    // Assert
+    await waitFor(() => {
+      expect(getPostListMock).toHaveBeenLastCalledWith(
+        {
+          page: 2,
+          size: DEFAULT_PAGE_SIZE,
+        },
+        expect.objectContaining({
+          signal: expect.any(AbortSignal),
+        }),
+      )
+    })
+  })
+
+  it('이어 받은 게시글을 기존 목록 뒤에 덧붙인다', async () => {
+    // Arrange
+    mockPageResponse(1, true)
+    mockPageResponse(2, false)
+
+    renderWithRouter(<PostListPage />, {
+      initialEntries: ['/posts'],
+    })
+
+    await screen.findByText('게시글 1')
+
+    // Act
+    await scrollToSentinel()
+
+    // Assert
+    expect(await screen.findByText('게시글 2')).toBeInTheDocument()
+    expect(screen.getByText('게시글 1')).toBeInTheDocument()
+    expect(screen.getAllByRole('listitem')).toHaveLength(2)
+  })
+
+  it('페이지를 넘길 때마다 다음 페이지 번호를 요청한다', async () => {
+    // Arrange
+    mockPageResponse(1, true)
+    mockPageResponse(2, true)
+    mockPageResponse(3, false)
+
+    renderWithRouter(<PostListPage />, {
+      initialEntries: ['/posts'],
+    })
+
+    await screen.findByText('게시글 1')
+
+    // Act
+    await scrollToSentinel()
+    await screen.findByText('게시글 2')
+
+    await scrollToSentinel()
+    await screen.findByText('게시글 3')
+
+    // Assert
+    expect(getPostListMock.mock.calls.map(([request]) => request.page)).toEqual(
+      [1, 2, 3],
+    )
+    expect(screen.getAllByRole('listitem')).toHaveLength(3)
+  })
+
+  it('DOM 접근용 ref이 연달아 감지돼도 다음 페이지를 한 번만 요청한다', async () => {
+    // Arrange
+    mockPageResponse(1, true)
+    mockPageResponse(2, true)
+
+    renderWithRouter(<PostListPage />, {
+      initialEntries: ['/posts'],
+    })
+
+    await screen.findByText('게시글 1')
+
+    const observer = await waitForSentinelObserver()
+
+    // Act: 스크롤이 빠르면 리렌더 전에 감지가 연달아 들어온다
+    await act(async () => {
+      observer.onIntersect([{ isIntersecting: true }])
+      observer.onIntersect([{ isIntersecting: true }])
+    })
+
+    // Assert: 1페이지 1번 + 2페이지 1번
+    expect(getPostListMock).toHaveBeenCalledTimes(2)
+    expect(screen.getAllByRole('listitem')).toHaveLength(2)
+  })
+
+  it('마지막 페이지를 받으면 DOM 접근용 ref을 더 이상 관찰하지 않는다', async () => {
+    // Arrange
+    mockPageResponse(1, false)
+
+    renderWithRouter(<PostListPage />, {
+      initialEntries: ['/posts'],
+    })
+
+    // Act
+    await screen.findByText('게시글 1')
+
+    // Assert: 관찰이 시작되지 않아 스크롤해도 요청할 수 없다
+    expect(isObservingSentinel()).toBe(false)
+    expect(getPostListMock).toHaveBeenCalledTimes(1)
   })
 })
