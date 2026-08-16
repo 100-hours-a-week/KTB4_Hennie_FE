@@ -45,7 +45,6 @@ const lastPagePagination = {
   hasNext: false,
 }
 
-// 무한 스크롤은 페이지마다 응답이 필요해서 만들어 쓴다
 const createPost = (id) => ({
   ...firstPost,
   id,
@@ -71,6 +70,12 @@ let observers = []
 
 beforeEach(() => {
   observers = []
+
+  // 소비되지 않은 once 응답이 다음 테스트로 새지 않게 큐를 비운다
+  getPostListMock.mockReset()
+
+  // 훅이 실패를 콘솔에 남겨서 테스트 출력에 섞이지 않게 막는다
+  vi.spyOn(console, 'error').mockImplementation(() => {})
 
   // jsdom에는 IntersectionObserver가 없어서 무한 스크롤 감지를 대체한다
   vi.stubGlobal(
@@ -120,6 +125,19 @@ const scrollToSentinel = async () => {
 
 const isObservingSentinel = () =>
   observers.some((observer) => observer.isObserving)
+
+const NETWORK_ERROR_MESSAGE = '네트워크 연결을 확인한 뒤 다시 시도해주세요.'
+const SERVER_ERROR_MESSAGE =
+  '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+
+// fetch 자체가 실패하면 status 없는 TypeError가 올라온다
+const createNetworkError = () => new TypeError('Failed to fetch')
+
+const createApiError = (status) =>
+  Object.assign(new Error(`API request failed: ${status}`), {
+    name: 'ApiError',
+    status,
+  })
 
 describe('게시글 목록 페이지 조회 성공', () => {
   it('첫 진입 시 1페이지를 기본 페이지 크기로 요청한다', async () => {
@@ -348,5 +366,107 @@ describe('게시글 목록 페이지 무한 스크롤', () => {
     // Assert: 관찰이 시작되지 않아 스크롤해도 요청할 수 없다
     expect(isObservingSentinel()).toBe(false)
     expect(getPostListMock).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('게시글 목록 페이지 조회 실패', () => {
+  it('네트워크가 끊기면 연결을 확인하라고 안내한다', async () => {
+    // Arrange
+    getPostListMock.mockRejectedValueOnce(createNetworkError())
+
+    // Act
+    renderWithRouter(<PostListPage />, {
+      initialEntries: ['/posts'],
+    })
+
+    // Assert
+    expect(await screen.findByText(NETWORK_ERROR_MESSAGE)).toBeInTheDocument()
+  })
+
+  it('서버 오류가 발생하면 서버 오류 메시지를 표시한다', async () => {
+    // Arrange
+    getPostListMock.mockRejectedValueOnce(createApiError(500))
+
+    // Act
+    renderWithRouter(<PostListPage />, {
+      initialEntries: ['/posts'],
+    })
+
+    // Assert
+    expect(await screen.findByText(SERVER_ERROR_MESSAGE)).toBeInTheDocument()
+  })
+
+  it('오류 문구를 화면 낭독기가 읽어주는 상태 영역에 표시한다', async () => {
+    // Arrange
+    getPostListMock.mockRejectedValueOnce(createNetworkError())
+
+    // Act
+    renderWithRouter(<PostListPage />, {
+      initialEntries: ['/posts'],
+    })
+
+    // Assert: 로딩·마지막 페이지 안내와 같은 자리에 한 번만 담긴다
+    const statusRegion = await screen.findByText(NETWORK_ERROR_MESSAGE)
+
+    expect(statusRegion).toHaveAttribute('aria-live', 'polite')
+    expect(screen.getAllByText(NETWORK_ERROR_MESSAGE)).toHaveLength(1)
+  })
+
+  it('조회에 실패하면 로딩 문구를 오류 문구로 바꾼다', async () => {
+    // Arrange
+    getPostListMock.mockRejectedValueOnce(createNetworkError())
+
+    // Act
+    renderWithRouter(<PostListPage />, {
+      initialEntries: ['/posts'],
+    })
+
+    // Assert: 상태 영역은 한 문구만 보여줘서 로딩이 남아 있으면 안 된다
+    await screen.findByText(NETWORK_ERROR_MESSAGE)
+
+    expect(
+      screen.queryByText('게시글을 불러오는 중입니다...'),
+    ).not.toBeInTheDocument()
+  })
+
+  it('이어 받다 실패해도 이미 표시한 게시글은 남긴다', async () => {
+    // Arrange
+    mockPageResponse(1, true)
+    getPostListMock.mockRejectedValueOnce(createNetworkError())
+
+    renderWithRouter(<PostListPage />, {
+      initialEntries: ['/posts'],
+    })
+
+    await screen.findByText('게시글 1')
+
+    // Act
+    await scrollToSentinel()
+
+    // Assert
+    await screen.findByText(NETWORK_ERROR_MESSAGE)
+
+    expect(screen.getByText('게시글 1')).toBeInTheDocument()
+    expect(screen.getAllByRole('listitem')).toHaveLength(1)
+  })
+
+  it('이어 받다 실패하면 더 이상 다음 페이지를 요청하지 않는다', async () => {
+    // Arrange
+    mockPageResponse(1, true)
+    getPostListMock.mockRejectedValueOnce(createNetworkError())
+
+    renderWithRouter(<PostListPage />, {
+      initialEntries: ['/posts'],
+    })
+
+    await screen.findByText('게시글 1')
+
+    // Act
+    await scrollToSentinel()
+    await screen.findByText(NETWORK_ERROR_MESSAGE)
+
+    // Assert: 관찰을 끊어 실패한 요청을 스크롤할 때마다 되풀이하지 않는다
+    expect(isObservingSentinel()).toBe(false)
+    expect(getPostListMock).toHaveBeenCalledTimes(2)
   })
 })
