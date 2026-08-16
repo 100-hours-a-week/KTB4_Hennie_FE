@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { getHttpErrorMessage } from '../../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../../shared/hook/useAsyncLock'
 import { createComment } from '../../api/commentApi'
-import { useNavigateLogin } from '../useNavigateLogin'
 import {
   COMMENT_REQUIRED_MESSAGE,
   POST_NOT_FOUND_MESSAGE,
 } from '../../../../shared/utils/constants'
+import { useNavigateLogin } from '../useNavigateLogin'
 
 export const useCreateComment = ({ postId, onCreated }) => {
   const requireLogin = useNavigateLogin()
@@ -40,16 +40,13 @@ export const useCreateComment = ({ postId, onCreated }) => {
       } catch (error) {
         console.error('댓글 작성 실패', error)
 
-        if (error?.status === 404) {
-          alert(POST_NOT_FOUND_MESSAGE)
-        } else {
-          alert(
-            getHttpErrorMessage(error, {
-              forbidden: '댓글을 작성할 권한이 없습니다.',
-              fallback: '댓글 작성에 실패했습니다.',
-            }),
-          )
-        }
+        alert(
+          getHttpErrorMessage(error, {
+            notFound: POST_NOT_FOUND_MESSAGE,
+            forbidden: '댓글을 작성할 권한이 없습니다.',
+            fallback: '댓글 작성에 실패했습니다.',
+          }),
+        )
       }
     })
   }

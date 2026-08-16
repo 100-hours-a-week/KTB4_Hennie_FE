@@ -45,16 +45,13 @@ export const useUpdateComment = ({
         console.error('댓글 수정 실패', error)
         rollback()
 
-        if (error?.status === 404) {
-          alert('게시글 또는 댓글을 찾을 수 없습니다.')
-        } else {
-          alert(
-            getHttpErrorMessage(error, {
-              forbidden: '댓글을 수정할 권한이 없습니다.',
-              fallback: '댓글 수정에 실패했습니다.',
-            }),
-          )
-        }
+        alert(
+          getHttpErrorMessage(error, {
+            notFound: '게시글 또는 댓글을 찾을 수 없습니다.',
+            forbidden: '댓글을 수정할 권한이 없습니다.',
+            fallback: '댓글 수정에 실패했습니다.',
+          }),
+        )
       }
     })
   }

@@ -10,6 +10,7 @@ import {
   POST_NOT_FOUND_MESSAGE,
   TITLE_CONTENT_REQUIRED_MESSAGE,
 } from '../../../shared/utils/constants'
+
 import { API_ERROR_CODE } from '../../../shared/utils/apiErrorCode'
 
 const isValidPostId = (postId) => /^\d+$/.test(postId || '')
@@ -154,11 +155,10 @@ export const useEditPost = (postId) => {
               ? '변경된 내용이 없습니다'
               : TITLE_CONTENT_REQUIRED_MESSAGE,
           )
-        } else if (error?.status === 404) {
-          alert(POST_NOT_FOUND_MESSAGE)
         } else {
           alert(
             getHttpErrorMessage(error, {
+              notFound: POST_NOT_FOUND_MESSAGE,
               forbidden: '게시글을 수정할 권한이 없습니다.',
               fallback: '게시글 수정에 실패했습니다.',
             }),

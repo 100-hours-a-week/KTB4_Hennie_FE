@@ -23,16 +23,13 @@ export const useDeletePost = (postId) => {
       } catch (error) {
         console.error('게시글 삭제 실패', error)
 
-        if (error?.status === 404) {
-          alert(POST_NOT_FOUND_MESSAGE)
-        } else {
-          alert(
-            getHttpErrorMessage(error, {
-              forbidden: '게시글을 삭제할 권한이 없습니다.',
-              fallback: '게시글 삭제에 실패했습니다.',
-            }),
-          )
-        }
+        alert(
+          getHttpErrorMessage(error, {
+            notFound: POST_NOT_FOUND_MESSAGE,
+            forbidden: '게시글을 삭제할 권한이 없습니다.',
+            fallback: '게시글 삭제에 실패했습니다.',
+          }),
+        )
       }
     })
 

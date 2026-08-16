@@ -1,8 +1,8 @@
 import { getHttpErrorMessage } from '../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import { likePost, unlikePost } from '../api/postApi'
-import { useNavigateLogin } from './useNavigateLogin'
 import { POST_NOT_FOUND_MESSAGE } from '../../../shared/utils/constants'
+import { useNavigateLogin } from './useNavigateLogin'
 
 export const usePostLike = ({ postId, liked, likeCount, onChange }) => {
   const requireLogin = useNavigateLogin()
@@ -40,18 +40,15 @@ export const usePostLike = ({ postId, liked, likeCount, onChange }) => {
           error,
         )
 
-        if (error?.status === 404) {
-          alert(POST_NOT_FOUND_MESSAGE)
-        } else {
-          alert(
-            getHttpErrorMessage(error, {
-              forbidden: '좋아요를 변경할 권한이 없습니다.',
-              fallback: previousLiked
-                ? '좋아요 취소에 실패했습니다.'
-                : '좋아요 등록에 실패했습니다.',
-            }),
-          )
-        }
+        alert(
+          getHttpErrorMessage(error, {
+            notFound: POST_NOT_FOUND_MESSAGE,
+            forbidden: '좋아요를 변경할 권한이 없습니다.',
+            fallback: previousLiked
+              ? '좋아요 취소에 실패했습니다.'
+              : '좋아요 등록에 실패했습니다.',
+          }),
+        )
       }
     })
   }
