@@ -1,16 +1,13 @@
+const today = new Date().toLocaleDateString('sv-SE', {
+  timeZone: 'Asia/Seoul',
+})
+
 module.exports = {
   ci: {
     collect: {
-      url: [
-        // 목록·이미지·API 요청이 많은 메인 화면
-        // 'http://localhost/posts',
-        // // 댓글 등 가장 복잡한 화면
-        // 'http://localhost/posts/1',
-        // // 별도의 목록 UI
-        // 'http://localhost/tech-enterprises',
-        // 'http://127.0.0.1:4173/tech-enterprises',
-        // 'http://127.0.0.1:4173/tech-enterprises/naver',
-      ],
+      // 백엔드(localhost:8080)가 떠 있어야 실제 데이터가 렌더링된다.
+      // vite preview는 server.proxy 설정을 그대로 물려받아 /api를 프록시한다.
+      url: ['http://127.0.0.1:4173/posts'],
       numberOfRuns: 3,
       startServerCommand:
         'npm run preview -- --host 127.0.0.1 --port 4173 --strictPort',
@@ -19,7 +16,27 @@ module.exports = {
         chromeFlags: '--no-sandbox --disable-dev-shm-usage',
       },
     },
-
-    // 기존 assert와 upload 설정 복사
+    assert: {
+      assertions: {
+        'categories:performance': ['error', { minScore: 0.8 }],
+        'categories:accessibility': ['error', { minScore: 0.9 }],
+        'categories:best-practices': ['error', { minScore: 0.9 }],
+        'categories:seo': ['error', { minScore: 0.8 }],
+        'cumulative-layout-shift': [
+          'error',
+          { maxNumericValue: 0.1, aggregationMethod: 'median' },
+        ],
+        'largest-contentful-paint': [
+          'warn',
+          { maxNumericValue: 2500, aggregationMethod: 'median' },
+        ],
+      },
+    },
+    upload: {
+      target: 'filesystem',
+      outputDir: `.lighthouseci/reports/${today}-posts`,
+      reportFilenamePattern:
+        '%%HOSTNAME%%-%%PATHNAME%%-%%DATETIME%%.report.%%EXTENSION%%',
+    },
   },
 }
