@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { getPostList } from '../../features/posts/api/postApi'
+import { useEffect, useRef } from 'react'
 import PostList from '../../features/posts/components/PostList'
+import { usePostList } from '../../features/posts/hook/usePostList'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
-import { DEFAULT_PAGE_SIZE } from '../../shared/utils/constants'
 import { getListStatusMessage } from '../../shared/utils/listStatusMessage'
 
 const POST_LIST_LABEL = '게시글'
@@ -11,87 +10,8 @@ function PostListPage() {
   usePageTitle('게시글 목록')
 
   const sentinelRef = useRef(null)
-  const lifecycleControllerRef = useRef(null)
-  const isRequestingRef = useRef(false)
-  const [posts, setPosts] = useState(null)
-  const [currentPage, setCurrentPage] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
-  const [hasNextPage, setHasNextPage] = useState(true)
-  const [error, setError] = useState('')
-
-  const loadPostListPage = useCallback(async (page, { append }) => {
-    const signal = lifecycleControllerRef.current?.signal
-
-    if (!signal || signal.aborted || isRequestingRef.current) {
-      return
-    }
-
-    isRequestingRef.current = true
-
-    await Promise.resolve()
-
-    if (signal.aborted) {
-      return
-    }
-
-    setIsLoading(true)
-    setError('')
-
-    try {
-      const { posts: nextPosts, pagination } = await getPostList(
-        {
-          page,
-          size: DEFAULT_PAGE_SIZE,
-        },
-        { signal },
-      )
-
-      if (signal.aborted) {
-        return
-      }
-
-      setPosts((currentPosts) =>
-        append ? [...(currentPosts || []), ...nextPosts] : nextPosts,
-      )
-      setCurrentPage(page)
-      setHasNextPage(pagination.hasNext)
-    } catch (requestError) {
-      if (requestError.name !== 'AbortError' && !signal.aborted) {
-        console.error('게시글 목록 조회 실패', requestError)
-        setError('게시글 목록을 불러오지 못했습니다.')
-      }
-    } finally {
-      if (!signal.aborted) {
-        isRequestingRef.current = false
-        setIsLoading(false)
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    let isActive = true
-    const controller = new AbortController()
-    lifecycleControllerRef.current = controller
-    isRequestingRef.current = false
-
-    queueMicrotask(() => {
-      if (isActive) {
-        loadPostListPage(1, {
-          append: false,
-        })
-      }
-    })
-
-    return () => {
-      isActive = false
-      controller.abort()
-
-      if (lifecycleControllerRef.current === controller) {
-        lifecycleControllerRef.current = null
-        isRequestingRef.current = false
-      }
-    }
-  }, [loadPostListPage])
+  const { posts, currentPage, error, hasNextPage, isLoading, loadNextPage } =
+    usePostList()
 
   useEffect(() => {
     const sentinel = sentinelRef.current
@@ -107,9 +27,7 @@ function PostListPage() {
         }
 
         observer.disconnect()
-        loadPostListPage(currentPage + 1, {
-          append: true,
-        })
+        loadNextPage()
       },
       {
         rootMargin: '180px 0px',
@@ -121,7 +39,7 @@ function PostListPage() {
     return () => {
       observer.disconnect()
     }
-  }, [currentPage, error, hasNextPage, isLoading, loadPostListPage])
+  }, [currentPage, error, hasNextPage, isLoading, loadNextPage])
 
   const statusMessage = getListStatusMessage({
     label: POST_LIST_LABEL,
