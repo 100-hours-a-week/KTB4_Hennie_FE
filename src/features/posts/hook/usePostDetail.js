@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import { getPost } from '../api/postApi'
+import {
+  ABORT_ERROR_NAME,
+  POST_LOAD_FAILED_MESSAGE,
+  POST_NOT_FOUND_MESSAGE,
+} from '../../../shared/utils/constants'
 
 const isValidPostId = (postId) => /^\d+$/.test(postId || '')
 
@@ -13,7 +18,7 @@ export const usePostDetail = (postId) => {
     const nextPost = await getPost(postId)
 
     if (!nextPost) {
-      throw new Error('게시글을 찾을 수 없습니다.')
+      throw new Error(POST_NOT_FOUND_MESSAGE)
     }
 
     setPost(nextPost)
@@ -46,7 +51,7 @@ export const usePostDetail = (postId) => {
       setIsLoading(true)
 
       if (!isValidPostId(postId)) {
-        setError('게시글을 찾을 수 없습니다.')
+        setError(POST_NOT_FOUND_MESSAGE)
         setIsLoading(false)
         return
       }
@@ -55,21 +60,21 @@ export const usePostDetail = (postId) => {
         const nextPost = await getPost(postId, { signal: controller.signal })
 
         if (!nextPost) {
-          setError('게시글을 찾을 수 없습니다.')
+          setError(POST_NOT_FOUND_MESSAGE)
           return
         }
 
         setPost(nextPost)
       } catch (requestError) {
-        if (requestError.name === 'AbortError') {
+        if (requestError.name === ABORT_ERROR_NAME) {
           return
         }
 
         console.error('게시글 상세 조회 실패', requestError)
         setError(
           requestError.status === 404
-            ? '게시글을 찾을 수 없습니다.'
-            : '게시글을 불러오지 못했습니다.',
+            ? POST_NOT_FOUND_MESSAGE
+            : POST_LOAD_FAILED_MESSAGE,
         )
       } finally {
         if (isActive && !controller.signal.aborted) {

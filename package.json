@@ -16,8 +16,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
-    "lighthouse:ci": "lhci autorun",
-    "lighthouse:backend": "lhci autorun --config=.lighthouserc.backend.cjs"
+    "lighthouse:ci": "lhci autorun; ret=$?; node scripts/rename-lighthouse-reports.mjs; exit $ret",
+    "lighthouse:backend": "lhci autorun --config=.lighthouserc.backend.cjs; ret=$?; node scripts/rename-lighthouse-reports.mjs; exit $ret"
   },
   "dependencies": {
     "eventsource": "^4.1.1",

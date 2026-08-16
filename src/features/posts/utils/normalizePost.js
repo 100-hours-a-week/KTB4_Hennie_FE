@@ -1,4 +1,8 @@
-import { DEFAULT_PROFILE_PATH } from '../../../shared/utils/constants'
+import {
+  DEFAULT_PROFILE_PATH,
+  UNKNOWN_AUTHOR_NAME,
+  UNTITLED_TITLE,
+} from '../../../shared/utils/constants'
 import { toCount } from '../../../shared/utils/countValue'
 
 const normalizeReplyTarget = (target) => {
@@ -9,20 +13,20 @@ const normalizeReplyTarget = (target) => {
   return {
     commentId: target.commentId ?? null,
     authorId: target.authorId ?? null,
-    nickname: target.nickname || '알 수 없음',
+    nickname: target.nickname || UNKNOWN_AUTHOR_NAME,
     deleted: Boolean(target.deleted),
   }
 }
 
 export const normalizePost = (post = {}) => ({
   id: post.postId ?? post.id ?? null,
-  title: post.title || '제목 없음',
+  title: post.title || UNTITLED_TITLE,
   category: post.category || null,
   authorNickname:
     post.nickname ||
     post.authorNickname ||
     post.author?.nickname ||
-    '알 수 없음',
+    UNKNOWN_AUTHOR_NAME,
   authorProfileUrl: post.profileUrl || DEFAULT_PROFILE_PATH,
   createdAt: post.createdAt || '',
   likeCount: toCount(post.likeCount ?? post.likes),
@@ -33,7 +37,7 @@ export const normalizePost = (post = {}) => ({
 export const normalizeComment = (comment = {}) => ({
   id: comment.commentId ?? comment.replyId ?? null,
   authorId: comment.authorId ?? null,
-  authorNickname: comment.nickname || '알 수 없음',
+  authorNickname: comment.nickname || UNKNOWN_AUTHOR_NAME,
   authorProfileUrl: comment.profileUrl || DEFAULT_PROFILE_PATH,
   replyTo: normalizeReplyTarget(comment.replyTo),
   content: comment.content || '',
@@ -51,8 +55,8 @@ export const normalizePostDetail = (post = {}) => {
 
   return {
     id: post.postId ?? null,
-    title: post.title || '제목 없음',
-    authorNickname: post.nickname || '알 수 없음',
+    title: post.title || UNTITLED_TITLE,
+    authorNickname: post.nickname || UNKNOWN_AUTHOR_NAME,
     authorProfileUrl: post.profileUrl || DEFAULT_PROFILE_PATH,
     content: post.content || '',
     category: post.category || null,

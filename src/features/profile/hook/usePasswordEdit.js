@@ -5,6 +5,7 @@ import {
   PASSWORD_PATTERN,
   PWD_EMPTY_ERRORS,
 } from '../../../shared/utils/constants'
+import { API_ERROR_CODE } from '../../../shared/utils/apiErrorCode'
 
 const getServerFieldErrors = (error) => {
   const serverErrors = error?.body?.data?.errors
@@ -57,7 +58,7 @@ export const usePasswordEdit = ({ getPasswordErrorMessage }) => {
 
         const code = error?.code
 
-        if (code === 'INVALID_CREDENTIALS') {
+        if (code === API_ERROR_CODE.INVALID_CREDENTIALS) {
           setErrors({
             ...PWD_EMPTY_ERRORS,
             currentPassword: '현재 비밀번호가 일치하지 않습니다.',

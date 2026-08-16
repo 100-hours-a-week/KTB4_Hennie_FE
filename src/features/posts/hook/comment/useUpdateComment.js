@@ -1,6 +1,7 @@
 import { getHttpErrorMessage } from '../../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../../shared/hook/useAsyncLock'
 import { updateComment as updateCommentApi } from '../../api/commentApi'
+import { COMMENT_REQUIRED_MESSAGE } from '../../../../shared/utils/constants'
 
 export const useUpdateComment = ({
   postId,
@@ -15,7 +16,7 @@ export const useUpdateComment = ({
     const trimmedContent = content.trim()
 
     if (!trimmedContent) {
-      alert('댓글 내용을 입력해주세요.')
+      alert(COMMENT_REQUIRED_MESSAGE)
       return
     }
 
@@ -44,16 +45,13 @@ export const useUpdateComment = ({
         console.error('댓글 수정 실패', error)
         rollback()
 
-        if (error?.status === 404) {
-          alert('게시글 또는 댓글을 찾을 수 없습니다.')
-        } else {
-          alert(
-            getHttpErrorMessage(error, {
-              forbidden: '댓글을 수정할 권한이 없습니다.',
-              fallback: '댓글 수정에 실패했습니다.',
-            }),
-          )
-        }
+        alert(
+          getHttpErrorMessage(error, {
+            notFound: '게시글 또는 댓글을 찾을 수 없습니다.',
+            forbidden: '댓글을 수정할 권한이 없습니다.',
+            fallback: '댓글 수정에 실패했습니다.',
+          }),
+        )
       }
     })
   }

@@ -1,3 +1,7 @@
+const today = new Date().toLocaleDateString('sv-SE', {
+  timeZone: 'Asia/Seoul',
+})
+
 module.exports = {
   ci: {
     collect: {
@@ -27,8 +31,9 @@ module.exports = {
     },
     upload: {
       target: 'filesystem',
-      outputDir: '.lighthouseci/reports',
-      reportFilenamePattern: '%%HOSTNAME%%-%%PATHNAME%%.report.%%EXTENSION%%',
+      outputDir: `.lighthouseci/reports/${today}-static`,
+      reportFilenamePattern:
+        '%%HOSTNAME%%-%%PATHNAME%%-%%DATETIME%%.report.%%EXTENSION%%',
     },
   },
 }

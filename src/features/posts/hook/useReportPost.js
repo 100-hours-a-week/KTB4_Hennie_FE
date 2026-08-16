@@ -3,6 +3,7 @@ import { getHttpErrorMessage } from '../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import { reportPost } from '../api/postApi'
 import { isReportReason } from '../utils/reportReason'
+import { POST_NOT_FOUND_MESSAGE } from '../../../shared/utils/constants'
 import { useNavigateLogin } from './useNavigateLogin'
 
 export const useReportPost = (postId) => {
@@ -51,13 +52,12 @@ export const useReportPost = (postId) => {
       } catch (error) {
         console.error('게시글 신고 실패', error)
 
-        if (error?.status === 404) {
-          alert('게시글을 찾을 수 없습니다.')
-        } else if (error?.status === 409) {
+        if (error?.status === 409) {
           alert('이미 신고한 게시글입니다.')
         } else {
           alert(
             getHttpErrorMessage(error, {
+              notFound: POST_NOT_FOUND_MESSAGE,
               forbidden: '본인의 게시글은 신고할 수 없습니다.',
               fallback: '게시글 신고에 실패했습니다.',
             }),

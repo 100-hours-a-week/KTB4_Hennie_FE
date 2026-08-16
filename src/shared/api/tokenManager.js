@@ -1,4 +1,5 @@
 import client, { ApiError } from './client'
+import { LOGIN_REQUIRED_MESSAGE } from '../utils/constants'
 
 const REFRESH_TOKEN_PATH = '/users/token/refresh'
 const REFRESH_MARGIN_MS = 60 * 1000
@@ -96,7 +97,7 @@ export const ensureValidAccessToken = async () => {
     throw new ApiError({
       status: 401,
       statusText: 'Unauthorized',
-      body: { message: '로그인이 필요합니다.' },
+      body: { message: LOGIN_REQUIRED_MESSAGE },
     })
   }
 

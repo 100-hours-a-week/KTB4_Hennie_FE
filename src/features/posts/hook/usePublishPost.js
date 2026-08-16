@@ -2,6 +2,10 @@ import { useNavigate } from 'react-router'
 import { createPost } from '../api/postApi'
 import { getHttpErrorMessage } from '../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
+import {
+  CATEGORY_REQUIRED_MESSAGE,
+  TITLE_CONTENT_REQUIRED_MESSAGE,
+} from '../../../shared/utils/constants'
 
 export const usePublishPost = ({
   title,
@@ -23,12 +27,12 @@ export const usePublishPost = ({
     setFormError('')
 
     if (!trimmedTitle || !trimmedContent) {
-      setFormError('제목,내용을 모두 작성해주세요')
+      setFormError(TITLE_CONTENT_REQUIRED_MESSAGE)
       return
     }
 
     if (!category) {
-      setFormError('유형을 선택해주세요')
+      setFormError(CATEGORY_REQUIRED_MESSAGE)
       return
     }
 
@@ -51,7 +55,7 @@ export const usePublishPost = ({
         console.error('게시글 작성 실패', error)
 
         if (error?.status === 400) {
-          setFormError('제목,내용을 모두 작성해주세요')
+          setFormError(TITLE_CONTENT_REQUIRED_MESSAGE)
         } else if (error?.status === 404 && draftPostId !== null) {
           alert('발행할 임시저장 글을 찾을 수 없습니다.')
         } else {

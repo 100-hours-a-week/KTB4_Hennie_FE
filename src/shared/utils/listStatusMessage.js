@@ -9,7 +9,7 @@ export const getListStatusMessage = ({
   isLoading,
 }) => {
   if (isLoading) {
-    return `${withObjectParticle(label)} 불러오는 중입니다.`
+    return `${withObjectParticle(label)} 불러오는 중입니다...`
   }
 
   if (error) {

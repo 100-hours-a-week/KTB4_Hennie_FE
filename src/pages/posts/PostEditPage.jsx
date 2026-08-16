@@ -4,6 +4,10 @@ import PostEditorFields from '../../features/posts/components/PostEditorFields'
 import LoadingPage from '../../shared/components/LoadingPage'
 import NotFoundPage from '../../shared/components/NotFoundPage'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
+import {
+  CATEGORY_REQUIRED_MESSAGE,
+  TITLE_CONTENT_REQUIRED_MESSAGE,
+} from '../../shared/utils/constants'
 
 function PostEditPage() {
   usePageTitle('게시글 수정')
@@ -40,9 +44,9 @@ function PostEditPage() {
   const helperMessage =
     formError ||
     (!title.trim() || !content.trim()
-      ? '제목,내용을 모두 작성해주세요'
+      ? TITLE_CONTENT_REQUIRED_MESSAGE
       : !category
-        ? '유형을 선택해주세요'
+        ? CATEGORY_REQUIRED_MESSAGE
         : '')
 
   return (

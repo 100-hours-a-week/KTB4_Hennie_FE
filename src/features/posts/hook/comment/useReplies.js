@@ -7,6 +7,7 @@ import {
 import { useAsyncLock } from '../../../../shared/hook/useAsyncLock'
 import { getHttpErrorMessage } from '../../../../shared/utils/httpErrorMessage'
 import { useNavigateLogin } from '../useNavigateLogin'
+import { UNKNOWN_AUTHOR_NAME } from '../../../../shared/utils/constants'
 
 export const useReplies = ({ postId, addReply, updateReply }) => {
   const requireLogin = useNavigateLogin()
@@ -39,11 +40,9 @@ export const useReplies = ({ postId, addReply, updateReply }) => {
         console.error('답글 작성 실패', error)
         alert(
           getHttpErrorMessage(error, {
+            notFound: '답글 대상을 찾을 수 없습니다.',
             forbidden: '답글을 작성할 권한이 없습니다.',
-            fallback:
-              error?.status === 404
-                ? '답글 대상을 찾을 수 없습니다.'
-                : '답글 작성에 실패했습니다.',
+            fallback: '답글 작성에 실패했습니다.',
           }),
         )
         return false
@@ -76,11 +75,9 @@ export const useReplies = ({ postId, addReply, updateReply }) => {
         rollback()
         alert(
           getHttpErrorMessage(error, {
+            notFound: '답글을 찾을 수 없습니다.',
             forbidden: '답글을 수정할 권한이 없습니다.',
-            fallback:
-              error?.status === 404
-                ? '답글을 찾을 수 없습니다.'
-                : '답글 수정에 실패했습니다.',
+            fallback: '답글 수정에 실패했습니다.',
           }),
         )
         return false
@@ -110,7 +107,7 @@ export const useReplies = ({ postId, addReply, updateReply }) => {
     return runDelete(async () => {
       const rollback = updateReply(commentId, replyId, {
         authorId: null,
-        authorNickname: '알 수 없음',
+        authorNickname: UNKNOWN_AUTHOR_NAME,
         content: '삭제된 댓글입니다',
         deleted: true,
       })
