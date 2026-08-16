@@ -8,6 +8,7 @@ export const PASSWORD_PATTERN =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])\S{8,20}$/
 export const NICKNAME_MAX_LENGTH = 10
 export const MAX_DRAFT_COUNT = 10
+export const SENTINEL_ROOT_MARGIN = '180px 0px' // 미리 다음 페이지를 받는 화면 아래 남아있는 기준값
 export const TITLE_MAX_LENGTH = 100
 export const LIST_TITLE_MAX_LENGTH = 55
 export const COMMENT_MAX_LENGTH = 3000

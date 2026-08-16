@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import PostList from '../../features/posts/components/PostList'
 import { usePostList } from '../../features/posts/hook/usePostList'
+import { useInfiniteScroll } from '../../shared/hook/useInfiniteScroll'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
 import { getListStatusMessage } from '../../shared/utils/listStatusMessage'
 
@@ -13,33 +14,11 @@ function PostListPage() {
   const { posts, currentPage, error, hasNextPage, isLoading, loadNextPage } =
     usePostList()
 
-  useEffect(() => {
-    const sentinel = sentinelRef.current
-
-    if (!sentinel || isLoading || error || !hasNextPage || currentPage < 1) {
-      return undefined
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          return
-        }
-
-        observer.disconnect()
-        loadNextPage()
-      },
-      {
-        rootMargin: '180px 0px',
-      },
-    )
-
-    observer.observe(sentinel)
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [currentPage, error, hasNextPage, isLoading, loadNextPage])
+  useInfiniteScroll({
+    targetRef: sentinelRef,
+    enabled: !isLoading && !error && hasNextPage && currentPage >= 1,
+    onIntersect: loadNextPage,
+  })
 
   const statusMessage = getListStatusMessage({
     label: POST_LIST_LABEL,

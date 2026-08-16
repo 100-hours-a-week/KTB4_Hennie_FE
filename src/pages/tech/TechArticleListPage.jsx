@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { Navigate, useParams } from 'react-router'
 import TechArticleList from '../../features/tech/components/TechArticleList'
 import TechEnterpriseHeader from '../../features/tech/components/TechEnterpriseHeader'
 import { useEnterpriseSubscription } from '../../features/tech/hook/useEnterpriseSubscription'
 import { useTechArticleList } from '../../features/tech/hook/useTechArticleList'
 import NotFoundPage from '../../shared/components/NotFoundPage'
+import { useInfiniteScroll } from '../../shared/hook/useInfiniteScroll'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
 import { getListStatusMessage } from '../../shared/utils/listStatusMessage'
 
@@ -28,33 +29,11 @@ function TechArticleListPage() {
   const { articles, currentPage, error, hasNextPage, isLoading, loadNextPage } =
     useTechArticleList(shouldRedirectToCanonicalSlug ? null : enterprise?.code)
 
-  useEffect(() => {
-    const sentinel = sentinelRef.current
-
-    if (!sentinel || isLoading || error || !hasNextPage || currentPage < 1) {
-      return undefined
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          return
-        }
-
-        observer.disconnect()
-        loadNextPage()
-      },
-      {
-        rootMargin: '180px 0px',
-      },
-    )
-
-    observer.observe(sentinel)
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [currentPage, error, hasNextPage, isLoading, loadNextPage])
+  useInfiniteScroll({
+    targetRef: sentinelRef,
+    enabled: !isLoading && !error && hasNextPage && currentPage >= 1,
+    onIntersect: loadNextPage,
+  })
 
   if (shouldRedirectToCanonicalSlug) {
     return <Navigate to={`/tech-enterprises/${enterprise.slug}`} replace />
