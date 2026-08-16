@@ -7,6 +7,7 @@ import {
 import { useAsyncLock } from '../../../../shared/hook/useAsyncLock'
 import { getHttpErrorMessage } from '../../../../shared/utils/httpErrorMessage'
 import { useNavigateLogin } from '../useNavigateLogin'
+import { UNKNOWN_AUTHOR_NAME } from '../../../../shared/utils/constants'
 
 export const useReplies = ({ postId, addReply, updateReply }) => {
   const requireLogin = useNavigateLogin()
@@ -110,7 +111,7 @@ export const useReplies = ({ postId, addReply, updateReply }) => {
     return runDelete(async () => {
       const rollback = updateReply(commentId, replyId, {
         authorId: null,
-        authorNickname: '알 수 없음',
+        authorNickname: UNKNOWN_AUTHOR_NAME,
         content: '삭제된 댓글입니다',
         deleted: true,
       })

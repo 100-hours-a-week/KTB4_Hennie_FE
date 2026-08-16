@@ -4,6 +4,7 @@ import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import { reportPost } from '../api/postApi'
 import { isReportReason } from '../utils/reportReason'
 import { useNavigateLogin } from './useNavigateLogin'
+import { POST_NOT_FOUND_MESSAGE } from '../../../shared/utils/constants'
 
 export const useReportPost = (postId) => {
   const requireLogin = useNavigateLogin()
@@ -52,7 +53,7 @@ export const useReportPost = (postId) => {
         console.error('게시글 신고 실패', error)
 
         if (error?.status === 404) {
-          alert('게시글을 찾을 수 없습니다.')
+          alert(POST_NOT_FOUND_MESSAGE)
         } else if (error?.status === 409) {
           alert('이미 신고한 게시글입니다.')
         } else {

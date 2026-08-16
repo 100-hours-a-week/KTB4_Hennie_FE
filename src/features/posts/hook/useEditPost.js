@@ -3,6 +3,14 @@ import { useNavigate } from 'react-router'
 import { getHttpErrorMessage } from '../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import { getPost, updatePost } from '../api/postApi'
+import {
+  ABORT_ERROR_NAME,
+  CATEGORY_REQUIRED_MESSAGE,
+  POST_LOAD_FAILED_MESSAGE,
+  POST_NOT_FOUND_MESSAGE,
+  TITLE_CONTENT_REQUIRED_MESSAGE,
+} from '../../../shared/utils/constants'
+import { API_ERROR_CODE } from '../../../shared/utils/apiErrorCode'
 
 const isValidPostId = (postId) => /^\d+$/.test(postId || '')
 
@@ -37,7 +45,7 @@ export const useEditPost = (postId) => {
       setIsLoading(true)
 
       if (!isValidPostId(postId)) {
-        setLoadError('게시글을 찾을 수 없습니다.')
+        setLoadError(POST_NOT_FOUND_MESSAGE)
         setIsLoading(false)
         return
       }
@@ -47,7 +55,7 @@ export const useEditPost = (postId) => {
         const loadedCategory = post.category
 
         if (!post) {
-          setLoadError('게시글을 찾을 수 없습니다.')
+          setLoadError(POST_NOT_FOUND_MESSAGE)
           return
         }
 
@@ -60,15 +68,15 @@ export const useEditPost = (postId) => {
           category: loadedCategory,
         }
       } catch (error) {
-        if (error.name === 'AbortError') {
+        if (error.name === ABORT_ERROR_NAME) {
           return
         }
 
         console.error('수정할 게시글 조회 실패', error)
         setLoadError(
           error?.status === 404
-            ? '게시글을 찾을 수 없습니다.'
-            : '게시글을 불러오지 못했습니다.',
+            ? POST_NOT_FOUND_MESSAGE
+            : POST_LOAD_FAILED_MESSAGE,
         )
       } finally {
         if (isActive && !controller.signal.aborted) {
@@ -107,12 +115,12 @@ export const useEditPost = (postId) => {
     setFormError('')
 
     if (!trimmedTitle || !trimmedContent) {
-      setFormError('제목,내용을 모두 작성해주세요')
+      setFormError(TITLE_CONTENT_REQUIRED_MESSAGE)
       return
     }
 
     if (!category) {
-      setFormError('유형을 선택해주세요')
+      setFormError(CATEGORY_REQUIRED_MESSAGE)
       return
     }
 
@@ -141,13 +149,13 @@ export const useEditPost = (postId) => {
 
         if (error?.status === 400) {
           setFormError(
-            error?.code === 'noChangedValue' ||
-              error?.code === 'NO_UPDATE_FIELD'
+            error?.code === API_ERROR_CODE.NO_CHANGED_VALUE ||
+              error?.code === API_ERROR_CODE.NO_UPDATE_FIELD
               ? '변경된 내용이 없습니다'
-              : '제목,내용을 모두 작성해주세요',
+              : TITLE_CONTENT_REQUIRED_MESSAGE,
           )
         } else if (error?.status === 404) {
-          alert('게시글을 찾을 수 없습니다.')
+          alert(POST_NOT_FOUND_MESSAGE)
         } else {
           alert(
             getHttpErrorMessage(error, {

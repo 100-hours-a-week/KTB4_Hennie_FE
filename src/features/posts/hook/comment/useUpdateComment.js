@@ -1,6 +1,7 @@
 import { getHttpErrorMessage } from '../../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../../shared/hook/useAsyncLock'
 import { updateComment as updateCommentApi } from '../../api/commentApi'
+import { COMMENT_REQUIRED_MESSAGE } from '../../../../shared/utils/constants'
 
 export const useUpdateComment = ({
   postId,
@@ -15,7 +16,7 @@ export const useUpdateComment = ({
     const trimmedContent = content.trim()
 
     if (!trimmedContent) {
-      alert('댓글 내용을 입력해주세요.')
+      alert(COMMENT_REQUIRED_MESSAGE)
       return
     }
 

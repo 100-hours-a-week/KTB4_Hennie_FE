@@ -3,6 +3,10 @@ import { getHttpErrorMessage } from '../../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../../shared/hook/useAsyncLock'
 import { createComment } from '../../api/commentApi'
 import { useNavigateLogin } from '../useNavigateLogin'
+import {
+  COMMENT_REQUIRED_MESSAGE,
+  POST_NOT_FOUND_MESSAGE,
+} from '../../../../shared/utils/constants'
 
 export const useCreateComment = ({ postId, onCreated }) => {
   const requireLogin = useNavigateLogin()
@@ -22,7 +26,7 @@ export const useCreateComment = ({ postId, onCreated }) => {
     const trimmedContent = content.trim()
 
     if (!trimmedContent) {
-      alert('댓글 내용을 입력해주세요.')
+      alert(COMMENT_REQUIRED_MESSAGE)
       return
     }
 
@@ -37,7 +41,7 @@ export const useCreateComment = ({ postId, onCreated }) => {
         console.error('댓글 작성 실패', error)
 
         if (error?.status === 404) {
-          alert('게시글을 찾을 수 없습니다.')
+          alert(POST_NOT_FOUND_MESSAGE)
         } else {
           alert(
             getHttpErrorMessage(error, {

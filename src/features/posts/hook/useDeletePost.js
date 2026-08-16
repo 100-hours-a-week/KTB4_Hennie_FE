@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router'
 import { getHttpErrorMessage } from '../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import { deletePost } from '../api/postApi'
+import { POST_NOT_FOUND_MESSAGE } from '../../../shared/utils/constants'
 
 export const useDeletePost = (postId) => {
   const navigate = useNavigate()
@@ -23,7 +24,7 @@ export const useDeletePost = (postId) => {
         console.error('게시글 삭제 실패', error)
 
         if (error?.status === 404) {
-          alert('게시글을 찾을 수 없습니다.')
+          alert(POST_NOT_FOUND_MESSAGE)
         } else {
           alert(
             getHttpErrorMessage(error, {

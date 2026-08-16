@@ -2,6 +2,7 @@ import { getHttpErrorMessage } from '../../../shared/utils/httpErrorMessage'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import { likePost, unlikePost } from '../api/postApi'
 import { useNavigateLogin } from './useNavigateLogin'
+import { POST_NOT_FOUND_MESSAGE } from '../../../shared/utils/constants'
 
 export const usePostLike = ({ postId, liked, likeCount, onChange }) => {
   const requireLogin = useNavigateLogin()
@@ -40,7 +41,7 @@ export const usePostLike = ({ postId, liked, likeCount, onChange }) => {
         )
 
         if (error?.status === 404) {
-          alert('게시글을 찾을 수 없습니다.')
+          alert(POST_NOT_FOUND_MESSAGE)
         } else {
           alert(
             getHttpErrorMessage(error, {

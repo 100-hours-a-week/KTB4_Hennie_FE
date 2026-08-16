@@ -1,7 +1,8 @@
+import { LOGIN_REQUIRED_MESSAGE } from './constants'
 // HTTP 상태코드 → 사용자 메시지 공통 매퍼.
 export const getHttpErrorMessage = (error, { forbidden, fallback }) => {
   if (error?.status === 401) {
-    return '로그인이 필요합니다.'
+    return LOGIN_REQUIRED_MESSAGE
   }
 
   if (error?.status === 403) {

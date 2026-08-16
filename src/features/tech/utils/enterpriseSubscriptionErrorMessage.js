@@ -1,13 +1,18 @@
+import { LOGIN_REQUIRED_MESSAGE } from '../../../shared/utils/constants'
+import { API_ERROR_CODE } from '../../../shared/utils/apiErrorCode'
 export const getEnterpriseSubscriptionErrorMessage = (error, fallback) => {
   if (error?.status === 401) {
-    return '로그인이 필요합니다.'
+    return LOGIN_REQUIRED_MESSAGE
   }
 
-  if (error?.code === 'ENTERPRISE_INACTIVE') {
+  if (error?.code === API_ERROR_CODE.ENTERPRISE_INACTIVE) {
     return '현재 구독할 수 없는 기업입니다.'
   }
 
-  if (error?.code === 'ENTERPRISE_NOT_FOUND' || error?.status === 404) {
+  if (
+    error?.code === API_ERROR_CODE.ENTERPRISE_NOT_FOUND ||
+    error?.status === 404
+  ) {
     return '기업 정보를 찾을 수 없습니다. 목록을 새로고침해주세요.'
   }
 

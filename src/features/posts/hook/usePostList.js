@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { getPostList } from '../api/postApi'
 import { useAsyncLock } from '../../../shared/hook/useAsyncLock'
 import { DEFAULT_PAGE_SIZE } from '../../../shared/utils/constants'
+import { ABORT_ERROR_NAME } from '../../../shared/utils/constants'
 
 export function usePostList() {
   const lifecycleControllerRef = useRef(null)
@@ -50,7 +51,7 @@ export function usePostList() {
           setCurrentPage(page)
           setHasNextPage(pagination.hasNext)
         } catch (requestError) {
-          if (requestError.name !== 'AbortError' && !signal.aborted) {
+          if (requestError.name !== ABORT_ERROR_NAME && !signal.aborted) {
             console.error('게시글 목록 조회 실패', requestError)
             setError('게시글 목록을 불러오지 못했습니다.')
           }

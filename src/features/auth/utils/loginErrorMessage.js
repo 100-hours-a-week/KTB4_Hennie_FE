@@ -1,9 +1,10 @@
+import { API_ERROR_CODE } from '../../../shared/utils/apiErrorCode'
 // 로그인 실패 메시지 매핑 (useLogin 전용)
 const getLoginErrorMessage = (error) => {
   if (
     error?.status === 400 ||
     error?.status === 401 ||
-    error?.code === 'INVALID_CREDENTIALS'
+    error?.code === API_ERROR_CODE.INVALID_CREDENTIALS
   ) {
     return '이메일 또는 비밀번호가 올바르지 않습니다.'
   }
