@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { UNKNOWN_AUTHOR_NAME } from '../../../../shared/utils/constants'
 
 export const useReplyEditor = ({
   createReply,
@@ -52,7 +53,7 @@ export const useReplyEditor = ({
       mode: 'edit',
       commentId: comment.id,
       replyId: reply.id,
-      nickname: reply.replyTo?.nickname || '알 수 없음',
+      nickname: reply.replyTo?.nickname || UNKNOWN_AUTHOR_NAME,
     })
     setContent(reply.content)
     focusEditor(reply.content)

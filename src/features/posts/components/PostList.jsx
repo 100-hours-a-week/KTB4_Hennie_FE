@@ -1,7 +1,6 @@
 import PostCard from './PostCard'
 import EmptyListMessage from '../../../shared/components/EmptyListMessage'
-
-const POST_LIST_LABEL = '게시글'
+import { POST_LIST_LABEL } from '../../../shared/utils/constants'
 
 function PostList({ posts }) {
   const postItems = Array.isArray(posts) ? posts : []

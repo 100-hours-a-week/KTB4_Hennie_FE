@@ -19,6 +19,7 @@ import NotFoundPage from '../../shared/components/NotFoundPage'
 import { formatDate } from '../../shared/utils/formatDate'
 import { getPostCategoryLabel } from '../../features/posts/utils/postCategory'
 import { REPORT_REASON_OPTIONS } from '../../features/posts/utils/reportReason'
+import { POST_NOT_FOUND_MESSAGE } from '../../shared/utils/constants'
 import {
   CommentIcon,
   LikeIcon,
@@ -185,7 +186,7 @@ function PostDetailPage() {
     return (
       <NotFoundPage
         title="게시글을 찾을 수 없습니다"
-        description={error || '게시글을 찾을 수 없습니다.'}
+        description={error || POST_NOT_FOUND_MESSAGE}
       />
     )
   }

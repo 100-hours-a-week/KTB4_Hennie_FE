@@ -8,6 +8,7 @@ import NotFoundPage from '../../shared/components/NotFoundPage'
 import { useInfiniteScroll } from '../../shared/hook/useInfiniteScroll'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
 import { getListStatusMessage } from '../../shared/utils/listStatusMessage'
+import { TECH_ARTICLE_LIST_LABEL } from '../../shared/utils/constants'
 
 function TechArticleListPage() {
   const { enterpriseSlug } = useParams()
@@ -51,7 +52,7 @@ function TechArticleListPage() {
   }
 
   const statusMessage = getListStatusMessage({
-    label: '기술 원문',
+    label: TECH_ARTICLE_LIST_LABEL,
     currentPage,
     error,
     hasNextPage,

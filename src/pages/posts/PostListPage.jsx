@@ -4,8 +4,7 @@ import { usePostList } from '../../features/posts/hook/usePostList'
 import { useInfiniteScroll } from '../../shared/hook/useInfiniteScroll'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
 import { getListStatusMessage } from '../../shared/utils/listStatusMessage'
-
-const POST_LIST_LABEL = '게시글'
+import { POST_LIST_LABEL } from '../../shared/utils/constants'
 
 function PostListPage() {
   usePageTitle('게시글 목록')

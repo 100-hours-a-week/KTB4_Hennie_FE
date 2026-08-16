@@ -1,5 +1,6 @@
 import { useEffect, useEffectEvent, useRef } from 'react'
 import { formatDate } from '../../../shared/utils/formatDate'
+import { UNTITLED_TITLE } from '../../../shared/utils/constants'
 
 function DraftListModal({
   isOpen,
@@ -109,7 +110,7 @@ function DraftListModal({
                     <span className="mb-1 truncate text-sm font-semibold text-app-text">
                       {isLoading
                         ? '불러오는 중...'
-                        : draft.title || '제목 없음'}
+                        : draft.title || UNTITLED_TITLE}
                     </span>
                     <span className="truncate text-xs text-app-text-subtle">
                       {formatDate(draft.modifiedAt || draft.createdAt)}

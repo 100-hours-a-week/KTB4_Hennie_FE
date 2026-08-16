@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { getUnreadNotificationCount } from '../api/notificationApi'
 import { getNotificationErrorMessage } from '../utils/notificationErrorMessage'
+import { ABORT_ERROR_NAME } from '../../../shared/utils/constants'
 
 export function useUnreadNotificationCount({ sessionKey }) {
   const activeSessionKeyRef = useRef(sessionKey)
@@ -46,7 +47,7 @@ export function useUnreadNotificationCount({ sessionKey }) {
       return true
     } catch (error) {
       if (
-        error.name !== 'AbortError' &&
+        error.name !== ABORT_ERROR_NAME &&
         activeSessionKeyRef.current === requestSessionKey
       ) {
         console.error('읽지 않은 알림 개수 조회 실패', error)

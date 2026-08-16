@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { getNotificationList } from '../api/notificationApi'
 import { getNotificationErrorMessage } from '../utils/notificationErrorMessage'
-import { NOTIFICATION_PAGE_SIZE } from '../../../shared/utils/constants'
+import {
+  ABORT_ERROR_NAME,
+  NOTIFICATION_PAGE_SIZE,
+} from '../../../shared/utils/constants'
 
 const INITIAL_PAGINATION = {
   page: 1,
@@ -81,7 +84,7 @@ export function useNotificationList({
         setPagination(notificationList.pagination)
         return true
       } catch (error) {
-        if (error.name !== 'AbortError') {
+        if (error.name !== ABORT_ERROR_NAME) {
           console.error('알림 조회 실패', error)
           reportError(
             getNotificationErrorMessage(

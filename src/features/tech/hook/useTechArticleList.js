@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { getTechArticleList } from '../api/techArticleApi'
 import { getTechArticleErrorMessage } from '../utils/techArticleErrorMessage'
+import { ABORT_ERROR_NAME } from '../../../shared/utils/constants'
 
 export function useTechArticleList(enterprise) {
   const lifecycleControllerRef = useRef(null)
@@ -65,7 +66,7 @@ export function useTechArticleList(enterprise) {
         setCurrentPage(page)
         setHasNextPage(pagination.hasNext)
       } catch (requestError) {
-        if (requestError.name !== 'AbortError' && !signal.aborted) {
+        if (requestError.name !== ABORT_ERROR_NAME && !signal.aborted) {
           console.error('기술 원문 목록 조회 실패', requestError)
           setError(getTechArticleErrorMessage(requestError))
         }

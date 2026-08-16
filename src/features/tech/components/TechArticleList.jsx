@@ -1,7 +1,6 @@
 import TechArticleCard from './TechArticleCard'
 import EmptyListMessage from '../../../shared/components/EmptyListMessage'
-
-const TECH_ARTICLE_LIST_LABEL = '기술 원문'
+import { TECH_ARTICLE_LIST_LABEL } from '../../../shared/utils/constants'
 
 function TechArticleList({ articles }) {
   const articleItems = Array.isArray(articles) ? articles : []

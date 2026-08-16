@@ -7,7 +7,10 @@ import {
   updateDraft,
 } from '../api/postApi'
 import { getHttpErrorMessage } from '../../../shared/utils/httpErrorMessage'
-import { MAX_DRAFT_COUNT } from '../../../shared/utils/constants'
+import {
+  ABORT_ERROR_NAME,
+  MAX_DRAFT_COUNT,
+} from '../../../shared/utils/constants'
 
 export const usePostDrafts = ({
   enabled,
@@ -59,7 +62,7 @@ export const usePostDrafts = ({
       }
 
       refreshDrafts({ signal: controller.signal }).catch((error) => {
-        if (error?.name !== 'AbortError') {
+        if (error?.name !== ABORT_ERROR_NAME) {
           console.error('임시저장 목록 조회 실패', error)
         }
       })

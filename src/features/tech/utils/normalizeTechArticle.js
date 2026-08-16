@@ -1,8 +1,9 @@
 import { toCount } from '../../../shared/utils/countValue'
+import { UNTITLED_TITLE } from '../../../shared/utils/constants'
 
 export const normalizeTechArticle = (article = {}) => ({
   id: article.articleId ?? article.id ?? null,
-  title: article.title || '제목 없음',
+  title: article.title || UNTITLED_TITLE,
   enterprise: article.enterprise || '',
   originalUrl: article.originalUrl || '',
   publishedAt: article.publishedAt || '',

@@ -76,3 +76,14 @@ export const NOTIFICATION_TYPE_LABEL = {
   REPLY_REPLY: '답글',
   SUBSCRIBED_ENTERPRISE_ARTICLE: '기업 기술 원문',
 }
+export const ABORT_ERROR_NAME = 'AbortError'
+export const LOGIN_REQUIRED_MESSAGE = '로그인이 필요합니다.'
+export const UNKNOWN_AUTHOR_NAME = '알 수 없음'
+export const UNTITLED_TITLE = '제목 없음'
+export const POST_LIST_LABEL = '게시글'
+export const TECH_ARTICLE_LIST_LABEL = '기술 원문'
+export const POST_NOT_FOUND_MESSAGE = '게시글을 찾을 수 없습니다.'
+export const POST_LOAD_FAILED_MESSAGE = '게시글을 불러오지 못했습니다.'
+export const TITLE_CONTENT_REQUIRED_MESSAGE = '제목,내용을 모두 작성해주세요'
+export const CATEGORY_REQUIRED_MESSAGE = '유형을 선택해주세요'
+export const COMMENT_REQUIRED_MESSAGE = '댓글 내용을 입력해주세요.'

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { getEnterpriseList } from '../api/enterpriseSubscriptionApi'
 import { getEnterpriseSubscriptionErrorMessage } from '../utils/enterpriseSubscriptionErrorMessage'
 import { createFallbackEnterpriseList } from '../utils/normalizeEnterprise'
+import { ABORT_ERROR_NAME } from '../../../shared/utils/constants'
 
 export const useEnterpriseCatalog = () => {
   const requestControllerRef = useRef(null)
@@ -31,7 +32,7 @@ export const useEnterpriseCatalog = () => {
       setIsEnterpriseCatalogReady(true)
       return true
     } catch (error) {
-      if (error.name !== 'AbortError') {
+      if (error.name !== ABORT_ERROR_NAME) {
         console.error('기업 목록 조회 실패', error)
         setEnterpriseError(
           getEnterpriseSubscriptionErrorMessage(

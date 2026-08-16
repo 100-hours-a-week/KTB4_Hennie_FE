@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router'
 import { useAuth } from '../../auth/hook/useAuth'
+import { LOGIN_REQUIRED_MESSAGE } from '../../../shared/utils/constants'
 
 export const useNavigateLogin = () => {
   const navigate = useNavigate()
@@ -7,7 +8,7 @@ export const useNavigateLogin = () => {
 
   return () => {
     if (!currentUser) {
-      alert('로그인이 필요합니다.')
+      alert(LOGIN_REQUIRED_MESSAGE)
       navigate('/users/login')
       return false
     }
