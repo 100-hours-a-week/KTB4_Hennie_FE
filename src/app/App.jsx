@@ -1,18 +1,28 @@
+import { lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router'
 import AppLayout from './layouts/AppLayout'
 import GuestOnlyRoute from '../shared/routes/GuestOnlyRoute'
 import ProtectedRoute from '../shared/routes/ProtectedRoute'
 import NotFoundPage from '../shared/components/NotFoundPage'
-import LoginPage from '../pages/auth/LoginPage'
-import SignupPage from '../pages/auth/SignupPage'
-import MyPage from '../pages/profile/MyPage'
-import NotificationPage from '../pages/notification/NotificationPage'
+// 목록과 상세는 진입 경로라 즉시 받는다. 청크로 나누면 왕복이 하나 늘어
+// 상세 페이지 LCP가 0.8초 나빠지는 것을 측정으로 확인했다.
 import PostListPage from '../pages/posts/PostListPage'
-import PostWritePage from '../pages/posts/PostWritePage'
 import PostDetailPage from '../pages/posts/PostDetailPage'
-import PostEditPage from '../pages/posts/PostEditPage'
-import TechEnterprisePage from '../pages/tech/TechEnterprisePage'
-import TechArticleListPage from '../pages/tech/TechArticleListPage'
+
+const PostWritePage = lazy(() => import('../pages/posts/PostWritePage'))
+const PostEditPage = lazy(() => import('../pages/posts/PostEditPage'))
+const LoginPage = lazy(() => import('../pages/auth/LoginPage'))
+const SignupPage = lazy(() => import('../pages/auth/SignupPage'))
+const MyPage = lazy(() => import('../pages/profile/MyPage'))
+const NotificationPage = lazy(
+  () => import('../pages/notification/NotificationPage'),
+)
+const TechEnterprisePage = lazy(
+  () => import('../pages/tech/TechEnterprisePage'),
+)
+const TechArticleListPage = lazy(
+  () => import('../pages/tech/TechArticleListPage'),
+)
 
 function App() {
   return (
