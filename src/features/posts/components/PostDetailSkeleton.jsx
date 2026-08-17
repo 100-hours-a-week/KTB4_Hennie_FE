@@ -1,4 +1,4 @@
-function PostArticleSkeleton() {
+function PostDetailSkeleton() {
   return (
     <div className="animate-pulse" aria-hidden="true">
       <div className="mb-6 border-b border-app-border pb-5">
@@ -21,4 +21,4 @@ function PostArticleSkeleton() {
   )
 }
 
-export default PostArticleSkeleton
+export default PostDetailSkeleton

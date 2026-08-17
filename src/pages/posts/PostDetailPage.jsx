@@ -12,7 +12,7 @@ import { useReportPost } from '../../features/posts/hook/useReportPost'
 import { useUpdateComment } from '../../features/posts/hook/comment/useUpdateComment'
 import CommentForm from '../../features/posts/components/CommentForm'
 import CommentList from '../../features/posts/components/CommentList'
-import PostArticleSkeleton from '../../features/posts/components/PostArticleSkeleton'
+import PostDetailSkeleton from '../../features/posts/components/PostDetailSkeleton'
 import { isOwnedByCurrentUser } from '../../features/posts/utils/isOwnedByCurrentUser'
 import { useAuth } from '../../features/auth/hook/useAuth'
 import NotFoundPage from '../../shared/components/NotFoundPage'
@@ -195,7 +195,7 @@ function PostDetailPage() {
       {isLoading ? (
         <div role="status" aria-live="polite">
           <p className="sr-only">게시글을 불러오는 중입니다...</p>
-          <PostArticleSkeleton />
+          <PostDetailSkeleton />
         </div>
       ) : (
         <article>

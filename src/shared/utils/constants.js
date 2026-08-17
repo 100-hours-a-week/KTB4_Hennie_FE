@@ -3,6 +3,7 @@ export const LOGO_PATH = '/assets/logo.webp'
 export const DEFAULT_PROFILE_PATH = '/assets/profile-default.webp'
 export const DEFAULT_PAGE = 1
 export const DEFAULT_PAGE_SIZE = 10
+export const POST_LIST_SKELETON_COUNT = 4
 export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export const PASSWORD_PATTERN =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])\S{8,20}$/
