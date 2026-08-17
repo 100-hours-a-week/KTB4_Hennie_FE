@@ -1,9 +1,9 @@
-const DEFAULT_POST_THUMBNAIL = '/assets/thumbnail/thumbnail_default.png'
+const DEFAULT_POST_THUMBNAIL = '/assets/thumbnail/thumbnail_default.webp'
 
 const POST_THUMBNAILS = {
-  FE: '/assets/thumbnail/thumbnail_fe.png',
-  BE: '/assets/thumbnail/thumbnail_be.png',
-  AI: '/assets/thumbnail/thumbnail_ai.png',
+  FE: '/assets/thumbnail/thumbnail_fe.webp',
+  BE: '/assets/thumbnail/thumbnail_be.webp',
+  AI: '/assets/thumbnail/thumbnail_ai.webp',
 }
 
 export const POST_CATEGORY_OPTIONS = [

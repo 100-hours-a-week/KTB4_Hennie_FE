@@ -1,6 +1,6 @@
 export const APP_NAME = '개발바닥'
-export const LOGO_PATH = '/assets/logo.png'
-export const DEFAULT_PROFILE_PATH = '/assets/profile-default.jpeg'
+export const LOGO_PATH = '/assets/logo.webp'
+export const DEFAULT_PROFILE_PATH = '/assets/profile-default.webp'
 export const DEFAULT_PAGE = 1
 export const DEFAULT_PAGE_SIZE = 10
 export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/

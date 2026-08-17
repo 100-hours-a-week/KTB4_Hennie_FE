@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./public/assets/logo.png" width="280" alt="개발바닥" />
+  <img src="./docs/logo.webp" width="280" alt="개발바닥" />
 </p>
 
 ## 프로젝트 설명

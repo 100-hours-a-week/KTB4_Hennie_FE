@@ -14,6 +14,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "preview": "vite preview",
+    "optimize:images": "node scripts/optimize-images.mjs",
     "test": "vitest",
     "test:run": "vitest run",
     "lighthouse:ci": "lhci autorun; ret=$?; node scripts/rename-lighthouse-reports.mjs; exit $ret",
@@ -43,6 +44,7 @@
     "globals": "^17.7.0",
     "jsdom": "^27.4.0",
     "prettier": "^3.9.5",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4.3.3",
     "vite": "^8.1.1",
     "vitest": "^4.1.10"

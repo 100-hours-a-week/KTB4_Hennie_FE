@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { getPostThumbnail } from '../../features/posts/utils/postCategory'
 
-const DEFAULT_THUMBNAIL = '/assets/thumbnail/thumbnail_default.png'
+const DEFAULT_THUMBNAIL = '/assets/thumbnail/thumbnail_default.webp'
 
 describe('카테고리가 있는 게시글의 썸네일', () => {
   it.each([
-    ['FE', '/assets/thumbnail/thumbnail_fe.png'],
-    ['BE', '/assets/thumbnail/thumbnail_be.png'],
-    ['AI', '/assets/thumbnail/thumbnail_ai.png'],
+    ['FE', '/assets/thumbnail/thumbnail_fe.webp'],
+    ['BE', '/assets/thumbnail/thumbnail_be.webp'],
+    ['AI', '/assets/thumbnail/thumbnail_ai.webp'],
   ])('%s 게시글은 전용 썸네일을 사용한다', (category, expected) => {
     // Arrange & Act
     const thumbnail = getPostThumbnail(category)
