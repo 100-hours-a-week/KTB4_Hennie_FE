@@ -71,6 +71,8 @@ function Header({ currentUser = null, onLogout }) {
       className="h-7 w-auto object-contain min-[360px]:h-9 sm:h-11"
       src={LOGO_PATH}
       alt={APP_NAME}
+      width={186}
+      height={88}
     />
   )
 
@@ -167,6 +169,8 @@ function Header({ currentUser = null, onLogout }) {
               className="size-7 rounded-full object-cover ring-1 ring-app-border sm:size-8"
               src={profileImage}
               alt={profileAlt}
+              width={32}
+              height={32}
             />
             <button
               className="flex size-6 items-center justify-center rounded-md text-app-text-muted transition-colors hover:bg-app-surface hover:text-app-text"

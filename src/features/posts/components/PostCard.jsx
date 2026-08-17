@@ -33,6 +33,8 @@ function PostCard({ post }) {
                   className="size-full object-cover"
                   src={post.authorProfileUrl}
                   alt="작성자"
+                  width={28}
+                  height={28}
                 />
               </span>
               <span className="truncate text-[13px] font-medium text-app-text-muted">
@@ -75,6 +77,8 @@ function PostCard({ post }) {
             className="aspect-video w-24 shrink-0 self-center rounded-lg border border-app-border bg-app-surface-raised object-cover sm:w-40"
             src={getPostThumbnail(post.category)}
             alt=""
+            width={320}
+            height={180}
           />
         </div>
       </Link>

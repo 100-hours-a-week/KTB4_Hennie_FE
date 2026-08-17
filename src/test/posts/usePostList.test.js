@@ -16,7 +16,7 @@ const createPost = (id) => ({
   title: `게시글 ${id}`,
   category: 'FE',
   authorNickname: '테스터',
-  authorProfileUrl: '/assets/profile-default.jpeg',
+  authorProfileUrl: '/assets/profile-default.webp',
   createdAt: '2026-08-16T10:00:00',
   likeCount: 0,
   commentCount: 0,

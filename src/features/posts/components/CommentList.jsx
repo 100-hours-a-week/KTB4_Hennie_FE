@@ -19,7 +19,9 @@ function CommentList({
 }) {
   const { isExpanded, setExpanded } = useReplyThreadVisibility()
 
-  if (comments.length === 0) {
+  const commentItems = Array.isArray(comments) ? comments : []
+
+  if (Array.isArray(comments) && comments.length === 0) {
     return (
       <ul className="flex flex-col">
         <li className="app-empty">아직 댓글이 없습니다.</li>
@@ -29,7 +31,7 @@ function CommentList({
 
   return (
     <ul className="flex flex-col">
-      {comments.map((comment) => {
+      {commentItems.map((comment) => {
         const replies = Array.isArray(comment.replies) ? comment.replies : []
         const isReplyFormOpen =
           String(replyEditor?.commentId) === String(comment.id)

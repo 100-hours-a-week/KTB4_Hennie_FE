@@ -64,6 +64,8 @@ function ProfileSettingsSection() {
                 className="size-full rounded-full object-cover"
                 src={profileImage}
                 alt={`${currentUser?.nickname || '사용자'} 프로필`}
+                width={96}
+                height={96}
               />
               <span
                 className="absolute right-0 bottom-0 flex size-7 items-center justify-center rounded-full border-2 border-app-bg bg-app-primary text-base leading-none font-bold text-app-primary-ink transition-colors group-hover:bg-app-primary-hover"

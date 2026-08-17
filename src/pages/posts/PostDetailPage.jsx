@@ -12,9 +12,9 @@ import { useReportPost } from '../../features/posts/hook/useReportPost'
 import { useUpdateComment } from '../../features/posts/hook/comment/useUpdateComment'
 import CommentForm from '../../features/posts/components/CommentForm'
 import CommentList from '../../features/posts/components/CommentList'
+import PostDetailSkeleton from '../../features/posts/components/PostDetailSkeleton'
 import { isOwnedByCurrentUser } from '../../features/posts/utils/isOwnedByCurrentUser'
 import { useAuth } from '../../features/auth/hook/useAuth'
-import LoadingPage from '../../shared/components/LoadingPage'
 import NotFoundPage from '../../shared/components/NotFoundPage'
 import { formatDate } from '../../shared/utils/formatDate'
 import { getPostCategoryLabel } from '../../features/posts/utils/postCategory'
@@ -178,11 +178,7 @@ function PostDetailPage() {
     submitComment(event)
   }
 
-  if (isLoading) {
-    return <LoadingPage message="게시글을 불러오는 중입니다..." />
-  }
-
-  if (error || !post) {
+  if (!isLoading && (error || !post)) {
     return (
       <NotFoundPage
         title="게시글을 찾을 수 없습니다"
@@ -191,109 +187,120 @@ function PostDetailPage() {
     )
   }
 
-  const canManagePost = isOwnedByCurrentUser(post, currentUser)
-  const postDate = post.createdAt || post.modifiedAt
+  const canManagePost = post ? isOwnedByCurrentUser(post, currentUser) : false
+  const postDate = post?.createdAt || post?.modifiedAt
 
   return (
     <section className="mx-auto max-w-[760px] px-4 py-6 sm:px-6 sm:py-8">
-      <article>
-        <header className="mb-6 flex items-start justify-between gap-4 border-b border-app-border pb-5">
-          <div className="min-w-0">
-            <div className="mb-2.5 flex flex-col items-start gap-2">
-              {getPostCategoryLabel(post.category) && (
-                <span className={`app-chip app-chip-${post.category}`}>
-                  {getPostCategoryLabel(post.category)}
+      {isLoading ? (
+        <div role="status" aria-live="polite">
+          <p className="sr-only">게시글을 불러오는 중입니다...</p>
+          <PostDetailSkeleton />
+        </div>
+      ) : (
+        <article>
+          <header className="mb-6 flex items-start justify-between gap-4 border-b border-app-border pb-5">
+            <div className="min-w-0">
+              <div className="mb-2.5 flex flex-col items-start gap-2">
+                {getPostCategoryLabel(post.category) && (
+                  <span className={`app-chip app-chip-${post.category}`}>
+                    {getPostCategoryLabel(post.category)}
+                  </span>
+                )}
+                <h1 className="min-w-0 text-[22px] leading-[1.35] font-bold break-words sm:text-[26px]">
+                  {post.title}
+                </h1>
+              </div>
+
+              <div className="app-meta">
+                <span className="size-8 shrink-0 overflow-hidden rounded-full bg-app-surface-raised">
+                  <img
+                    className="size-full object-cover"
+                    src={post.authorProfileUrl}
+                    alt="작성자"
+                    width={32}
+                    height={32}
+                  />
                 </span>
-              )}
-              <h1 className="min-w-0 text-[22px] leading-[1.35] font-bold break-words sm:text-[26px]">
-                {post.title}
-              </h1>
+                <span className="font-medium text-app-text-muted">
+                  {post.authorNickname}
+                </span>
+                {postDate && (
+                  <time dateTime={postDate}>{formatDate(postDate)}</time>
+                )}
+                {post.edited && (
+                  <span className="text-app-text-subtle">(수정됨)</span>
+                )}
+              </div>
             </div>
 
-            <div className="app-meta">
-              <span className="size-8 shrink-0 overflow-hidden rounded-full bg-app-surface-raised">
-                <img
-                  className="size-full object-cover"
-                  src={post.authorProfileUrl}
-                  alt="작성자"
-                />
-              </span>
-              <span className="font-medium text-app-text-muted">
-                {post.authorNickname}
-              </span>
-              {postDate && (
-                <time dateTime={postDate}>{formatDate(postDate)}</time>
-              )}
-              {post.edited && (
-                <span className="text-app-text-subtle">(수정됨)</span>
-              )}
-            </div>
-          </div>
-
-          <div className="flex shrink-0 gap-2">
-            {canManagePost ? (
-              <>
-                <Link
-                  className="app-btn app-btn-outline app-btn-xs"
-                  to={`/posts/${postId}/edit`}
-                >
-                  수정
-                </Link>
+            <div className="flex shrink-0 gap-2">
+              {canManagePost ? (
+                <>
+                  <Link
+                    className="app-btn app-btn-outline app-btn-xs"
+                    to={`/posts/${postId}/edit`}
+                  >
+                    수정
+                  </Link>
+                  <button
+                    className="app-btn app-btn-outline app-btn-xs"
+                    type="button"
+                    onClick={openDeleteModal}
+                  >
+                    삭제
+                  </button>
+                </>
+              ) : (
                 <button
                   className="app-btn app-btn-outline app-btn-xs"
                   type="button"
-                  onClick={openDeleteModal}
+                  onClick={openReportModal}
                 >
-                  삭제
+                  신고
                 </button>
-              </>
-            ) : (
-              <button
-                className="app-btn app-btn-outline app-btn-xs"
-                type="button"
-                onClick={openReportModal}
-              >
-                신고
-              </button>
-            )}
-          </div>
-        </header>
+              )}
+            </div>
+          </header>
 
-        <p className="mb-8 whitespace-pre-wrap text-[15px] leading-[1.8] text-app-text">
-          {post.content}
-        </p>
-      </article>
+          <p className="mb-8 whitespace-pre-wrap text-[15px] leading-[1.8] text-app-text">
+            {post.content}
+          </p>
+        </article>
+      )}
 
       <section className="mt-8 border-t border-app-border pt-5">
-        <div className="mb-5 flex items-center gap-1 text-sm text-app-text-muted">
-          <button
-            className={`app-btn app-btn-sm disabled:cursor-wait ${post.liked ? 'border border-app-primary/40 bg-app-primary/10 text-app-primary hover:bg-app-primary/18' : 'app-btn-outline'}`}
-            type="button"
-            aria-label={post.liked ? '좋아요 취소' : '좋아요'}
-            aria-pressed={post.liked}
-            disabled={isUpdatingLike}
-            onClick={toggleLike}
-          >
-            <LikeIcon
-              className={`size-[18px] ${post.liked ? 'fill-current' : ''}`}
-            />
-            <span>{post.likeCount}</span>
-          </button>
-          <span
-            className="inline-flex items-center gap-1.5 px-2.5 text-[13px] text-app-text-subtle"
-            aria-label={`댓글 ${commentCount}`}
-          >
-            <CommentIcon className="size-[18px]" />
-            <span>{commentCount}</span>
-          </span>
-          <span
-            className="inline-flex items-center gap-1.5 px-2.5 text-[13px] text-app-text-subtle"
-            aria-label={`조회수 ${post.viewCount}`}
-          >
-            <ViewIcon className="size-[18px]" />
-            <span>{post.viewCount}</span>
-          </span>
-        </div>
+        {!isLoading && (
+          <div className="mb-5 flex items-center gap-1 text-sm text-app-text-muted">
+            <button
+              className={`app-btn app-btn-sm disabled:cursor-wait ${post.liked ? 'border border-app-primary/40 bg-app-primary/10 text-app-primary hover:bg-app-primary/18' : 'app-btn-outline'}`}
+              type="button"
+              aria-label={post.liked ? '좋아요 취소' : '좋아요'}
+              aria-pressed={post.liked}
+              disabled={isUpdatingLike}
+              onClick={toggleLike}
+            >
+              <LikeIcon
+                className={`size-[18px] ${post.liked ? 'fill-current' : ''}`}
+              />
+              <span>{post.likeCount}</span>
+            </button>
+            <span
+              className="inline-flex items-center gap-1.5 px-2.5 text-[13px] text-app-text-subtle"
+              aria-label={`댓글 ${commentCount}`}
+            >
+              <CommentIcon className="size-[18px]" />
+              <span>{commentCount}</span>
+            </span>
+            <span
+              className="inline-flex items-center gap-1.5 px-2.5 text-[13px] text-app-text-subtle"
+              aria-label={`조회수 ${post.viewCount}`}
+            >
+              <ViewIcon className="size-[18px]" />
+              <span>{post.viewCount}</span>
+            </span>
+          </div>
+        )}
 
         <CommentForm
           className="mb-6"
@@ -301,6 +308,7 @@ function PostDetailPage() {
           value={content}
           placeholder="이 기술에 대한 생각을 개발자국으로 남겨보세요"
           isPending={isCommentSubmitting}
+          disabled={isLoading}
           submitLabel={isEditingComment ? '수정 등록' : '댓글 등록'}
           pendingLabel={isEditingComment ? '수정 중...' : '등록 중...'}
           onChange={changeContent}
@@ -311,7 +319,7 @@ function PostDetailPage() {
         />
 
         <CommentList
-          comments={comments}
+          comments={isLoading ? null : comments}
           currentUser={currentUser}
           onEdit={startCommentEdit}
           onDelete={openDeleteCommentModal}

@@ -13,6 +13,8 @@ function CommentForm({
   className = '',
   autoFocus = false,
   isPending = false,
+  // 아직 쓸 수 없는 상태. isPending과 달리 버튼 문구는 바꾸지 않는다.
+  disabled = false,
   submitDisabled = false,
   submitLabel = '댓글 등록',
   pendingLabel = '등록 중...',
@@ -21,6 +23,7 @@ function CommentForm({
 }) {
   const generatedId = useId()
   const resolvedInputId = inputId || `${generatedId}-comment`
+  const isBlocked = isPending || disabled
 
   return (
     <form
@@ -43,7 +46,7 @@ function CommentForm({
         placeholder={placeholder}
         maxLength={COMMENT_MAX_LENGTH}
         autoFocus={autoFocus}
-        disabled={isPending}
+        disabled={isBlocked}
         value={value}
         onChange={onChange}
       />
@@ -52,7 +55,7 @@ function CommentForm({
           <button
             className="app-btn app-btn-outline app-btn-xs"
             type="button"
-            disabled={isPending}
+            disabled={isBlocked}
             onClick={onCancel}
           >
             {cancelLabel}
@@ -61,7 +64,7 @@ function CommentForm({
         <button
           className="app-btn app-btn-primary app-btn-xs"
           type="submit"
-          disabled={isPending || submitDisabled}
+          disabled={isBlocked || submitDisabled}
         >
           {isPending ? pendingLabel : submitLabel}
         </button>

@@ -51,6 +51,8 @@ function SignupPage() {
                   className="size-full object-cover"
                   src={previewUrl}
                   alt="프로필 미리보기"
+                  width={96}
+                  height={96}
                 />
               ) : (
                 <span aria-hidden="true">+</span>

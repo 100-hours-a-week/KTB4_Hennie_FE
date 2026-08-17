@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import PostList from '../../features/posts/components/PostList'
+import PostListSkeleton from '../../features/posts/components/PostListSkeleton'
 import { usePostList } from '../../features/posts/hook/usePostList'
 import { useInfiniteScroll } from '../../shared/hook/useInfiniteScroll'
 import { usePageTitle } from '../../shared/hook/usePageTitle'
@@ -38,7 +39,7 @@ function PostListPage() {
         남겨보세요...🐾
       </p>
 
-      <PostList posts={posts} />
+      {posts === null ? <PostListSkeleton /> : <PostList posts={posts} />}
 
       <div className="app-list-status" ref={sentinelRef} aria-live="polite">
         {statusMessage}

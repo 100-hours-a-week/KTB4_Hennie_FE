@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { Outlet, useNavigate } from 'react-router'
 import { useAuth } from '../../features/auth/hook/useAuth'
 import Header from '../../shared/components/Header'
@@ -26,7 +27,10 @@ function AppLayout() {
     <>
       <Header currentUser={currentUser} onLogout={handleLogout} />{' '}
       <main className="min-h-[calc(100vh-4rem)]">
-        <Outlet />
+        {/* 경로별로 나눈 청크를 받는 동안에도 헤더는 그대로 둔다 */}
+        <Suspense fallback={<LoadingPage />}>
+          <Outlet />
+        </Suspense>
       </main>
     </>
   )
