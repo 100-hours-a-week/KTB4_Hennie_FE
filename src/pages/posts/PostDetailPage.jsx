@@ -216,6 +216,8 @@ function PostDetailPage() {
                   className="size-full object-cover"
                   src={post.authorProfileUrl}
                   alt="작성자"
+                  width={32}
+                  height={32}
                 />
               </span>
               <span className="font-medium text-app-text-muted">

@@ -9,6 +9,8 @@ function TechEnterpriseLogo({ enterprise, className = 'size-12 p-1.5' }) {
         alt=""
         aria-hidden="true"
         loading="lazy"
+        width={96}
+        height={96}
       />
     </span>
   )

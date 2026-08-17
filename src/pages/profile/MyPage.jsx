@@ -26,6 +26,8 @@ function MyPage() {
                 className="size-full object-cover"
                 src={profileImage}
                 alt={`${currentUser?.nickname || '사용자'} 프로필`}
+                width={40}
+                height={40}
               />
             </span>
             <div className="min-w-0">

@@ -29,6 +29,8 @@ function CommentItem({
               className="size-full object-cover"
               src={comment.authorProfileUrl}
               alt="작성자"
+              width={28}
+              height={28}
             />
           </span>
           <span className="text-[13px] font-semibold">

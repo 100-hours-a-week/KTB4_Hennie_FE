@@ -70,6 +70,8 @@ function ProfileEditPage() {
                 className="size-full rounded-full object-cover"
                 src={profileImage}
                 alt={`${currentUser.nickname || '사용자'} 프로필`}
+                width={112}
+                height={112}
               />
               <span
                 className="absolute right-0.5 bottom-0.5 flex size-8 items-center justify-center rounded-full border-2 border-app-surface bg-app-primary text-xl leading-none font-bold text-app-primary-ink transition-colors group-hover:bg-app-primary-hover"

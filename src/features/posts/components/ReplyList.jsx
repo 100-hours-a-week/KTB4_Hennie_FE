@@ -38,6 +38,8 @@ function ReplyList({
                       className="size-full object-cover"
                       src={reply.authorProfileUrl}
                       alt=""
+                      width={28}
+                      height={28}
                     />
                   </span>
                   <span className="text-[13px] font-semibold">
