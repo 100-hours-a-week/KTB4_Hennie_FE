@@ -21,15 +21,17 @@
 | 기간          | 2026.05.26 ~ 2026.08.09, 약 11주                                                                     |
 | 인원          | 1인 프로젝트                                                                                         |
 | 담당 범위     | React 프론트엔드, Spring Boot 백엔드, 데이터베이스, Docker·Nginx, AWS EC2, CI/CD                     |
-| 프로젝트 성격 | 교육 과정 개인 과제에서 출발해 실제 배포와 운영 환경의 문제 해결까지 확장한 학습·포트폴리오 프로젝트 |
 
-회원, 게시글, 댓글, 좋아요, 기술 아티클 수집, 기업 구독, 실시간 알림을 추가하며 기술 콘텐츠를 중심으로 의견을 나누는 서비스로 고도화했습니다. EC2에 직접 배포 진행했습니다.
+회원, 게시글, 댓글, 좋아요, 기술 아티클 수집, 기업 구독, 실시간 알림을 추가하며 기술 콘텐츠를 중심으로 의견을 나누는 서비스로 고도화했습니다.
+
+## 시연 영상
+https://youtu.be/_trr3wPh-To
 
 ## 주요 기능
 
 | 영역          | 제공 기능                                                              |
 | ------------- | ---------------------------------------------------------------------- |
-| 개발 토론     | 게시글 무한 스크롤, 상세 조회, 작성·수정·삭제, 좋아요, 신고, 임시 저장 |
+| 개발 토론     | 게시글 무한 스크롤, 상세 조회, 작성·수정·삭제, 좋아요, 게시글 신고, 임시 저장 |
 | 댓글과 답글   | 댓글·답글 작성, 수정, 삭제 및 작성자 기준 액션 제어                    |
 | 기술 원문     | 기업 목록 조회, 기업별 기술 아티클 무한 스크롤, 원문 링크 이동         |
 | 기업 구독     | 기업 구독·해지, 비활성 기업 상태 반영, 마이페이지 구독 목록            |
@@ -37,8 +39,6 @@
 | 회원과 프로필 | 회원가입, 로그인·로그아웃, 세션 복원, 프로필·비밀번호 변경, 회원 탈퇴  |
 
 ## 서비스 화면
-
-스크린샷은 `docs/screenshots/`에 있으며 모두 데스크톱 1242px 너비에서 동일한 조건으로 촬영했습니다. 마이페이지 캡처의 이메일은 예시 값으로 가렸습니다.
 
 | 페이지          | 경로                                | 스크린샷                                                                                            | 확인할 기능                             |
 | --------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------- |
@@ -63,21 +63,21 @@
 
 ### 로딩 화면
 
-목록과 상세는 데이터를 기다리는 동안 빈 화면 대신 실제 레이아웃의 뼈대를 그립니다. 회색 상자만 쓰고 글자는 넣지 않아 LCP 계산에 끼어들지 않으며, 안내 문구는 `aria-live` 영역에 남겨 화면 낭독기에는 그대로 전달됩니다.
+목록과 상세는 데이터를 기다리는 동안 빈 화면 대신 실제 레이아웃의 뼈대를 그립니다. 회색 상자만 쓰고 글자는 넣지 않아 LCP 계산에 끼어들지 않으며, 안내 문구는 `aria-live` 영역에 남깁니다.
 
 | 화면        | 경로             | 스크린샷                                                                                                       | 확인할 기능                                  |
 | ----------- | ---------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
 | 게시글 목록 | `/posts`         | <img src="./docs/screenshots/skeleton-post-list.png" width="560" alt="개발바닥 게시글 목록 스켈레톤 화면" />   | 카드 골격 4장으로 자리 확보, 하단 상태 안내  |
 | 게시글 상세 | `/posts/:postId` | <img src="./docs/screenshots/skeleton-post-detail.png" width="560" alt="개발바닥 게시글 상세 스켈레톤 화면" /> | 본문은 뼈대, 댓글 입력창은 즉시 표시(비활성) |
 
-게시글 상세는 댓글 입력창이 게시글 데이터를 쓰지 않아 응답을 기다리지 않고 먼저 그립니다. 이 구분으로 LCP가 12.2초에서 2.1초로 줄었습니다. 다만 어느 게시글인지 정해지기 전에는 입력을 막아 둡니다.
+게시글 상세는 댓글 입력창이 게시글 데이터를 쓰지 않아 응답을 기다리지 않고 먼저 그립니다. 이 구분으로 LCP가 12.2초에서 2.1초로 줄었습니다. 어느 게시글인지 정해지기 전에는 입력을 막아 둡니다.
 
 ## 기술 스택
 
 | 구분   | 기술                                  |
 | ------ | ------------------------------------- |
-| 런타임 | Node.js 20.19.0                       |
-| UI     | React 19, JavaScript, JSX             |
+| 런타임 | Node.js 24.19.0                       |
+| UI     | React 19, JavaScript                  |
 | 라우팅 | React Router 7                        |
 | 스타일 | Tailwind CSS 4, Pretendard            |
 | 통신   | Fetch API, EventSource                |
@@ -89,7 +89,7 @@
 
 기술을 많이 도입하는 것보다 현재 문제를 해결하는 데 필요한 범위를 먼저 판단했습니다. 아래 내용은 실제로 검토한 선택지와 감수한 trade-off를 기준으로 작성했습니다.
 
-### React + Vite — DOM 중심 SPA를 상태 중심 구조로 전환
+### React + Vite : DOM 중심 SPA를 상태 중심 구조로 전환
 
 처음에 JS의 구동 방식을 제대로 익히고자 Vanilla JavaScript를 SPA 구조를 대입하여 구현을 시작했습니다. 추후 VDOM을 적용해보면서 React의 동작 방식을 익혔고, 최종 구조로는 React로 마이그레이션했습니다.
 
@@ -107,7 +107,7 @@ Vite는 Vanilla JavaScript 단계부터 개발 서버와 API 프록시로 사용
 
 React 전환으로 컴포넌트 생명주기와 비동기 경쟁 상태를 직접 관리해야 하는 비용이 생겼습니다. 이를 feature 훅, `AbortController`, 요청 잠금으로 분리했습니다. 현재 구조는 [`main.jsx`](./src/main.jsx), [`AuthProvider.jsx`](./src/shared/routes/AuthProvider.jsx), [`vite.config.js`](./vite.config.js)에서 확인할 수 있습니다.
 
-### Tailwind CSS — CSS+BEM보다 일관된 UI 규칙을 우선
+### Tailwind CSS : CSS+BEM보다 일관된 UI 규칙을 우선
 
 **문제**
 
@@ -126,7 +126,7 @@ React 마이그레이션 과정에서 기존 CSS+BEM을 유지하는 대신 Tail
 
 유틸리티 클래스가 JSX에 길게 노출되는 비용을 감수하는 대신, 반복되는 버튼·폼·상태 표현은 `app-*` 공통 클래스로 묶고 브랜드 색상과 표면·타이포그래피는 Tailwind theme token으로 관리했습니다. 실제 규칙은 [`main.css`](./src/styles/main.css)에서 확인할 수 있습니다.
 
-### Context + 커스텀 훅 — 상태의 수명과 공유 범위에 맞춘 소유권
+### Context + 커스텀 훅 : 상태의 수명과 공유 범위에 맞춘 소유권
 
 **문제**
 
@@ -146,7 +146,7 @@ React 마이그레이션 과정에서 기존 CSS+BEM을 유지하는 대신 Tail
 
 서버 캐시 라이브러리를 사용하지 않아 loading·error·요청 취소·재조회 코드를 직접 관리해야 합니다. 대신 임시저장처럼 외부 변경 가능성이 낮은 데이터는 불필요한 자동 재검증 없이 사용 시점에 조회하고, 상태의 변경 경로를 feature 안에서 명시적으로 추적할 수 있습니다. 여러 화면에서 동일 서버 상태의 캐싱과 재검증이 반복적으로 필요해지면 TanStack Query를 검토할 수 있지만 현재 확정된 도입 계획은 아닙니다.
 
-### SSE — 단방향 알림에 필요한 통신만 유지
+### SSE : 단방향 알림에 필요한 통신만 유지
 
 **문제**
 
@@ -160,7 +160,7 @@ Spring Boot와 React에서 단방향 연결을 비교적 단순하게 구성할 
 
 지속 연결은 timeout·heartbeat·서버 emitter 정리·네트워크 재연결·중복 이벤트 처리가 필요합니다. 프론트엔드는 페이지 이동과 관계없이 로그인 세션 동안 연결을 유지하고, SSE를 데이터 원본이 아닌 재조회 신호로 사용합니다. 인증 실패 재연결, 이벤트 ID 중복 제거, 150ms 단위 동기화는 [`useNotificationStream.js`](./src/features/notification/hook/useNotificationStream.js)에 구현되어 있습니다.
 
-### JWT 인증 — 메모리 토큰과 HttpOnly cookie의 역할 분리
+### JWT 인증 : 메모리 토큰과 HttpOnly cookie의 역할 분리
 
 **문제**
 
@@ -174,7 +174,7 @@ Spring Boot와 React에서 단방향 연결을 비교적 단순하게 구성할 
 
 XSS에 대한 토큰 노출 범위를 줄이는 대신 새로고침마다 인증 복구 요청이 필요합니다. 여러 요청이 동시에 재발급을 시도할 때는 하나의 `refreshPromise`를 공유해 중복 호출을 막았습니다. 쿠키가 필요한 로그인·재발급·로그아웃 요청은 `credentials: 'include'`를 사용하고 브라우저 네트워크 탭에서 전달과 삭제를 확인했습니다. 관련 흐름은 [`authApi.js`](./src/features/auth/api/authApi.js), [`tokenManager.js`](./src/shared/api/tokenManager.js), [`http.js`](./src/shared/api/http.js)로 이어집니다.
 
-### Docker + Nginx + GitHub Actions — 빌드와 실행 책임 분리
+### Docker + Nginx + GitHub Actions : 빌드와 실행 책임 분리
 
 **문제**
 
@@ -192,12 +192,6 @@ XSS에 대한 토큰 노출 범위를 줄이는 대신 새로고침마다 인증
 이미지 레지스트리, 배포 secret, Compose와 저장소 간 계약을 함께 관리해야 하는 복잡성이 추가됐습니다. 대신 프론트엔드·백엔드·인프라 저장소가 각자 자신의 서비스를 배포하고, 프론트엔드는 `--no-deps`로 자기 컨테이너만 교체해 영향 범위를 제한합니다. 구성은 [`Dockerfile`](./Dockerfile), [`nginx.conf`](./nginx.conf), [CD 워크플로](./.github/workflows/cd.yml)에서 확인할 수 있습니다.
 
 ## 시작하기
-
-### 요구 사항
-
-- Node.js `20.19.0` (`.nvmrc`와 `package.json`에서 동일하게 고정)
-- npm
-- API 기능을 사용하려면 `http://localhost:8080`에서 실행 중인 [개발바닥 백엔드](https://github.com/100-hours-a-week/KTB4_Hennie_BE)
 
 ### 설치 및 실행
 
@@ -276,7 +270,7 @@ URL 또는 사용자 이벤트
 → 화면 렌더링
 ```
 
-서버 상태는 기능별 페이지와 훅이 소유합니다. 목록 요청은 `AbortController`로 이전 요청을 정리하고, 게시글과 기술 원문은 `IntersectionObserver`를 이용해 다음 페이지를 불러옵니다. 앱 전역에서는 `AuthProvider`가 사용자 세션을, `NotificationProvider`가 읽지 않은 알림 수와 실시간 동기화 신호를 제공합니다.
+서버 상태는 기능별 페이지와 훅이 소유합니다. 게시글과 기술 원문 목록은 요청 잠금으로 다음 페이지 호출을 직렬화하고, 화면이 언마운트되거나 조회 기준이 바뀔 때 `AbortController`로 진행 중인 요청을 취소합니다. `IntersectionObserver`는 목록 하단의 sentinel을 감지해 다음 페이지 요청을 시작합니다. 앱 전역에서는 `AuthProvider`가 사용자 세션을, `NotificationProvider`가 읽지 않은 알림 수와 실시간 동기화 신호를 제공합니다.
 
 ## 핵심 구현
 
@@ -284,10 +278,10 @@ URL 또는 사용자 이벤트
 | --------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 인증 세션       | 메모리 액세스 토큰, refresh cookie, single-flight 재발급                | [`AuthProvider.jsx`](./src/shared/routes/AuthProvider.jsx), [`tokenManager.js`](./src/shared/api/tokenManager.js)                                                   |
 | 공통 HTTP 계층  | 요청별 인증 모드, Bearer 헤더, 조건부 `401` 재시도                      | [`http.js`](./src/shared/api/http.js), [`client.js`](./src/shared/api/client.js)                                                                                    |
-| 목록 조회       | `IntersectionObserver` 기반 무한 스크롤, 요청 취소와 중복 호출 방지     | [`PostListPage.jsx`](./src/pages/posts/PostListPage.jsx), [`useTechArticleList.js`](./src/features/tech/hook/useTechArticleList.js)                                 |
+| 목록 조회       | `IntersectionObserver` 기반 무한 스크롤, 요청 잠금과 생명주기 취소      | [`PostListPage.jsx`](./src/pages/posts/PostListPage.jsx), [`useTechArticleList.js`](./src/features/tech/hook/useTechArticleList.js)                                 |
 | 게시글 상호작용 | 상세 화면을 댓글·답글·좋아요·신고 훅으로 분리하고 비동기 실행 잠금 적용 | [`PostDetailPage.jsx`](./src/pages/posts/PostDetailPage.jsx), [`useAsyncLock.js`](./src/shared/hook/useAsyncLock.js)                                                |
 | 기업 구독       | 사용자 세션별 구독 상태, 기업 단위 pending 잠금, 변경 후 서버 재동기화  | [`useEnterpriseSubscriptions.js`](./src/features/tech/hook/useEnterpriseSubscriptions.js)                                                                           |
-| 실시간 알림     | Bearer 인증 SSE, 이벤트 중복 제거·micro-batching·재연결                 | [`useNotificationStream.js`](./src/features/notification/hook/useNotificationStream.js), [`NotificationProvider.jsx`](./src/shared/routes/NotificationProvider.jsx) |
+| 실시간 알림     | Bearer 인증 SSE, 이벤트 중복 제거·150ms debounce·재연결                 | [`useNotificationStream.js`](./src/features/notification/hook/useNotificationStream.js), [`NotificationProvider.jsx`](./src/shared/routes/NotificationProvider.jsx) |
 | 응답 정규화     | 서버 DTO를 화면 전용 모델로 변환하고 기본값과 페이지 정보를 통일        | [`normalizePost.js`](./src/features/posts/utils/normalizePost.js), [`normalizeNotification.js`](./src/features/notification/utils/normalizeNotification.js)         |
 
 ### 인증 세션과 공통 HTTP 계층
@@ -321,7 +315,7 @@ URL 또는 사용자 이벤트
 ```
 
 - 관찰 대상이 뷰포트에서 약 `180px` 앞에 들어오면 다음 페이지를 미리 요청합니다.
-- 요청을 시작할 때 observer를 해제하고 `isRequestingRef`를 확인해 동일 페이지가 연속 호출되는 것을 막습니다.
+- 요청을 시작할 때 observer를 해제하고, 게시글은 `useAsyncLock`, 기술 원문은 `isRequestingRef`로 동일 페이지가 연속 호출되는 것을 막습니다.
 - 화면이 언마운트되거나 조회 기준이 바뀌면 `AbortController`로 진행 중인 요청을 취소합니다. 취소된 응답은 로딩·오류·목록 상태를 갱신하지 않습니다.
 - React 함수형 상태 갱신으로 이전 목록 뒤에 새 페이지를 이어 붙여, 비동기 응답 시점의 오래된 state 참조를 피합니다.
 
@@ -349,7 +343,8 @@ notification.created 수신
 → 현재 사용자 대상 이벤트인지 확인
 → event ID 중복 제거
 → 150ms 동안 신호 병합
-→ 알림 목록과 읽지 않은 개수를 REST로 재조회
+→ 읽지 않은 개수를 REST로 재조회하고 목록 동기화 신호 갱신
+→ 알림 페이지가 열려 있으면 로컬 목록도 REST로 재조회
 ```
 
 - 최근 이벤트 ID를 최대 200개까지 기억해 재연결 과정에서 같은 이벤트가 다시 도착해도 중복 반영하지 않습니다.
@@ -364,15 +359,20 @@ API 응답은 컴포넌트로 바로 전달하지 않고 각 feature의 normaliz
 
 ## 스크립트와 품질 검사
 
-| 명령                      | 용도                                   |
-| ------------------------- | -------------------------------------- |
-| `npm run dev`             | Vite 개발 서버 실행                    |
-| `npm run build`           | 프로덕션 정적 파일을 `dist/`에 생성    |
-| `npm run preview -- 4173` | 빌드 결과를 4173 포트에서 미리보기     |
-| `npm run lint`            | 전체 소스 ESLint 검사                  |
-| `npm run lint:fix`        | 자동 수정 가능한 ESLint 문제 정리      |
-| `npm run format`          | Prettier로 전체 파일 포맷 적용         |
-| `npm run format:check`    | 파일 수정 없이 Prettier 준수 여부 검사 |
+| 명령                             | 용도                                               |
+| -------------------------------- | -------------------------------------------------- |
+| `npm run dev`                    | Vite 개발 서버 실행                                |
+| `npm run build`                  | 프로덕션 정적 파일을 `dist/`에 생성                |
+| `npm run preview -- --port 4173` | 빌드 결과를 4173 포트에서 미리보기                 |
+| `npm run lint`                   | 전체 소스 ESLint 검사                              |
+| `npm run lint:fix`               | 자동 수정 가능한 ESLint 문제 정리                  |
+| `npm run format`                 | Prettier로 전체 파일 포맷 적용                     |
+| `npm run format:check`           | 파일 수정 없이 Prettier 준수 여부 검사             |
+| `npm test`                       | Vitest watch 모드 실행                             |
+| `npm run test:run`               | 전체 테스트 1회 실행                               |
+| `npm run optimize:images`        | 정적 이미지를 표시 크기로 리사이즈하고 WebP로 변환 |
+| `npm run lighthouse:ci`          | 정적·비로그인 페이지 Lighthouse 측정               |
+| `npm run lighthouse:backend`     | 백엔드 실행 상태에서 동적 페이지 Lighthouse 측정   |
 
 Pull Request가 `main` 브랜치를 대상으로 열리면 [CI 워크플로](./.github/workflows/ci.yml)가 다음 순서로 실행됩니다.
 
@@ -383,7 +383,9 @@ npm run lint
 npm run build
 ```
 
-현재 `package.json`에는 자동화 테스트 스크립트가 정의되어 있지 않습니다. 따라서 CI도 포맷, 정적 분석, 프로덕션 빌드를 기준으로 변경 사항을 검증합니다.
+자동화 테스트는 Vitest와 Testing Library로 작성되어 있으며 `src/test/`에 11개 파일, 105개 테스트가 있습니다. 인증(로그인·회원가입), 게시글 목록·상세, 댓글 컴포넌트의 성공·실패·조회 전 상태를 검증합니다.
+
+현재 CI 워크플로는 포맷, 정적 분석, 프로덕션 빌드까지 실행하며 테스트 실행 단계는 아직 포함하지 않았습니다. 테스트는 `npm run test:run`으로 로컬에서 실행합니다. Lighthouse CI는 정적 측정 환경의 인증 복구 요청과 기존 Performance assertion 실패를 보완할 때까지 워크플로에서 주석 처리했습니다. 보고서를 filesystem에 저장해 artifact로 올리는 방식에는 GitHub App 토큰이 필수가 아니며, PR status check와 보고서 링크를 연동할 때 필요합니다.
 
 ## 빌드와 배포
 
@@ -391,12 +393,12 @@ npm run build
 
 ```bash
 npm run build
-npm run preview -- 4173
+npm run preview -- --port 4173
 ```
 
 ### 컨테이너
 
-`Dockerfile`은 Node.js 20.19.0 Alpine 이미지에서 `npm ci`와 Vite 빌드를 수행한 뒤, 생성된 `dist/`만 Nginx 이미지에 복사합니다. Nginx는 다음 역할을 담당합니다.
+`Dockerfile`은 Node.js 24.19.0 Alpine 이미지에서 `npm ci`와 Vite 빌드를 수행한 뒤, 생성된 `dist/`만 Nginx 이미지에 복사합니다. Nginx는 다음 역할을 담당합니다.
 
 - SPA 경로를 `index.html`로 fallback
 - 해시가 포함된 JS/CSS 장기 캐싱
@@ -406,6 +408,12 @@ npm run preview -- 4173
 ### 지속적 배포
 
 `main` 브랜치 push 또는 수동 실행 시 [CD 워크플로](./.github/workflows/cd.yml)가 품질 검사를 다시 수행하고 Docker 이미지를 빌드합니다. 이미지는 GHCR에 `latest`와 커밋 SHA 태그로 게시되며, 이후 인프라 저장소의 `compose.prod.yaml`을 이용해 EC2의 프론트엔드 컨테이너만 교체합니다.
+
+## 관련 문서
+
+| 문서                                                               | 내용                                                         |
+| ------------------------------------------------------------------ | ------------------------------------------------------------ |
+| [트러블슈팅](./docs/troubleshooting.md)                            | 마이그레이션·인증·비동기 경쟁·SSE·배포·성능 문제와 해결 기록 |        |
 
 ## 관련 저장소
 
